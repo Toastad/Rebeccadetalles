@@ -16,7 +16,29 @@
     .product-card img{width:100%;height:160px;object-fit:cover;transition:transform 0.3s ease;}
     .product-card:hover img{transform:scale(1.08)}
     .product-card .info{padding:10px;text-align:center}
-    .search-bar{max-width:720px;margin:16px auto;display:flex;gap:8px}
+    .search-wrapper{max-width:720px;margin:16px auto;position:relative}
+    .search-bar{display:flex;gap:8px}
+    .search-suggestions{
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      margin:6px 0 0;
+      padding:6px 0;
+      list-style:none;
+      background:#fff;
+      border:1px solid #f1b3cb;
+      border-radius:10px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.08);
+      z-index:1200;
+      max-height:280px;
+      overflow-y:auto;
+      display:none;
+    }
+    .search-suggestions li{padding:10px 12px;cursor:pointer}
+    .search-suggestions li:hover,.search-suggestions li.active{background:#fff1f7}
+    .search-suggestions .sg-name{display:block;font-weight:700;color:#333}
+    .search-suggestions .sg-desc{display:block;font-size:12px;color:#777;margin-top:2px}
     @media (max-width:800px){.product-card{width:calc(50% - 14px)}}
     @media (max-width:480px){.product-card{width:calc(50% - 8px)}.product-card img{height:120px}}
     /* Ensure header covers full viewport on desktop and doesn't get constrained by .w3-content max-width */
@@ -148,9 +170,12 @@
     <h2 class="w3-center w3-text-pink">Tienda</h2>
     <p class="w3-center w3-text-grey">Busca entre todos los productos</p>
 
-    <div class="search-bar">
-      <input id="searchInput" class="w3-input w3-border" type="text" placeholder="Busca un producto, ej. 'fresas'" />
-      <button id="searchBtn" class="w3-button w3-pink">Buscar</button>
+    <div class="search-wrapper">
+      <div class="search-bar">
+        <input id="searchInput" class="w3-input w3-border" type="text" autocomplete="off" placeholder="Busca un producto, ej. 'fresas'" />
+        <button id="searchBtn" class="w3-button w3-pink">Buscar</button>
+      </div>
+      <ul id="searchSuggestions" class="search-suggestions" aria-label="Sugerencias de productos"></ul>
     </div>
 
     <div id="products" class="product-grid">
@@ -238,6 +263,8 @@
     const productsEl = document.getElementById('products');
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
+    const suggestionsEl = document.getElementById('searchSuggestions');
+    let activeSuggestionIndex = -1;
 
     // Helper: get flattened products
     function getAllProducts(){
@@ -265,16 +292,106 @@
       });
     }
 
-    function doSearch(){
-      const q = searchInput.value.trim().toLowerCase();
+    function normalizeText(text){
+      return (text || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    function searchProducts(query){
       const allProducts = getAllProducts();
-      if(!q){ render(allProducts); return; }
-      const results = allProducts.filter(p => (p.name + ' ' + (p.desc||'')).toLowerCase().includes(q));
+      const q = normalizeText(query).trim();
+      if(!q) return allProducts;
+      const scored = allProducts
+        .map(p => {
+          const name = normalizeText(p.name);
+          const desc = normalizeText(p.desc || '');
+          const haystack = name + ' ' + desc;
+          let score = 0;
+          if(name.startsWith(q)) score += 4;
+          if(name.includes(q)) score += 3;
+          if(desc.includes(q)) score += 1;
+          return { p, score, match: haystack.includes(q) };
+        })
+        .filter(x => x.match)
+        .sort((a, b) => b.score - a.score);
+      return scored.map(x => x.p);
+    }
+
+    function clearSuggestions(){
+      suggestionsEl.innerHTML = '';
+      suggestionsEl.style.display = 'none';
+      activeSuggestionIndex = -1;
+    }
+
+    function renderSuggestions(list){
+      if(!searchInput.value.trim() || list.length === 0){
+        clearSuggestions();
+        return;
+      }
+
+      const top = list.slice(0, 6);
+      suggestionsEl.innerHTML = '';
+      top.forEach((p, idx) => {
+        const li = document.createElement('li');
+        li.dataset.idx = String(idx);
+        li.innerHTML = `<span class="sg-name">${p.name}</span><span class="sg-desc">${p.desc || 'Producto disponible'}</span>`;
+        li.addEventListener('mousedown', (ev) => {
+          ev.preventDefault();
+          searchInput.value = p.name;
+          doSearch(p.name);
+          clearSuggestions();
+        });
+        suggestionsEl.appendChild(li);
+      });
+      suggestionsEl.style.display = 'block';
+      activeSuggestionIndex = -1;
+    }
+
+    function updateSuggestionHighlight(){
+      const items = suggestionsEl.querySelectorAll('li');
+      items.forEach((item, idx) => item.classList.toggle('active', idx === activeSuggestionIndex));
+    }
+
+    function doSearch(rawQuery){
+      const q = (typeof rawQuery === 'string' ? rawQuery : searchInput.value).trim();
+      const results = searchProducts(q);
       render(results);
+      renderSuggestions(results);
     }
 
     searchBtn.addEventListener('click', doSearch);
-    searchInput.addEventListener('keyup', (e) => { if(e.key === 'Enter') doSearch(); });
+    searchInput.addEventListener('input', () => doSearch());
+    searchInput.addEventListener('keydown', (e) => {
+      const items = suggestionsEl.querySelectorAll('li');
+      if(e.key === 'ArrowDown' && items.length){
+        e.preventDefault();
+        activeSuggestionIndex = Math.min(activeSuggestionIndex + 1, items.length - 1);
+        updateSuggestionHighlight();
+      } else if(e.key === 'ArrowUp' && items.length){
+        e.preventDefault();
+        activeSuggestionIndex = Math.max(activeSuggestionIndex - 1, 0);
+        updateSuggestionHighlight();
+      } else if(e.key === 'Enter'){
+        if(activeSuggestionIndex >= 0 && items[activeSuggestionIndex]){
+          e.preventDefault();
+          items[activeSuggestionIndex].dispatchEvent(new MouseEvent('mousedown'));
+        } else {
+          doSearch();
+          clearSuggestions();
+        }
+      } else if(e.key === 'Escape'){
+        clearSuggestions();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if(!suggestionsEl.contains(e.target) && e.target !== searchInput){
+        clearSuggestions();
+      }
+    });
 
     // Initial render - mostrar todos los productos
     render(getAllProducts());
@@ -286,6 +403,14 @@
       if(q){
         searchInput.value = q;
         doSearch();
+      }
+
+      if(window.location.hash === '#search'){
+        setTimeout(() => {
+          searchInput.focus();
+          searchInput.select();
+          doSearch();
+        }, 80);
       }
     })();
 
@@ -365,11 +490,11 @@
     }
 
     function toggleSearchMobile() {
-      const q = prompt('¿Qué producto buscas? (ej: fresas, anchetas, rosas)');
-      if (q === null) return;
-      const clean = q.trim();
-      const target = clean ? `tienda.html?q=${encodeURIComponent(clean)}` : 'tienda.html';
-      window.location.href = target;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        searchInput.focus();
+        searchInput.select();
+      }, 150);
     }
 
     // Ensure counts reflect current state

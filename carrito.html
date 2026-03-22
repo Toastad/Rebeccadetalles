@@ -763,11 +763,7 @@
     // account-related scripts removed since authentication is no longer needed
 
     function toggleSearchMobile() {
-      const q = prompt('¿Qué producto buscas? (ej: fresas, anchetas, rosas)');
-      if (q === null) return;
-      const clean = q.trim();
-      const target = clean ? `tienda.html?q=${encodeURIComponent(clean)}` : 'tienda.html';
-      window.location.href = target;
+      window.location.href = 'tienda.html#search';
     }
 
     function updateBottomNavCart() {

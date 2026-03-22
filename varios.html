@@ -102,11 +102,7 @@
     function addToCart(id, name, price, img, category){ const cart = JSON.parse(localStorage.getItem('detallesCart')) || []; const existing = cart.find(item => item.id === id); if (existing) existing.qty++; else cart.push({ id, name, price, img, category, qty: 1 }); localStorage.setItem('detallesCart', JSON.stringify(cart)); updateCartCount(); trackEvent('add_to_cart'); alert(`${name} agregado al carrito`); }
     function updateCartCount(){ const cart = JSON.parse(localStorage.getItem('detallesCart')) || []; const total = cart.reduce((sum, item) => sum + item.qty, 0); document.getElementById('cartCount').textContent = total; const bottomBadge = document.getElementById('bottomNavCartCount'); if (bottomBadge) { bottomBadge.textContent = total; bottomBadge.style.display = total > 0 ? 'flex' : 'none'; } }
     function toggleSearchMobile() {
-      const q = prompt('¿Qué producto buscas? (ej: fresas, anchetas, rosas)');
-      if (q === null) return;
-      const clean = q.trim();
-      const target = clean ? `tienda.html?q=${encodeURIComponent(clean)}` : 'tienda.html';
-      window.location.href = target;
+      window.location.href = 'tienda.html#search';
     }
     renderProducts(); updateCartCount(); window.onclick = function(event){ const modal = document.getElementById('productModal'); if (event.target === modal) closeModal(); };
   </script>
