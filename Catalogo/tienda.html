@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tienda - Detalles Barranquilla</title>
+  <link rel="stylesheet" href="estilos-principal.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins|Dancing+Script">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body,h1,h2,h3 {font-family: "Montserrat", sans-serif}
+    .product-grid {display:flex; flex-wrap:wrap; gap:14px; padding:16px}
+    .product-card {background:#fff;border-radius:10px;overflow:hidden;width:calc(33.33% - 18px);min-width:160px;box-shadow:0 6px 18px rgba(0,0,0,0.06);cursor:pointer;transition:all 0.3s ease;}
+    .product-card:hover{transform:translateY(-8px);box-shadow:0 12px 28px rgba(233, 30, 99, 0.2);}
+    .product-card img{width:100%;height:160px;object-fit:cover;transition:transform 0.3s ease;}
+    .product-card:hover img{transform:scale(1.08)}
+    .product-card .info{padding:10px;text-align:center}
+    .search-bar{max-width:720px;margin:16px auto;display:flex;gap:8px}
+    @media (max-width:800px){.product-card{width:calc(50% - 14px)}}
+    @media (max-width:480px){.product-card{width:calc(50% - 8px)}.product-card img{height:120px}}
+    /* Ensure header covers full viewport on desktop and doesn't get constrained by .w3-content max-width */
+    @media (min-width:1025px) {
+      .w3-bar.w3-top {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        z-index: 1000 !important;
+      }
+      /* make sure header content is centered, not pushed right */
+      .w3-bar .w3-wide { margin-left: 0 !important; }
+      /* avoid content being hidden under header */
+      .w3-container { padding-top: 80px; }
+    }
+    
+    /* Bottom Navigation Bar - Solo en móvil */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top: 2px solid #E91E63;
+      z-index: 999;
+      padding: 8px 0;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 600px) {
+      .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .w3-container {
+        margin-bottom: 70px;
+      }
+    }
+    .bottom-nav a, .bottom-nav button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 0;
+      color: #E91E63;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .bottom-nav a:hover, .bottom-nav button:hover {
+      color: #c2185b;
+    }
+    .bottom-nav i {
+      font-size: 20px;
+    }
+    .bottom-nav .badge {
+      position: absolute;
+      background: #FFD700;
+      color: #333;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      top: 2px;
+    }
+  </style>
+
+  <!-- Modal & Carousel Styles (added) -->
+  <style>
+    .modal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; background: rgba(0,0,0,0.6); overflow:auto; }
+    .modal-content { background:#fff; margin:5% auto; border-radius:12px; max-width:760px; box-shadow:0 12px 40px rgba(0,0,0,0.3); overflow:hidden; }
+    .modal-header { background: linear-gradient(135deg,#E91E63,#c2185b); color:#fff; padding:16px; display:flex; justify-content:space-between; align-items:center; }
+    .modal-header h2{margin:0;font-size:20px}
+    .modal-body{padding:18px}
+    .modal-footer{display:flex;gap:12px;padding:16px;border-top:1px solid #f0f0f0}
+    .btn-buy{background:#E91E63;color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:700}
+    .btn-secondary{background:#f0f0f0;border:none;padding:12px;border-radius:8px;cursor:pointer}
+    .modal-carousel{position:relative;width:100%;height:360px;background:#f9f9f9}
+    .carousel-slide{display:none;width:100%;height:100%}
+    .carousel-slide.active{display:block}
+    .carousel-slide img{width:100%;height:100%;object-fit:cover}
+    .carousel-prev,.carousel-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);color:#fff;border:none;padding:10px;border-radius:4px;cursor:pointer}
+    .carousel-prev{left:8px}.carousel-next{right:8px}
+    .carousel-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+    .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.6);cursor:pointer}
+    .dot.active{background:#fff}
+    .image-lightbox{display:none;position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.85);align-items:center;justify-content:center}
+    .image-lightbox img{max-width:92%;max-height:86vh}
+    /* Account Modal Styles */
+    .account-modal { display:none; position:fixed; z-index:5000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); overflow:auto; }
+    .account-modal-content { background:#fff; margin:5% auto; border-radius:12px; max-width:450px; box-shadow:0 12px 40px rgba(0,0,0,0.3); overflow:hidden; }
+    .account-modal-header { background:linear-gradient(135deg,#E91E63,#c2185b); color:#fff; padding:20px; display:flex; justify-content:space-between; align-items:center; }
+    .account-modal-header h2 { margin:0; font-size:22px; }
+    .account-modal-body { padding:24px; }
+    .account-modal-body .form-group { margin-bottom:16px; }
+    .account-modal-body label { display:block; font-weight:600; margin-bottom:6px; color:#333; }
+    .account-modal-body input, .account-modal-body select { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; }
+    .account-modal-body input:focus, .account-modal-body select:focus { outline:none; border-color:#E91E63; box-shadow:0 0 0 2px rgba(233,30,99,0.1); }
+    .account-modal-footer { display:flex; gap:12px; padding:16px 24px; border-top:1px solid #f0f0f0; }
+    .account-modal-footer button { flex:1; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
+    .btn-create { background:#E91E63; color:#fff; }
+    .btn-create:hover { background:#c2185b; }
+    .btn-cancel { background:#f0f0f0; color:#333; }
+    .btn-cancel:hover { background:#e0e0e0; }
+    .form-success { color:#4caf50; font-size:14px; margin-top:12px; text-align:center; }
+  </style>
+</head>
+<body class="w3-content" style="max-width:1200px">
+  <header class="w3-bar w3-top w3-pink w3-xlarge" style="padding:8px 12px; font-size:16px;">
+    <div class="w3-bar-item w3-wide" style="font-size:16px; padding: 4px 8px;">Detalles Barranquilla</div>
+    <a href="Catalogo.html" class="w3-bar-item w3-button w3-right" style="font-size:14px; padding: 4px 8px;">Volver</a>
+  </header>
+
+  <div style="height:50px"></div>
+
+  <div class="w3-container">
+    <h2 class="w3-center w3-text-pink">Tienda</h2>
+    <p class="w3-center w3-text-grey">Busca entre todos los productos</p>
+
+    <div class="search-bar">
+      <input id="searchInput" class="w3-input w3-border" type="text" placeholder="Busca un producto, ej. 'fresas'" />
+      <button id="searchBtn" class="w3-button w3-pink">Buscar</button>
+    </div>
+
+    <div id="products" class="product-grid">
+      <!-- Products inserted by JS -->
+    </div>
+
+    <!-- Product Details Modal -->
+    <div id="productModal" class="modal" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle">Producto</h2>
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-carousel" id="modalCarousel">
+            <!-- slides injected here -->
+            <button class="carousel-prev" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="carousel-next" onclick="changeSlide(1)">&#10095;</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+          </div>
+          <div id="modalDetails" style="margin-top:12px"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeModal()">Cerrar</button>
+          <button class="btn-buy" id="modalBuyBtn">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div id="imageLightbox" class="image-lightbox" onclick="closeLightbox()" role="dialog" aria-hidden="true">
+      <span class="close-light" onclick="closeLightbox()">&times;</span>
+      <img id="lightboxImg" src="" alt="Imagen" />
+    </div>
+
+  </div>
+
+  <script>
+    // Datos de productos centralizados (mismo formato que desayunos.html)
+    const productos = {
+      clasicos: [
+        { 
+          id: 1, 
+          name: 'Desayuno Rebecca Deluxe', 
+          desc: 'Desayuno premium con waffles, parfait y sorpresas especiales', 
+          price: '230.000', 
+          img: 'img/rebecca-deluxe-3.jpg',
+          category: 'Premium',
+          images: ['img/rebecca-deluxe-1.jpg', 'img/rebecca-deluxe-2.jpg', 'img/rebecca-deluxe-3.jpg', 'img/rebecca-deluxe-4.jpg'],
+          contents: [
+            'Café frío sabor o Jugo natural de naranja',
+            'Yogurt o Leche',
+            'Waffles en forma de corazón bañados en chocolate y sprinkles',
+            'Arándanos y fresas',
+            'Parfait en copa de vidrio',
+            'Fresa decorada',
+            'Sándwich de Jamón y queso',
+            'Ensalada de frutas',
+            'Galletas',
+            'Ferrero Roche o Adro',
+            'Mug personalizado con la palabra Mamá',
+            'Florero de vidrio',
+            'Bouquet de globos',
+            'Caja, tarjeta y decoración'
+          ], 
+          shipping: '0', 
+          prepTime: '4-5 horas',
+          note: 'No incluye domicilio'
+        },
+        { id: 2, name: 'Frutas y Delicias', desc: 'Selección de frutas frescas y yogur', price: '55.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Selección de frutas frescas y yogur'], shipping: '5.000', prepTime: '30 minutos' },
+        { id: 3, name: 'Desayuno con Globos', desc: 'Bandeja completa + globos decorativos', price: '65.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Todo del Desayuno Tradicional', 'Pastel pequeño', '3 globos de colores', 'Tarjeta personalizada'], shipping: '8.000', prepTime: '2-3 horas' }
+      ],
+      premium: [
+        { id: 4, name: 'Bandeja Premium', desc: 'Frutas, pasteles, quesos y aceitunas', price: '85.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Tabla de quesos variados', 'Frutas exóticas', 'Aceitunas finas', 'Panes artesanales', 'Mermeladas importadas', 'Café premium'], shipping: '10.000', prepTime: '3-4 horas' },
+        { id: 5, name: 'Desayuno Sorpresa Deluxe', desc: 'Incluye champaña, fresas y chocolates', price: '120.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Botella de champaña', 'Fresas bañadas en chocolate', 'Chocolates belgas', 'Quesos premium', 'Frutas del bosque', 'Croissants franceses'], shipping: '12.000', prepTime: '4-5 horas' },
+        { id: 6, name: 'Mesa Ejecutiva', desc: 'Variedad de pasteles, frutas y bebidas', price: '150.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Variedad de pasteles gourmet', 'Café espresso + cappuccino', 'Zumos naturales', 'Tabla de quesos premium', 'Frutas tropicales', 'Panettone italiano'], shipping: '15.000', prepTime: '5-6 horas' }
+      ],
+      combos: [
+        { id: 7, name: 'Combo Romántico', desc: 'Desayuno + rosas + nota personalizada', price: '95.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['Todo del Desayuno Premium', '6 rosas rojas frescas', 'Nota personalizada', 'Vela aromática', 'Decoración especial'], shipping: '10.000', prepTime: '4-5 horas' },
+        { id: 8, name: 'Combo Cumpleaños', desc: 'Desayuno + globos + sorpresa especial', price: '110.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['Desayuno completo', '5 globos con helio', 'Pastel de cumpleaños pequeño', 'Detalle sorpresa temático', 'Adornos temáticos'], shipping: '12.000', prepTime: '5-6 horas' },
+        { id: 9, name: 'Combo Empresarial', desc: 'Desayuno para 4 personas + café', price: '180.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['4 desayunos completos', 'Café para 4 personas', 'Té variado', 'Jugo natural', 'Pasteles para compartir', 'Servilletas y cubiertos'], shipping: '15.000', prepTime: '6-7 horas' }
+      ]
+    };
+
+    const productsEl = document.getElementById('products');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+
+    // Helper: get flattened products
+    function getAllProducts(){
+      return [].concat(productos.clasicos || [], productos.premium || [], productos.combos || []);
+    }
+
+    function render(list){
+      productsEl.innerHTML = '';
+      if(list.length === 0){
+        productsEl.innerHTML = '<p class="w3-center w3-text-grey">No se encontraron productos</p>';
+        return;
+      }
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div class="info">
+            <h4>${p.name}</h4>
+            <p class="w3-text-grey">${p.desc || ''}</p>
+            <p class="w3-text-pink"><b>$${p.price}</b></p>
+          </div>`;
+        card.onclick = () => openProductModal(p.id);
+        productsEl.appendChild(card);
+      });
+    }
+
+    function doSearch(){
+      const q = searchInput.value.trim().toLowerCase();
+      const allProducts = getAllProducts();
+      if(!q){ render(allProducts); return; }
+      const results = allProducts.filter(p => (p.name + ' ' + (p.desc||'')).toLowerCase().includes(q));
+      render(results);
+    }
+
+    searchBtn.addEventListener('click', doSearch);
+    searchInput.addEventListener('keyup', (e) => { if(e.key === 'Enter') doSearch(); });
+
+    // Initial render - mostrar todos los productos
+    render(getAllProducts());
+
+    // If a `q` parameter exists in the URL, prefill and run search
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q');
+      if(q){
+        searchInput.value = q;
+        doSearch();
+      }
+    })();
+
+    // --- Modal & Carousel + Cart functions ---
+    let currentProduct = null;
+    let currentSlide = 0;
+
+    function findProductById(id){ return getAllProducts().find(p => String(p.id) === String(id)); }
+
+    function openProductModal(id){
+      const p = findProductById(id); if(!p) return;
+      currentProduct = p; currentSlide = 0;
+      const carousel = document.getElementById('modalCarousel');
+      const dots = document.getElementById('carouselDots');
+      Array.from(carousel.querySelectorAll('.carousel-slide')).forEach(el=>el.remove());
+      dots.innerHTML = '';
+      const images = (p.images && p.images.length) ? p.images : [p.img];
+      images.forEach((imgSrc, idx)=>{
+        const slide = document.createElement('div'); slide.className = 'carousel-slide';
+        slide.innerHTML = `<img src="${imgSrc}" alt="${p.name} Image ${idx+1}" onclick="openLightbox('${imgSrc}', event)" />`;
+        carousel.insertBefore(slide, carousel.querySelector('.carousel-prev'));
+        const dot = document.createElement('div'); dot.className = 'dot'; dot.onclick = ()=>goToSlide(idx); dots.appendChild(dot);
+      });
+      updateCarousel();
+      const details = document.getElementById('modalDetails');
+      let html = `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><strong>Categoria:</strong> ${p.category || ''}</div><div style="font-weight:700;color:#E91E63">$${p.price}</div></div>`;
+      if(p.contents && p.contents.length){ html += `<div style="margin-top:12px"><strong>Contenido:</strong><ul>`+p.contents.map(i=>`<li>${i}</li>`).join('')+`</ul></div>`; }
+      html += `<div style="margin-top:8px;color:#666"><strong>Tiempo:</strong> ${p.prepTime || '—'}</div>`;
+      html += `<div style="margin-top:8px;color:#666"><strong>Envío:</strong> ${p.shipping === '0' ? 'No incluye domicilio' : '$'+p.shipping}</div>`;
+      details.innerHTML = html;
+      const buyBtn = document.getElementById('modalBuyBtn');
+      buyBtn.onclick = ()=>{ addToCart(p.id, p.name, p.price, p.img || (p.images && p.images[0]) , p.category); closeModal(); };
+      document.getElementById('modalTitle').textContent = p.name;
+      document.getElementById('productModal').style.display = 'block';
+    }
+
+    function changeSlide(n){ const slides = document.querySelectorAll('.carousel-slide'); if(!slides.length) return; currentSlide = (currentSlide + n + slides.length) % slides.length; updateCarousel(); }
+    function goToSlide(n){ currentSlide = n; updateCarousel(); }
+    function updateCarousel(){ const slides = document.querySelectorAll('.carousel-slide'); const dots = document.querySelectorAll('.dot'); slides.forEach((s,i)=> s.classList.toggle('active', i===currentSlide)); dots.forEach((d,i)=> d.classList.toggle('active', i===currentSlide)); }
+
+    function openLightbox(src, ev){ ev.stopPropagation(); const lb = document.getElementById('imageLightbox'); document.getElementById('lightboxImg').src = src; lb.style.display = 'flex'; }
+    function closeLightbox(){ const lb = document.getElementById('imageLightbox'); lb.style.display = 'none'; }
+    function closeModal(){ document.getElementById('productModal').style.display = 'none'; currentProduct = null; }
+
+    // Cart functions (localStorage)
+    function addToCart(id, name, price, img, category){
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const existing = cart.find(item => item.id === id || String(item.id) === String(id));
+      if(existing) existing.qty++;
+      else cart.push({ id, name, price, img, category, qty: 1 });
+      localStorage.setItem('detallesCart', JSON.stringify(cart));
+      updateCartCount();
+      trackEvent('add_to_cart'); alert(name + ' agregado al carrito');
+    }
+
+    function updateCartCount(){
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const total = cart.reduce((s,i)=> s + (i.qty||0), 0);
+      const bottomBadge = document.getElementById('bottomNavCartCount'); if(bottomBadge) bottomBadge.style.display = total>0? 'flex':'none', bottomBadge.textContent = total;
+      const headerBadge = document.getElementById('headerCartCount'); if(headerBadge) headerBadge.textContent = total;
+      const sidebarBadge = document.getElementById('sidebarCartCount'); if(sidebarBadge) sidebarBadge.style.display = total>0? 'inline-flex':'none', sidebarBadge.textContent = total;
+    }
+
+    // Actualizar contador en barra inferior
+    function updateBottomNavCart() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const total = cart.reduce((sum, item) => sum + item.qty, 0);
+      const bottomBadge = document.getElementById('bottomNavCartCount');
+      if (bottomBadge) {
+        if (total > 0) {
+          bottomBadge.textContent = total;
+          bottomBadge.style.display = 'flex';
+        } else {
+          bottomBadge.style.display = 'none';
+        }
+      }
+    }
+
+    function toggleSearchMobile() {
+      const q = prompt('¿Qué producto buscas? (ej: fresas, anchetas, rosas)');
+      if (q === null) return;
+      const clean = q.trim();
+      const target = clean ? `tienda.html?q=${encodeURIComponent(clean)}` : 'tienda.html';
+      window.location.href = target;
+    }
+
+    // Ensure counts reflect current state
+    updateCartCount();
+    updateBottomNavCart();
+    window.addEventListener('storage', updateBottomNavCart);
+  </script>
+
+  <!-- Bottom Navigation Bar - Solo en móvil -->
+  <div class="bottom-nav">
+    <a href="tienda.html" title="Ir a Tienda">
+      <i class="fa fa-shopping-bag"></i>
+      <span>Tienda</span>
+    </a>
+    <button onclick="toggleSearchMobile()" title="Buscar">
+      <i class="fa fa-search"></i>
+      <span>Buscar</span>
+    </button>
+    <a href="carrito.html" style="position:relative;" title="Mi Carrito">
+      <i class="fa fa-shopping-cart"></i>
+      <span id="bottomNavCartCount" class="badge" style="display:none;">0</span>
+      <span>Carrito</span>
+    </a>
+    <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473" target="_blank" title="Contacto WhatsApp">
+      <i class="fa fa-whatsapp"></i>
+      <span>Contacto</span>
+    </a>
+  </div>
+
+  <!-- Account Modal (Login / Crear Cuenta) -->
+
+  <script>
+    // Removed authentication-related scripts since login/signup not required
+  </script>
+  
+  <script>
+    window.trackEvent = window.trackEvent || function(name) {
+      try {
+        const key = 'detallesAnalytics';
+        const data = JSON.parse(localStorage.getItem(key) || '{}');
+        data[name] = (data[name] || 0) + 1;
+        data._last = new Date().toISOString();
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {}
+    };
+  </script>
+</body>
+</html>
+

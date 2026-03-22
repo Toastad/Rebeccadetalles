@@ -1,0 +1,993 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalles Barranquilla</title>
+  <meta name="description" content="Detalles Barranquilla: desayunos sorpresa, fresas, floristería y anchetas personalizadas con entrega en Barranquilla." />
+  <meta property="og:title" content="Detalles Barranquilla" />
+  <meta property="og:description" content="Regalos personalizados con entrega en Barranquilla. Pide por WhatsApp en minutos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="IMG_0618.JPG" />
+  <meta property="og:locale" content="es_CO" />
+  <link rel="stylesheet" href="estilos-principal.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins|Dancing+Script">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif;}
+    .w3-sidebar a {font-family: "Poppins", sans-serif;}
+    .w3-pink {background-color:#F7C5CC!important; color:#fff!important;}
+    .w3-hover-pink:hover {background-color:#F9AFC0!important;}
+    
+    @media (max-width: 1024px) {
+      #main-content {
+        margin-left: 0 !important;
+      }
+      #mySidebar {
+        width: 200px;
+      }
+    }
+    @media (max-width: 600px) {
+      .w3-container {
+        padding: 16px !important;
+      }
+      #main-content {
+        margin-left: 0 !important;
+      }
+    }
+    
+    /* Ajuste para header móvil */
+    @media (max-width: 1024px) {
+      .w3-bar {
+        z-index: 4;
+      }
+    }    /* Banner */
+    .banner-img-container {
+      position: relative;
+      width: 100%;
+      height: 550px;
+      overflow: hidden;
+    }
+    @media (max-width: 768px) {
+      .banner-img-container {
+        height: 350px;
+      }
+    }
+    @media (max-width: 480px) {
+      .banner-img-container {
+        height: 250px;
+      }
+    }
+    .banner-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .banner-img-container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0));
+      pointer-events: none;
+      z-index: 1;
+    }
+    .banner-text-overlay {
+      position: absolute;
+      top: 24px;
+      left: 48px;
+      color: white;
+      z-index: 2;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+    @media (max-width: 1024px) {
+      .banner-text-overlay {
+        top: 80px;
+        left: 24px;
+      }
+      .banner-text-overlay h1 {
+        font-size: 28px;
+      }
+    }
+    @media (max-width: 768px) {
+      .banner-text-overlay {
+        top: 70px;
+        left: 24px;
+      }
+      .banner-text-overlay h1 {
+        font-size: 24px;
+      }
+    }
+    @media (max-width: 480px) {
+      .banner-text-overlay {
+        top: 60px !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        max-width: calc(100% - 24px) !important;
+      }
+      .banner-text-overlay h1 {
+        font-size: 26px !important;
+        margin: 0 !important;
+        line-height: 1.1 !important;
+        word-break: break-word !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-weight: bold !important;
+      }
+      .banner-text-overlay p {
+        font-size: 13px !important;
+        margin: 8px 0 0 0 !important;
+      }
+      .banner-text-overlay .w3-button {
+        padding: 10px 16px !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Catálogo responsive */
+    .catalogo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 14px;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    .catalog-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      text-align: center;
+      flex: 1 1 calc(33% - 20px); /* 3 cards por fila en desktop */
+      max-width: 320px;
+      min-width: 150px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .catalog-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.35s, filter 0.35s;
+      filter: saturate(1) brightness(0.95);
+    }
+    .catalog-card:hover img {
+      transform: scale(1.05);
+      filter: saturate(1.6) brightness(1.05);
+    }
+    .catalog-card h3 {
+      margin: 12px 0 6px 0;
+      font-size: 20px;
+    }
+    .catalog-card p {
+      margin: 0 0 12px 0;
+      font-weight: bold;
+      color: #F7C5CC;
+    }
+
+    /* Responsive ajustes */
+    @media (max-width: 900px) {
+      .catalog-card {
+        flex: 1 1 calc(50% - 14px); /* 2 por fila en tablet */
+      }
+    }
+    @media (max-width: 600px) {
+      .catalog-card {
+        flex: 1 1 calc(50% - 10px); /* 2 por fila en celular */
+      }
+      .catalog-card h3 {
+        font-size: 16px;
+      }
+      .catalog-card p {
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 480px) {
+      .catalogo-grid {
+        gap: 8px;
+        padding: 5px;
+        justify-content: center;
+      }
+      .catalog-card {
+        flex: 0 1 calc(50% - 8px); /* 2 columnas fijas en celular pequeño */
+        min-width: 140px;
+        max-width: 180px;
+      }
+      .catalog-card img {
+        height: 150px;
+      }
+      .catalog-card h3 {
+        font-size: 14px;
+        margin: 8px 0 4px 0;
+      }
+      .catalog-card p {
+        font-size: 12px;
+        margin: 0 0 8px 0;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      .catalog-card {
+        flex: 0 1 calc(50% - 6px);
+        min-width: 120px;
+        max-width: 160px;
+      }
+      .catalog-card img {
+        height: 120px;
+      }
+      .banner-text-overlay h1 {
+        font-size: 12px;
+      }
+      .banner-text-overlay p {
+        font-size: 10px;
+      }
+    }
+    
+    /* Animación suave del menú desplegable: solo en pantallas pequeñas */
+    @media (max-width: 1024px) {
+      #mySidebar {
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transform: translateX(-100%) !important;
+        display: block !important;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.3) !important;
+        z-index: 999 !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 100% !important;
+        width: 250px !important;
+      }
+      #mySidebar.show {
+        transform: translateX(0) !important;
+      }
+      .w3-overlay {
+        transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        opacity: 0;
+        background-color: rgba(0,0,0,0) !important;
+        z-index: 998 !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none;
+      }
+      .w3-overlay.show {
+        opacity: 1;
+        background-color: rgba(0,0,0,0.6) !important;
+        pointer-events: auto;
+      }
+      /* Ajuste para header móvil */
+      .w3-bar {
+        z-index: 100 !important;
+      }
+    }
+
+    /* Desktop: mostrar sidebar estático (no off-canvas) */
+    @media (min-width: 1025px) {
+      #mySidebar {
+        transform: none !important;
+        position: fixed !important;
+        display: block !important;
+        box-shadow: none !important;
+        z-index: 3 !important;
+        width: 250px !important;
+      }
+      .w3-overlay { display: none !important; }
+      /* Mostrar el fondo de la barra superior a todo lo ancho, fijarla en la parte superior */
+      .w3-bar.w3-top {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+      }
+      /* Desplazar solo el contenido (titulo/botones) hacia la derecha para dejar espacio al sidebar */
+      .w3-bar .w3-wide {
+        margin-left: 250px !important;
+      }
+      /* Asegurar que enlaces de la derecha no queden sobre el sidebar */
+      .w3-bar .w3-right { margin-right: 16px !important; }
+    }
+    /* Evitar que el contenido principal quede debajo del header fijo */
+    #main-content {
+      margin-top: 56px !important;
+    }
+    @media (max-width: 600px) {
+      #main-content {
+        margin-top: 52px !important;
+        margin-bottom: 70px !important;
+      }
+
+      /* En móvil la bottom-nav cubre toda la navegación:
+         ocultar hamburguesa y sidebar para evitar duplicados */
+      .w3-bar.w3-hide-large .w3-button.w3-right {
+        display: none !important;
+      }
+      #mySidebar {
+        display: none !important;
+      }
+      #myOverlay {
+        display: none !important;
+      }
+
+      /* Centrar nombre de la tienda en el header móvil */
+      .w3-bar.w3-hide-large {
+        justify-content: center !important;
+      }
+      .w3-bar.w3-hide-large .w3-bar-item.w3-wide {
+        text-align: center !important;
+        width: 100% !important;
+      }
+
+      /* Ocultar mini-header interno (carrito + lupa) que repite la bottom-nav */
+      #main-content > header.w3-container {
+        display: none !important;
+      }
+    }
+
+    /* Bottom Navigation Bar - Solo en móvil */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top: 2px solid #E91E63;
+      z-index: 999;
+      padding: 8px 0;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 600px) {
+      .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      body.menu-open .bottom-nav {
+        display: none !important;
+      }
+    }
+    .bottom-nav a, .bottom-nav button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 0;
+      color: #E91E63;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .bottom-nav a:hover, .bottom-nav button:hover {
+      color: #c2185b;
+    }
+    .bottom-nav i {
+      font-size: 20px;
+    }
+    .bottom-nav .badge {
+      position: absolute;
+      background: #FFD700;
+      color: #333;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      top: 2px;
+    }
+    
+    /* Carrusel de productos destacados */
+    .destacados-container {
+      display: flex;
+      gap: 12px;
+      padding: 15px 10px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .destacados-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    .destacados-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .destacados-container::-webkit-scrollbar-thumb {
+      background: #F7C5CC;
+      border-radius: 10px;
+    }
+    .destacado-card {
+      flex: 0 0 calc(50% - 6px);
+      min-width: 140px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .destacado-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .destacado-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+    .destacado-card h4 {
+      margin: 10px 8px 4px 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+    .destacado-card p {
+      margin: 0 8px 10px 8px;
+      text-align: center;
+      color: #F7C5CC;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .info-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+      border: 1px solid #f0f0f0;
+    }
+    .info-card h4 {
+      margin: 0 0 8px 0;
+      color: #E91E63;
+      font-size: 16px;
+    }
+    .info-card p, .info-card li {
+      font-size: 14px;
+      color: #4a4a4a;
+      margin: 0;
+    }
+    .info-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .testimonial-card {
+      background: #fff;
+      border: 1px solid #f2e3e7;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .testimonial-card .stars {
+      color: #ffb400;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .testimonial-card p {
+      margin: 0 0 8px 0;
+      color: #555;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .testimonial-card strong {
+      color: #333;
+      font-size: 13px;
+    }
+
+    .floating-whatsapp {
+      position: fixed;
+      right: 18px;
+      bottom: 88px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      text-decoration: none;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+      z-index: 1100;
+    }
+    .floating-whatsapp:hover {
+      background: #20ba5a;
+    }
+
+    @media (max-width: 900px) {
+      .info-cards,
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Account Modal Styles */
+    .account-modal { display:none; position:fixed; z-index:5000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); overflow:auto; }
+    .account-modal-content { background:#fff; margin:5% auto; border-radius:12px; max-width:450px; box-shadow:0 12px 40px rgba(0,0,0,0.3); overflow:hidden; }
+    .account-modal-header { background:linear-gradient(135deg,#E91E63,#c2185b); color:#fff; padding:20px; display:flex; justify-content:space-between; align-items:center; }
+    .account-modal-header h2 { margin:0; font-size:22px; }
+    .account-modal-body { padding:24px; }
+    .account-modal-body .form-group { margin-bottom:16px; }
+    .account-modal-body label { display:block; font-weight:600; margin-bottom:6px; color:#333; }
+    .account-modal-body input, .account-modal-body select { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; }
+    .account-modal-body input:focus, .account-modal-body select:focus { outline:none; border-color:#E91E63; box-shadow:0 0 0 2px rgba(233,30,99,0.1); }
+    .account-modal-footer { display:flex; gap:12px; padding:16px 24px; border-top:1px solid #f0f0f0; }
+    .account-modal-footer button { flex:1; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
+    .btn-create { background:#E91E63; color:#fff; }
+    .btn-create:hover { background:#c2185b; }
+    .btn-cancel { background:#f0f0f0; color:#333; }
+    .btn-cancel:hover { background:#e0e0e0; }
+    .form-success { color:#4caf50; font-size:14px; margin-top:12px; text-align:center; }
+  </style>
+</head>
+<body class="w3-content" style="max-width:1200px">
+
+  <!-- Sidebar/menu -->
+  <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+    <div class="w3-container w3-display-container w3-padding-16">
+      <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+      <h3 class="w3-wide"><b>Detalles Barranquilla 🎁</b></h3>
+    </div>
+    <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+      <a href="#catalogo" class="w3-bar-item w3-button">Categorías</a>
+      <a href="tienda.html" class="w3-bar-item w3-button">🏪 Tienda</a>
+      <a href="#" class="w3-bar-item w3-button" onclick="toggleSidebarSearch();">🔍 Buscar</a>
+      <div id="sidebarSearchContainer" style="display:none; padding: 8px 16px;">
+        <input id="sidebarSearchInput" class="w3-input w3-border" type="text" placeholder="Busca un producto..." aria-label="Buscar producto" />
+        <div id="sidebarSuggestions" style="margin-top:8px; display:none; background:#fff; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08); max-height:220px; overflow:auto;">
+        </div>
+      </div>
+      <a href="carrito.html" class="w3-bar-item w3-button" style="position:relative;">🛒 Carrito <span id="sidebarCartCount" style="background:#FFD700;color:#333;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;position:absolute;right:12px;top:10px;display:none;">0</span></a>
+      <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473" target="_blank" class="w3-bar-item w3-button">📱 WhatsApp</a>
+    </div>
+    <a href="#contacto" class="w3-bar-item w3-button w3-padding">Contacto</a> 
+  </nav>
+
+  <header class="w3-bar w3-top w3-hide-large w3-pink w3-xlarge" style="padding: 6px 12px;">
+    <div class="w3-bar-item w3-padding-24 w3-wide" style="font-size: 14px; padding: 4px 8px !important;">Detalles Barranquilla</div>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right" style="padding: 6px 10px !important;" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+  </header>
+
+  <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+
+  <!-- PAGE CONTENT -->
+  <div class="w3-main" style="margin-left:250px" id="main-content">
+
+    <header class="w3-container w3-xlarge w3-padding-8" style="min-height: auto;">
+      <p class="w3-left" style="margin: 6px 0;">Catálogo</p>
+      <p class="w3-right" style="margin: 6px 0;">
+        <a href="carrito.html" style="color: #333; text-decoration: none; position: relative;">
+          <i class="fa fa-shopping-cart w3-margin-right"></i>
+          <span id="headerCartCount" style="background: #FFD700; color: #333; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; position: absolute; top: 0px; right: 0;">0</span>
+        </a>
+        <i class="fa fa-search"></i>
+      </p>
+    </header>
+
+    <!-- Banner -->
+    <div class="banner-img-container">
+      <img src="IMG_0618.JPG" alt="Detalles Barranquilla">
+      <div class="banner-text-overlay">
+        <h1 class="w3-jumbo">Regala Momentos Especiales</h1>
+        <p><a href="#catalogo" class="w3-button w3-pink w3-padding-large">Ver Catálogo</a></p>
+      </div>
+    </div>
+
+    <!-- Productos Destacados -->
+    <div class="w3-container w3-padding-16" id="destacados">
+      <h2 class="w3-center w3-text-pink" style="margin-top: 10px; margin-bottom: 5px;">✨ Destacados</h2>
+      <p class="w3-center w3-text-grey w3-small" style="margin: 0 0 10px 0;">Desliza para ver más</p>
+      <div class="destacados-container">
+        <a href="desayunos.html" class="destacado-card">
+          <img src="Desayunos.jpg" alt="Desayuno Premium">
+          <h4>Desayuno Premium</h4>
+          <p>$85.000</p>
+        </a>
+        <a href="fresas.html" class="destacado-card">
+          <img src="Fresas.jpg" alt="Fresas Gourmet">
+          <h4>Fresas Gourmet</h4>
+          <p>$95.000</p>
+        </a>
+        <a href="floristeria.html" class="destacado-card">
+          <img src="Floristeria.jpg" alt="Ramo Exclusivo">
+          <h4>Ramo Exclusivo</h4>
+          <p>$120.000</p>
+        </a>
+        <a href="anchetas.html" class="destacado-card">
+          <img src="Anchetas.JPG" alt="Ancheta Deluxe">
+          <h4>Ancheta Deluxe</h4>
+          <p>$95.000</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Catálogo -->
+    <div class="w3-container w3-padding-32" id="catalogo">
+      <h2 class="w3-center w3-text-pink">Categorías</h2>
+      <p class="w3-center w3-text-grey">Descubre nuestras categorías más solicitadas</p>
+      
+      <div class="catalogo-grid">
+        <a href="desayunos.html" class="catalog-card">
+          <img src="Desayunos.jpg" alt="Desayunos Sorpresa">
+          <h3>Desayunos Sorpresa</h3>
+          <p>Desde $75.000</p>
+        </a>
+        <a href="fresas.html" class="catalog-card">
+          <img src="Fresas.jpg" alt="Fresas con Chocolate">
+          <h3>Fresas con Chocolate</h3>
+          <p>Desde $90.000</p>
+        </a>
+        <a href="floristeria.html" class="catalog-card">
+          <img src="Floristeria.jpg" alt="Floristería">
+          <h3>Floristería</h3>
+          <p>Desde $50.000</p>
+        </a>
+        <a href="anchetas.html" class="catalog-card">
+          <img src="Anchetas.JPG" alt="Anchetas">
+          <h3>Anchetas</h3>
+          <p>Desde $65.000</p>
+        </a>
+        <a href="saludables.html" class="catalog-card">
+          <img src="Saludables.JPG" alt="Saludables">
+          <h3>Saludables</h3>
+          <p>Desde $80.000</p>
+        </a>
+        <a href="varios.html" class="catalog-card">
+          <img src="Varios.jpg" alt="Varios">
+          <h3>Varios</h3>
+          <p>Desde $70.000</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- El resto de la página sigue igual (colores de globos, horario, pasos, footer) -->
+    
+    <div class="w3-container w3-padding-32 w3-light-grey" id="colores-globos">
+      <h2 class="w3-center w3-text-pink">Colores de Globos Disponibles</h2>
+      <div class="w3-row-padding w3-center w3-margin-top">
+        <div class="w3-col s2"><div style="width:40px;height:40px;border-radius:50%;background-color:#FF0000;margin:auto;"></div></div>
+        <div class="w3-col s2"><div style="width:40px;height:40px;border-radius:50%;background-color:#00FF00;margin:auto;"></div></div>
+        <div class="w3-col s2"><div style="width:40px;height:40px;border-radius:50%;background-color:#0000FF;margin:auto;"></div></div>
+        <div class="w3-col s2"><div style="width:40px;height:40px;border-radius:50%;background-color:#FFFF00;margin:auto;"></div></div>
+        <div class="w3-col s2"><div style="width:40px;height:40px;border-radius:50%;background-color:#FFA500;margin:auto;"></div></div>
+        <div class="w3-col s2"><div style="width:40px;height:40px;border-radius:50%;background-color:#FFC0CB;margin:auto;"></div></div>
+      </div>
+    </div>
+
+    <div class="w3-container w3-padding-32" id="horario">
+      <h2 class="w3-center w3-text-pink">Horario de Entrega</h2>
+      <p class="w3-center">Realizamos entregas de lunes a sábado en el horario:</p>
+      <ul class="w3-ul w3-center" style="max-width:400px;margin:auto">
+        <li>Lunes a Viernes: 9:00 AM - 6:00 PM</li>
+        <li>Sábados: 10:00 AM - 2:00 PM</li>
+        <li>Domingos y festivos: Entrega bajo solicitud especial</li>
+      </ul>
+    </div>
+
+    <div class="w3-container w3-padding-32 w3-light-grey" id="cobertura-pagos">
+      <h2 class="w3-center w3-text-pink">Cobertura y Pagos</h2>
+      <div class="info-cards">
+        <div class="info-card">
+          <h4>Zona de Entrega</h4>
+          <p>Cubrimos Barranquilla y área metropolitana. Si estás fuera de cobertura, te confirmamos costo adicional por WhatsApp.</p>
+        </div>
+        <div class="info-card">
+          <h4>Métodos de Pago</h4>
+          <ul>
+            <li>Nequi</li>
+            <li>Daviplata</li>
+            <li>Transferencia</li>
+            <li>Efectivo contraentrega (según zona)</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>Políticas Rápidas</h4>
+          <ul>
+            <li>Cancelaciones con mínimo 24 horas</li>
+            <li>Cambios sujetos a disponibilidad</li>
+            <li>Productos personalizados no tienen devolución</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-container w3-padding-32 w3-light-grey" id="pasos-pedido">
+      <h2 class="w3-center w3-text-pink">Cómo Realizar tu Pedido</h2>
+      <div class="w3-row-padding w3-margin-top">
+        <div class="w3-col l3 s6 w3-center">
+          <i class="fa fa-shopping-cart w3-jumbo w3-text-pink"></i>
+          <p>1. Selecciona tu producto</p>
+        </div>
+        <div class="w3-col l3 s6 w3-center">
+          <i class="fa fa-pencil-square-o w3-jumbo w3-text-pink"></i>
+          <p>2. Personaliza tu regalo</p>
+        </div>
+        <div class="w3-col l3 s6 w3-center">
+          <i class="fa fa-credit-card w3-jumbo w3-text-pink"></i>
+          <p>3. Realiza el pago</p>
+        </div>
+        <div class="w3-col l3 s6 w3-center">
+          <i class="fa fa-truck w3-jumbo w3-text-pink"></i>
+          <p>4. Recibe tu pedido</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-container w3-padding-32" id="resenas">
+      <h2 class="w3-center w3-text-pink">Reseñas de Clientes</h2>
+      <p class="w3-center w3-text-grey">Opiniones reales de pedidos entregados</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Llegó puntual y la presentación fue hermosa. Quedamos felices con el detalle."</p>
+          <strong>Camila P. - Barrio El Prado</strong>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"La personalización quedó tal cual la pedimos, excelente atención por WhatsApp."</p>
+          <strong>Jhon M. - Villa Carolina</strong>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Muy buena calidad y empaque. Recomendado para cumpleaños y aniversarios."</p>
+          <strong>Laura G. - Riomar</strong>
+        </div>
+      </div>
+    </div>
+
+    <footer class="w3-padding-64 w3-light-grey w3-small w3-center" id="contacto">
+      <div class="w3-row-padding">
+        <div class="w3-col s4">
+          <h4>Contacto</h4>
+          <form>
+            <p><input class="w3-input w3-border" type="text" placeholder="Nombre" required></p>
+            <p><input class="w3-input w3-border" type="text" placeholder="Correo" required></p>
+            <p><input class="w3-input w3-border" type="text" placeholder="Mensaje" required></p>
+            <button type="submit" class="w3-button w3-block w3-pink">Enviar</button>
+          </form>
+        </div>
+        <div class="w3-col s4">
+          <h4>Sobre Nosotros</h4>
+          <p>En <b>Detalles Barranquilla</b> creemos que cada regalo cuenta una historia.</p>
+        </div>
+        <div class="w3-col s4">
+          <h4>Síguenos</h4>
+          <i class="fa fa-facebook-official w3-hover-opacity w3-large"></i>
+          <i class="fa fa-instagram w3-hover-opacity w3-large"></i>
+          <i class="fa fa-whatsapp w3-hover-opacity w3-large"></i>
+        </div>
+      </div>
+    </footer>
+
+    <div class="w3-black w3-center w3-padding-24">© 2025 Detalles Barranquilla</div>
+  </div>
+
+  <!-- Bottom Navigation Bar - Solo en móvil -->
+  <div class="bottom-nav">
+    <a href="tienda.html" title="Ir a Tienda">
+      <i class="fa fa-shopping-bag"></i>
+      <span>Tienda</span>
+    </a>
+    <button onclick="toggleSearchMobile()" title="Buscar">
+      <i class="fa fa-search"></i>
+      <span>Buscar</span>
+    </button>
+    <a href="carrito.html" style="position:relative;" title="Mi Carrito">
+      <i class="fa fa-shopping-cart"></i>
+      <span id="bottomNavCartCount" class="badge" style="display:none;">0</span>
+      <span>Carrito</span>
+    </a>
+    <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473" target="_blank" title="Contacto WhatsApp">
+      <i class="fa fa-whatsapp"></i>
+      <span>Contacto</span>
+    </a>
+  </div>
+
+  <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Detalles%20Barranquilla" class="floating-whatsapp" target="_blank" title="Pedir por WhatsApp" aria-label="Pedir por WhatsApp">
+    <i class="fa fa-whatsapp"></i>
+  </a>
+
+  <script>
+    function w3_open() {
+      document.getElementById("mySidebar").classList.add("show");
+      document.getElementById("myOverlay").classList.add("show");
+      document.body.classList.add("menu-open");
+    }
+    function w3_close() {
+      document.getElementById("mySidebar").classList.remove("show");
+      document.getElementById("myOverlay").classList.remove("show");
+      document.body.classList.remove("menu-open");
+    }
+    
+    function toggleSearchMobile() {
+      const q = prompt('¿Qué producto buscas? (ej: fresas, anchetas, rosas)');
+      if (q === null) return;
+      const clean = q.trim();
+      const target = clean ? `tienda.html?q=${encodeURIComponent(clean)}` : 'tienda.html';
+      window.location.href = target;
+    }
+    
+    // Actualizar contador del carrito
+    function updateHeaderCartCount() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const total = cart.reduce((sum, item) => sum + item.qty, 0);
+      const countEl = document.getElementById('headerCartCount');
+      if (countEl) countEl.textContent = total;
+
+      // Actualizar también el badge de la barra inferior
+      const bottomBadge = document.getElementById('bottomNavCartCount');
+      if (bottomBadge) {
+        if (total > 0) {
+          bottomBadge.textContent = total;
+          bottomBadge.style.display = 'flex';
+        } else {
+          bottomBadge.style.display = 'none';
+        }
+      }
+
+      // Actualizar badge en la barra lateral (sidebar)
+      const sidebarBadge = document.getElementById('sidebarCartCount');
+      if (sidebarBadge) {
+        if (total > 0) {
+          sidebarBadge.textContent = total;
+          sidebarBadge.style.display = 'inline-flex';
+        } else {
+          sidebarBadge.style.display = 'none';
+        }
+      }
+    }
+
+    updateHeaderCartCount();
+    window.addEventListener('storage', updateHeaderCartCount);
+  </script>
+
+  <script>
+    // Small product index used for sidebar live suggestions.
+    // Keep this in sync with your central products; consider moving to a shared `productos.js` later.
+    const productIndex = [
+      {name: 'Desayuno Rebecca Deluxe', desc: 'Desayuno premium con waffles, parfait y sorpresas especiales'},
+      {name: 'Frutas y Delicias', desc: 'Selección de frutas frescas y yogur'},
+      {name: 'Desayuno con Globos', desc: 'Bandeja completa + globos decorativos'},
+      {name: 'Bandeja Premium', desc: 'Frutas, pasteles, quesos y aceitunas'},
+      {name: 'Desayuno Sorpresa Deluxe', desc: 'Incluye champaña, fresas y chocolates'},
+      {name: 'Mesa Ejecutiva', desc: 'Variedad de pasteles, frutas y bebidas'},
+      {name: 'Combo Romántico', desc: 'Desayuno + rosas + nota personalizada'},
+      {name: 'Combo Cumpleaños', desc: 'Desayuno + globos + sorpresa especial'},
+      {name: 'Combo Empresarial', desc: 'Desayuno para 4 personas + café'}
+    ];
+
+    function toggleSidebarSearch(){
+      const container = document.getElementById('sidebarSearchContainer');
+      const input = document.getElementById('sidebarSearchInput');
+      if(!container) return;
+      if(container.style.display === 'none'){ container.style.display = 'block'; setTimeout(()=> input.focus(), 50); }
+      else { container.style.display = 'none'; clearSidebarSuggestions(); }
+    }
+
+    function clearSidebarSuggestions(){
+      const s = document.getElementById('sidebarSuggestions'); if(s){ s.innerHTML=''; s.style.display='none'; }
+    }
+
+    function renderSidebarSuggestions(list){
+      const out = document.getElementById('sidebarSuggestions');
+      if(!out) return;
+      out.innerHTML = '';
+      if(!list || list.length === 0){ out.style.display = 'none'; return; }
+      list.slice(0,8).forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'w3-padding-small';
+        row.style.borderBottom = '1px solid #f5f5f5';
+        row.style.cursor = 'pointer';
+        row.innerHTML = `<div style="font-weight:700;color:#333">${escapeHtml(item.name)}</div><div style="font-size:12px;color:#666">${escapeHtml(item.desc)}</div>`;
+        row.onclick = () => { window.location.href = `tienda.html?q=${encodeURIComponent(item.name)}`; };
+        out.appendChild(row);
+      });
+      out.style.display = 'block';
+    }
+
+    function escapeHtml(str){ return String(str).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+
+    // Live filtering as user types
+    const sidebarInput = () => document.getElementById('sidebarSearchInput');
+    if(sidebarInput()){
+      sidebarInput().addEventListener('input', (e)=>{
+        const q = (e.target.value||'').trim().toLowerCase();
+        if(!q){ clearSidebarSuggestions(); return; }
+        const results = productIndex.filter(p => (p.name + ' ' + p.desc).toLowerCase().includes(q));
+        renderSidebarSuggestions(results);
+      });
+      sidebarInput().addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          const q = (e.target.value||'').trim();
+          if(!q) return;
+          // redirect to tienda with query param
+          window.location.href = `tienda.html?q=${encodeURIComponent(q)}`;
+        }
+        if(e.key === 'Escape') { document.getElementById('sidebarSearchContainer').style.display='none'; clearSidebarSuggestions(); }
+      });
+    }
+  </script>
+
+  <!-- Account Modal (Login / Crear Cuenta) -->
+
+  <script>
+    function openAccountModal(){
+      document.getElementById('accountModal').style.display = 'block';
+      switchTab('login');
+    }
+
+    function closeAccountModal(){
+      document.getElementById('accountModal').style.display = 'none';
+    }
+
+    function switchTab(tab){
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginTabBtn = document.getElementById('loginTabBtn');
+      const signupTabBtn = document.getElementById('signupTabBtn');
+
+      if(tab === 'login'){
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        loginTabBtn.style.borderBottomColor = '#E91E63';
+        loginTabBtn.style.color = '#333';
+        signupTabBtn.style.borderBottomColor = 'transparent';
+        signupTabBtn.style.color = '#ccc';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        loginTabBtn.style.borderBottomColor = 'transparent';
+        loginTabBtn.style.color = '#ccc';
+        signupTabBtn.style.borderBottomColor = '#E91E63';
+        signupTabBtn.style.color = '#333';
+      }
+    }
+
+    function handleLogin(event){
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginError');
+
+      // Verificar si la cuenta existe
+      const savedUser = localStorage.getItem('userAccount');
+      const savedPassword = localStorage.getItem('userPassword');
+
+      if(!savedUser){
+        errorEl.textContent = 'No existe una cuenta con ese email. Crea una nueva.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+    // authentication removed
+            </div>
+
+
