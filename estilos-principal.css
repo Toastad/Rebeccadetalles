@@ -1,0 +1,204 @@
+:root {
+  --pink: #F7C5CC;
+  --accent: #E8C547;
+  --bg: #FAFAFA;
+  --card-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: #222;
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px; /* reducido */
+  background: var(--pink);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  font-size: 14px;
+}
+.logo {
+  font-weight: 700;
+  color: white;
+}
+.topnav a {
+  margin-left: 14px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 26px auto;
+  padding: 0 18px;
+}
+
+/* Page title */
+.page-title {
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 24px;
+}
+
+/* Banner */
+.banner-img-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+.banner-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.banner-img-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.45), rgba(0,0,0,0));
+  pointer-events: none;
+  z-index: 1;
+}
+.banner-text-overlay {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  z-index: 2;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  max-width: 70%;
+}
+
+/* Categories grid */
+.catalog-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.catalog-card {
+  flex: 1 1 calc(30% - 10px);
+  max-width: calc(30% - 10px);
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .28s ease, box-shadow .28s ease;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--card-shadow);
+}
+.catalog-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform .35s ease, filter .35s ease;
+  filter: saturate(1) brightness(1);
+}
+.catalog-card h3 {
+  padding: 14px 16px;
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+  word-wrap: break-word;
+}
+.catalog-card p {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+/* Hover effect */
+.catalog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+}
+.catalog-card:hover img,
+.catalog-card:active img {
+  transform: scale(1.06);
+  filter: saturate(1.28) brightness(1.04);
+}
+
+/* Subcategory gallery */
+.subcategoria {
+  margin-bottom: 30px;
+}
+.section-title {
+  font-size: 28px;
+  margin: 8px 0 14px;
+  text-align: left;
+  color: #333;
+}
+.galeria {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.galeria img {
+  width: 260px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: none;
+  transition: transform .3s ease, filter .3s ease, box-shadow .3s ease;
+}
+.galeria img:hover,
+.galeria img:active {
+  transform: translateY(-6px) scale(1.04);
+  filter: saturate(1.3) brightness(1.05);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+/* Media queries */
+@media (max-width: 900px) {
+  .banner-img-container { height: 320px; }
+  .banner-text-overlay { left: 18px; top: 18px; max-width: 86%; }
+  .galeria img { width: 46%; height: 140px; }
+  .catalog-card img { height: 180px; }
+}
+@media (max-width: 520px) {
+  .page-title { font-size: 26px; }
+  .banner-img-container { height: 260px; }
+  .galeria img { width: 100%; height: 180px; }
+  .catalog-card img { height: 150px; }
+  .catalog-card h3 { font-size: 16px; padding: 12px; line-height: 1.2; }
+  .catalog-card p { font-size: 14px; }
+}
+
+/* Celulares muy pequeños */
+@media (max-width: 480px) {
+  .catalog-card {
+    flex: 1 1 100%; /* una tarjeta por fila */
+    max-width: 100%;
+    margin-bottom: 14px;
+  }
+  .catalog-card h3 { font-size: 16px; line-height: 1.3; }
+  .catalog-card p { font-size: 14px; }
+  .banner-text-overlay {
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    max-width: 90%;
+  }
+}
+
+/* Desktop floating right-side navigation removed: menu moved into sidebar */

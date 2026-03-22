@@ -1,0 +1,810 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi Carrito - Detalles Barranquilla</title>
+  <link rel="stylesheet" href="estilos-principal.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins|Dancing+Script">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body,h1,h2,h3,h4 {font-family: "Montserrat", sans-serif}
+    .cart-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      gap: 16px;
+    }
+    .item-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+    .item-info { flex: 1; }
+    .item-info h4 { margin: 0 0 4px 0; font-size: 16px; }
+    .item-info p { margin: 0; color: #666; font-size: 14px; }
+    .item-price { font-weight: bold; color: #E91E63; font-size: 16px; min-width: 100px; text-align: right; }
+    .item-qty { display: flex; align-items: center; gap: 8px; }
+    .qty-input { width: 50px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
+    .remove-btn { background: #ff6b6b; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+    .remove-btn:hover { background: #ff5252; }
+    .cart-summary {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 24px;
+    }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; }
+    .summary-total { font-size: 20px; font-weight: bold; color: #E91E63; border-top: 2px solid #ddd; padding-top: 12px; }
+    .checkout-btn {
+      background: #E91E63;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 16px;
+    }
+    .checkout-btn:hover { background: #c2185b; }
+    .empty-cart { text-align: center; padding: 60px 20px; }
+    .empty-cart i { font-size: 64px; color: #ddd; margin-bottom: 20px; }
+    .empty-cart p { font-size: 18px; color: #999; }
+    .continue-btn {
+      background: #E91E63;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 16px;
+    }
+    .clear-cart-btn {
+      background: #ececec;
+      color: #444;
+      border: 1px solid #d8d8d8;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      font-weight: 600;
+    }
+    .clear-cart-btn:hover { background: #e2e2e2; }
+    .customization-box {
+      margin-top: 18px;
+      background: #fff;
+      border: 1px solid #ececec;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .customization-box h3 {
+      margin: 0 0 12px 0;
+      color: #E91E63;
+      font-size: 18px;
+    }
+    .customization-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .customization-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .customization-field-full {
+      grid-column: 1 / -1;
+    }
+    .customization-field label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+    }
+    .customization-field input,
+    .customization-field select,
+    .customization-field textarea {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      background: #fff;
+    }
+    .customization-field textarea {
+      min-height: 78px;
+    }
+    .customization-hint {
+      margin-top: 8px;
+      margin-bottom: 0;
+      color: #666;
+      font-size: 12px;
+    }
+    
+    /* Bottom Navigation Bar - Solo en móvil */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top: 2px solid #E91E63;
+      z-index: 999;
+      padding: 8px 0;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 600px) {
+      .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .cart-container {
+        margin-bottom: 70px;
+      }
+    }
+    .bottom-nav a, .bottom-nav button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 0;
+      color: #E91E63;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .bottom-nav a:hover, .bottom-nav button:hover {
+      color: #c2185b;
+    }
+    .bottom-nav i {
+      font-size: 20px;
+    }
+    .bottom-nav .badge {
+      position: absolute;
+      background: #FFD700;
+      color: #333;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      top: 2px;
+    }
+    
+    @media (max-width: 600px) {
+      .cart-item { flex-direction: column; text-align: center; }
+      .item-img { width: 120px; height: 120px; margin: 0 auto; }
+      .item-price { text-align: center; }
+      .customization-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Account Modal Styles */
+    .account-modal { display:none; position:fixed; z-index:5000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); overflow:auto; }
+    .account-modal-content { background:#fff; margin:5% auto; border-radius:12px; max-width:450px; box-shadow:0 12px 40px rgba(0,0,0,0.3); overflow:hidden; }
+    .account-modal-header { background:linear-gradient(135deg,#E91E63,#c2185b); color:#fff; padding:20px; display:flex; justify-content:space-between; align-items:center; }
+    .account-modal-header h2 { margin:0; font-size:22px; }
+    .account-modal-body { padding:24px; }
+    .account-modal-body .form-group { margin-bottom:16px; }
+    .account-modal-body label { display:block; font-weight:600; margin-bottom:6px; color:#333; }
+    .account-modal-body input, .account-modal-body select { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; }
+    .account-modal-body input:focus, .account-modal-body select:focus { outline:none; border-color:#E91E63; box-shadow:0 0 0 2px rgba(233,30,99,0.1); }
+    .account-modal-footer { display:flex; gap:12px; padding:16px 24px; border-top:1px solid #f0f0f0; }
+    .account-modal-footer button { flex:1; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
+    .btn-create { background:#E91E63; color:#fff; }
+    .btn-create:hover { background:#c2185b; }
+    .btn-cancel { background:#f0f0f0; color:#333; }
+    .btn-cancel:hover { background:#e0e0e0; }
+    .form-success { color:#4caf50; font-size:14px; margin-top:12px; text-align:center; }
+  </style>
+</head>
+<body class="w3-content" style="max-width:1200px">
+  <header class="w3-bar w3-top w3-pink w3-xlarge" style="padding:8px 12px; position:fixed; width:100vw; left:0; top:0; z-index:1000; font-size:16px;">
+    <div class="w3-bar-item w3-wide" style="font-size:16px; padding: 4px 8px;">Detalles Barranquilla</div>
+    <a href="Catalogo.html" class="w3-bar-item w3-button w3-right" style="font-size:14px; padding: 4px 8px;">← Volver</a>
+  </header>
+
+  <div style="height:50px"></div>
+
+  <div class="cart-container">
+    <h2 class="w3-text-pink" style="text-align:center">🛒 Mi Carrito</h2>
+    <div id="cartContent"></div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = '573195400473';
+    const CHECKOUT_STORAGE_KEY = 'detallesCheckout';
+
+    // Definir costos adicionales por personalización
+    const SURCHARGE_PRICES = {
+      balloons: 10000,           // Agregar globos
+      balloonHelium: 5000,       // Globos de helio (adicional)
+      balloonMetallic: 3000,     // Globos metálicos (adicional)
+      cardMessage: 5000,         // Mensaje personalizado en tarjeta
+      foodPreferences: 8000,     // Alimentos personalizados/restricciones
+      roseColor: 0,              // Color de rosa (sin costo extra)
+      delivery: 15000            // Costo base de entrega
+    };
+
+    function parsePriceToNumber(priceText) {
+      // Keep only digits to support values like 230.000 or $230,000
+      const digitsOnly = String(priceText || '').replace(/\D/g, '');
+      return parseInt(digitsOnly, 10) || 0;
+    }
+
+    function formatCOP(value) {
+      return Number(value || 0).toLocaleString('es-CO');
+    }
+
+    function calculateSurcharges() {
+      const details = getCheckoutDetails ? getCheckoutDetails() : {
+        includeBalloons: document.getElementById('includeBalloons')?.value || '',
+        balloonType: document.getElementById('balloonType')?.value || '',
+        cardMessage: document.getElementById('cardMessage')?.value || '',
+        foods: document.getElementById('foods')?.value || '',
+        deliveryAddress: document.getElementById('deliveryAddress')?.value || ''
+      };
+
+      let surcharges = {};
+      surcharges.balloons = (details.includeBalloons === 'Sí') ? SURCHARGE_PRICES.balloons : 0;
+
+      surcharges.balloonType = 0;
+      if (details.includeBalloons === 'Sí' && details.balloonType) {
+        if (details.balloonType === 'Helio') {
+          surcharges.balloonType = SURCHARGE_PRICES.balloonHelium;
+        } else if (details.balloonType === 'Metálicos') {
+          surcharges.balloonType = SURCHARGE_PRICES.balloonMetallic;
+        }
+      }
+
+      surcharges.cardMessage = (details.cardMessage && details.cardMessage.trim().length > 10) ? SURCHARGE_PRICES.cardMessage : 0;
+      surcharges.foodPreferences = (details.foods && details.foods.trim().length > 5) ? SURCHARGE_PRICES.foodPreferences : 0;
+      surcharges.delivery = (details.deliveryAddress && details.deliveryAddress.trim().length > 5) ? SURCHARGE_PRICES.delivery : 0;
+
+      return surcharges;
+    }
+
+    function getTotalSurcharges() {
+      const surcharges = calculateSurcharges();
+      return Object.values(surcharges).reduce((sum, val) => sum + val, 0);
+    }
+
+    function getCheckoutDetails() {
+      const saved = JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)) || {};
+      return {
+        occasion: saved.occasion || '',
+        recipientName: saved.recipientName || '',
+        senderName: saved.senderName || '',
+        paymentMethod: saved.paymentMethod || '',
+        deliveryDate: saved.deliveryDate || '',
+        deliveryTime: saved.deliveryTime || '',
+        roseColor: saved.roseColor || '',
+        includeBalloons: saved.includeBalloons || '',
+        balloonType: saved.balloonType || '',
+        foods: saved.foods || '',
+        cardMessage: saved.cardMessage || '',
+        deliveryAddress: saved.deliveryAddress || '',
+        extraNotes: saved.extraNotes || ''
+      };
+    }
+
+    function saveCheckoutDetailsFromForm() {
+      const ids = [
+        'occasion', 'recipientName', 'senderName', 'paymentMethod', 'deliveryDate', 'deliveryTime',
+        'roseColor', 'includeBalloons', 'balloonType', 'foods', 'cardMessage',
+        'deliveryAddress', 'extraNotes'
+      ];
+
+      const details = {};
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        details[id] = el ? el.value.trim() : '';
+      });
+
+      localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(details));
+      return details;
+    }
+
+    function toggleBalloonTypeField() {
+      const includeBalloons = document.getElementById('includeBalloons')?.value || '';
+      const balloonTypeField = document.getElementById('balloonTypeField');
+      if (balloonTypeField) {
+        if (includeBalloons === 'Sí') {
+          balloonTypeField.style.display = 'block';
+        } else {
+          balloonTypeField.style.display = 'none';
+          document.getElementById('balloonType').value = '';
+        }
+      }
+    }
+
+    function restoreCheckoutDetails() {
+      const details = getCheckoutDetails();
+      Object.entries(details).forEach(([key, value]) => {
+        const el = document.getElementById(key);
+        if (el) {
+          el.value = value;
+          el.addEventListener('input', () => {
+            saveCheckoutDetailsFromForm();
+            updatePriceBreakdown();
+          });
+          el.addEventListener('change', () => {
+            saveCheckoutDetailsFromForm();
+            updatePriceBreakdown();
+            if (key === 'includeBalloons') {
+              toggleBalloonTypeField();
+            }
+          });
+        }
+      });
+      toggleBalloonTypeField();
+    }
+
+    function setMinDeliveryDate() {
+      const dateInput = document.getElementById('deliveryDate');
+      if (!dateInput) return;
+
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      dateInput.min = `${yyyy}-${mm}-${dd}`;
+    }
+
+    function validateCheckout(details) {
+      const errors = [];
+      const requiredFields = [
+        { key: 'occasion', label: 'Ocasión' },
+        { key: 'recipientName', label: 'Nombre de quien recibe' },
+        { key: 'paymentMethod', label: 'Método de pago' },
+        { key: 'deliveryDate', label: 'Fecha de entrega' },
+        { key: 'deliveryAddress', label: 'Dirección de entrega' }
+      ];
+
+      requiredFields.forEach((field) => {
+        if (!details[field.key] || !String(details[field.key]).trim()) {
+          errors.push(`- ${field.label}`);
+        }
+      });
+
+      if (details.deliveryDate) {
+        const now = new Date();
+        const selected = new Date(`${details.deliveryDate}T${details.deliveryTime || '00:00'}`);
+        if (selected < now) {
+          errors.push('- Fecha y hora de entrega deben ser futuras');
+        }
+      }
+
+      if (details.includeBalloons === 'Sí' && !details.balloonType) {
+        errors.push('- Debes elegir tipo de globos si seleccionaste globos');
+      }
+
+      return errors;
+    }
+
+    function updatePriceBreakdown() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      let cartTotal = 0;
+
+      cart.forEach((item) => {
+        const unitPrice = parsePriceToNumber(item.price);
+        cartTotal += (unitPrice * item.qty);
+      });
+
+      const surcharges = calculateSurcharges();
+      const totalSurcharges = getTotalSurcharges();
+      const finalTotal = cartTotal + totalSurcharges;
+
+      const breakdownEl = document.getElementById('priceBreakdown');
+      if (breakdownEl) {
+        let breakdownHtml = `
+          <div style="margin-top:8px; padding:12px; background:#f9f9f9; border-radius:6px; font-size:13px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <span>Subtotal de productos:</span>
+              <span>$${formatCOP(cartTotal)}</span>
+            </div>
+        `;
+
+        if (surcharges.balloons > 0) {
+          breakdownHtml += `
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
+              <span style="margin-left:12px;">+ Globos:</span>
+              <span>$${formatCOP(surcharges.balloons)}</span>
+            </div>
+          `;
+        }
+
+        if (surcharges.balloonType > 0) {
+          breakdownHtml += `
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
+              <span style="margin-left:12px;">+ Tipo de globos:</span>
+              <span>$${formatCOP(surcharges.balloonType)}</span>
+            </div>
+          `;
+        }
+
+        if (surcharges.cardMessage > 0) {
+          breakdownHtml += `
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
+              <span style="margin-left:12px;">+ Mensaje en tarjeta:</span>
+              <span>$${formatCOP(surcharges.cardMessage)}</span>
+            </div>
+          `;
+        }
+
+        if (surcharges.foodPreferences > 0) {
+          breakdownHtml += `
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
+              <span style="margin-left:12px;">+ Alimentos personalizados:</span>
+              <span>$${formatCOP(surcharges.foodPreferences)}</span>
+            </div>
+          `;
+        }
+
+        if (surcharges.delivery > 0) {
+          breakdownHtml += `
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#666;">
+              <span style="margin-left:12px;">+ Envío:</span>
+              <span>$${formatCOP(surcharges.delivery)}</span>
+            </div>
+          `;
+        }
+
+        breakdownHtml += `
+            <div style="display:flex; justify-content:space-between; font-weight:bold; color:#E91E63; border-top:1px solid #ddd; padding-top:6px;">
+              <span>TOTAL FINAL:</span>
+              <span>$${formatCOP(finalTotal)}</span>
+            </div>
+          </div>
+        `;
+
+        breakdownEl.innerHTML = breakdownHtml;
+      }
+    }
+
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const cartContent = document.getElementById('cartContent');
+
+      if (cart.length === 0) {
+        cartContent.innerHTML = `
+          <div class="empty-cart">
+            <i class="fa fa-shopping-cart"></i>
+            <p>Tu carrito está vacío</p>
+            <a href="Catalogo.html" class="continue-btn">Continuar Comprando</a>
+          </div>`;
+        return;
+      }
+
+      let total = 0;
+      let html = '<div>';
+      
+      cart.forEach((item, idx) => {
+        const unitPrice = parsePriceToNumber(item.price);
+        const itemTotal = unitPrice * item.qty;
+        total += itemTotal;
+        
+        html += `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}" class="item-img">
+            <div class="item-info">
+              <h4>${item.name}</h4>
+              <p>${item.category}</p>
+            </div>
+            <div class="item-price">$${item.price}</div>
+            <div class="item-qty">
+              <button onclick="updateQty(${idx}, -1)" class="w3-button w3-small">-</button>
+              <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateQtyDirect(${idx}, this.value)">
+              <button onclick="updateQty(${idx}, 1)" class="w3-button w3-small">+</button>
+            </div>
+            <button onclick="removeItem(${idx})" class="remove-btn">Eliminar</button>
+          </div>`;
+      });
+
+      html += `</div>
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span>$${formatCOP(total)}</span>
+          </div>
+          <div class="summary-row">
+            <span>Envío:</span>
+            <span>Calcular</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span>Total base:</span>
+            <span id="tempTotal">$${formatCOP(total)}</span>
+          </div>
+          <div id="priceBreakdown"></div>
+          <div class="customization-box">
+            <h3>Personaliza tu pedido</h3>
+            <div class="customization-grid">
+              <div class="customization-field">
+                <label for="occasion">Ocasión</label>
+                <select id="occasion">
+                  <option value="">Seleccionar</option>
+                  <option value="Cumpleaños">Cumpleaños</option>
+                  <option value="Aniversario">Aniversario</option>
+                  <option value="Romántico">Romántico</option>
+                  <option value="Día de la Madre">Día de la Madre</option>
+                  <option value="Día del Padre">Día del Padre</option>
+                  <option value="Nacimiento">Nacimiento</option>
+                  <option value="Graduación">Graduación</option>
+                  <option value="Agradecimiento">Agradecimiento</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <div class="customization-field">
+                <label for="roseColor">Color de rosas</label>
+                <select id="roseColor">
+                  <option value="">Sin preferencia</option>
+                  <option value="Rojas">Rojas</option>
+                  <option value="Rosadas">Rosadas</option>
+                  <option value="Blancas">Blancas</option>
+                  <option value="Amarillas">Amarillas</option>
+                  <option value="Mixtas">Mixtas</option>
+                </select>
+              </div>
+              <div class="customization-field">
+                <label for="includeBalloons">Globos</label>
+                <select id="includeBalloons">
+                  <option value="">Sin definir</option>
+                  <option value="Sí">Sí</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div id="balloonTypeField" class="customization-field" style="display:none;">
+                <label for="balloonType">Tipo de globos</label>
+                <select id="balloonType">
+                  <option value="">Sin preferencia</option>
+                  <option value="Helio">Helio</option>
+                  <option value="Metálicos">Metálicos</option>
+                  <option value="Látex">Látex</option>
+                  <option value="Burbuja transparente">Burbuja transparente</option>
+                  <option value="Mixtos">Mixtos</option>
+                </select>
+              </div>
+              <div class="customization-field">
+                <label for="recipientName">Nombre de quien recibe</label>
+                <input id="recipientName" type="text" placeholder="Ej: Laura" />
+              </div>
+              <div class="customization-field">
+                <label for="senderName">Nombre de quien envía</label>
+                <input id="senderName" type="text" placeholder="Ej: Carlos" />
+              </div>
+              <div class="customization-field">
+                <label for="paymentMethod">Método de pago</label>
+                <select id="paymentMethod">
+                  <option value="">Seleccionar</option>
+                  <option value="Nequi">Nequi</option>
+                  <option value="Daviplata">Daviplata</option>
+                  <option value="Transferencia">Transferencia</option>
+                  <option value="Efectivo">Efectivo</option>
+                </select>
+              </div>
+              <div class="customization-field">
+                <label for="deliveryDate">Fecha de entrega</label>
+                <input id="deliveryDate" type="date" />
+              </div>
+              <div class="customization-field">
+                <label for="deliveryTime">Hora aproximada</label>
+                <input id="deliveryTime" type="time" />
+              </div>
+              <div class="customization-field customization-field-full">
+                <label for="foods">Alimentos / preferencias</label>
+                <textarea id="foods" placeholder="Ej: Sin maní, incluir más frutas, sin lactosa..."></textarea>
+              </div>
+              <div class="customization-field customization-field-full">
+                <label for="cardMessage">Mensaje para la tarjeta</label>
+                <textarea id="cardMessage" placeholder="Escribe aquí el mensaje que va en la carta"></textarea>
+              </div>
+              <div class="customization-field customization-field-full">
+                <label for="deliveryAddress">Dirección de entrega</label>
+                <textarea id="deliveryAddress" placeholder="Barrio, dirección, referencias"></textarea>
+              </div>
+              <div class="customization-field customization-field-full">
+                <label for="extraNotes">Notas adicionales</label>
+                <textarea id="extraNotes" placeholder="Cualquier detalle extra que debamos tener en cuenta"></textarea>
+              </div>
+            </div>
+            <p class="customization-hint">Estos detalles se incluirán automáticamente en tu mensaje de WhatsApp.</p>
+          </div>
+          <button class="checkout-btn" onclick="checkoutWhatsApp()">Confirmar y Enviar por WhatsApp</button>
+          <button class="clear-cart-btn" onclick="clearCart()">Limpiar carrito</button>
+          <a href="Catalogo.html" class="continue-btn" style="text-align:center; display:block; margin-top:12px; background: #999;">Continuar Comprando</a>
+        </div>`;
+
+      cartContent.innerHTML = html;
+      restoreCheckoutDetails();
+      setMinDeliveryDate();
+      updatePriceBreakdown();
+    }
+
+    function updateQty(idx, change) {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      cart[idx].qty = Math.max(1, cart[idx].qty + change);
+      localStorage.setItem('detallesCart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    function updateQtyDirect(idx, value) {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      cart[idx].qty = Math.max(1, parseInt(value) || 1);
+      localStorage.setItem('detallesCart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    function removeItem(idx) {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      cart.splice(idx, 1);
+      localStorage.setItem('detallesCart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    function clearCart() {
+      const ok = confirm('¿Seguro que deseas limpiar todo el carrito?');
+      if (!ok) return;
+
+      localStorage.removeItem('detallesCart');
+      localStorage.removeItem(CHECKOUT_STORAGE_KEY);
+      loadCart();
+      updateBottomNavCart();
+    }
+
+    function checkoutWhatsApp() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+
+      if (cart.length === 0) {
+        alert('Tu carrito esta vacio. Agrega productos antes de continuar.');
+        return;
+      }
+
+      const details = saveCheckoutDetailsFromForm();
+      const validationErrors = validateCheckout(details);
+
+      if (validationErrors.length) {
+        alert(`Completa la información obligatoria:\n\n${validationErrors.join('\n')}`);
+        return;
+      }
+
+      let total = 0;
+      const lines = cart.map((item, index) => {
+        const unitPrice = parsePriceToNumber(item.price);
+        const itemTotal = unitPrice * item.qty;
+        total += itemTotal;
+        return `${index + 1}. ${item.name} x${item.qty} - $${formatCOP(itemTotal)}`;
+      });
+
+      const surcharges = calculateSurcharges();
+      const totalSurcharges = getTotalSurcharges();
+      const finalTotal = total + totalSurcharges;
+
+      const customizationLines = [];
+      if (details.occasion) customizationLines.push(`- Ocasión: ${details.occasion}`);
+      if (details.recipientName) customizationLines.push(`- Recibe: ${details.recipientName}`);
+      if (details.senderName) customizationLines.push(`- Envía: ${details.senderName}`);
+      if (details.paymentMethod) customizationLines.push(`- Método de pago: ${details.paymentMethod}`);
+      if (details.deliveryDate) customizationLines.push(`- Fecha de entrega: ${details.deliveryDate}`);
+      if (details.deliveryTime) customizationLines.push(`- Hora aproximada: ${details.deliveryTime}`);
+      if (details.roseColor) customizationLines.push(`- Color de rosas: ${details.roseColor}`);
+      if (details.includeBalloons) customizationLines.push(`- Globos: ${details.includeBalloons}`);
+      if (details.balloonType) customizationLines.push(`- Tipo de globos: ${details.balloonType}`);
+      if (details.foods) customizationLines.push(`- Alimentos/preferencias: ${details.foods}`);
+      if (details.cardMessage) customizationLines.push(`- Mensaje para tarjeta: ${details.cardMessage}`);
+      if (details.deliveryAddress) customizationLines.push(`- Dirección de entrega: ${details.deliveryAddress}`);
+      if (details.extraNotes) customizationLines.push(`- Notas adicionales: ${details.extraNotes}`);
+      customizationLines.push(''); // Espacio
+      customizationLines.push('Desglose de precios:');
+      customizationLines.push(`- Subtotal de productos: $${formatCOP(total)}`);
+      if (surcharges.balloons > 0) customizationLines.push(`- Globos: $${formatCOP(surcharges.balloons)}`);
+      if (surcharges.balloonType > 0) customizationLines.push(`- Tipo de globos: $${formatCOP(surcharges.balloonType)}`);
+      if (surcharges.cardMessage > 0) customizationLines.push(`- Mensaje en tarjeta: $${formatCOP(surcharges.cardMessage)}`);
+      if (surcharges.foodPreferences > 0) customizationLines.push(`- Alimentos personalizados: $${formatCOP(surcharges.foodPreferences)}`);
+      if (surcharges.delivery > 0) customizationLines.push(`- Envío: $${formatCOP(surcharges.delivery)}`);
+      customizationLines.push(`- TOTAL FINAL: $${formatCOP(finalTotal)}`);
+
+      const message = [
+        'Hola, quiero realizar este pedido:',
+        '',
+        ...lines,
+        '',
+        'Personalización del pedido:',
+        ...(customizationLines.length ? customizationLines : ['- Sin detalles adicionales']),
+        '',
+        'Quedo atento(a) para confirmar disponibilidad y domicilio.'
+      ].join('\n');
+
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      trackEvent('checkout_whatsapp'); window.open(whatsappUrl, '_blank');
+    }
+
+    loadCart();
+  </script>
+
+  <!-- Bottom Navigation Bar - Solo en móvil -->
+  <div class="bottom-nav">
+    <a href="tienda.html" title="Ir a Tienda">
+      <i class="fa fa-shopping-bag"></i>
+      <span>Tienda</span>
+    </a>
+    <button onclick="toggleSearchMobile()" title="Buscar">
+      <i class="fa fa-search"></i>
+      <span>Buscar</span>
+    </button>
+    <a href="carrito.html" style="position:relative;" title="Mi Carrito">
+      <i class="fa fa-shopping-cart"></i>
+      <span id="bottomNavCartCount" class="badge" style="display:none;">0</span>
+      <span>Carrito</span>
+    </a>
+    <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473" target="_blank" title="Contacto WhatsApp">
+      <i class="fa fa-whatsapp"></i>
+      <span>Contacto</span>
+    </a>
+  </div>
+
+  <script>
+    // account-related scripts removed since authentication is no longer needed
+
+    function toggleSearchMobile() {
+      const q = prompt('¿Qué producto buscas? (ej: fresas, anchetas, rosas)');
+      if (q === null) return;
+      const clean = q.trim();
+      const target = clean ? `tienda.html?q=${encodeURIComponent(clean)}` : 'tienda.html';
+      window.location.href = target;
+    }
+
+    function updateBottomNavCart() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const total = cart.reduce((sum, item) => sum + item.qty, 0);
+      const bottomBadge = document.getElementById('bottomNavCartCount');
+      if (bottomBadge) {
+        if (total > 0) {
+          bottomBadge.textContent = total;
+          bottomBadge.style.display = 'flex';
+        } else {
+          bottomBadge.style.display = 'none';
+        }
+      }
+    }
+
+    updateBottomNavCart();
+    window.addEventListener('storage', updateBottomNavCart);
+  </script>
+
+  
+  <script>
+    window.trackEvent = window.trackEvent || function(name) {
+      try {
+        const key = 'detallesAnalytics';
+        const data = JSON.parse(localStorage.getItem(key) || '{}');
+        data[name] = (data[name] || 0) + 1;
+        data._last = new Date().toISOString();
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {}
+    };
+  </script>
+</body>
+</html>
+
+
+
+
+
+
