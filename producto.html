@@ -490,6 +490,7 @@
                 <span class="caret"><i class="fa fa-chevron-down"></i></span>
               </summary>
               <div class="config-content">
+                <div id="variantWrapper"></div>
                 <div class="config-grid">
                   <div class="config-field">
                     <label for="qtyInput">Cantidad</label>
@@ -526,8 +527,8 @@
                       <option value="Efectivo">Efectivo</option>
                     </select>
                   </div>
-                  <div class="config-field">
-                    <label for="roseColorInput">Color de rosas</label>
+                  <div class="config-field" id="roseColorWrapper">
+                    <label for="roseColorInput">Color de flores</label>
                     <select id="roseColorInput">
                       <option value="Sin preferencia">Sin preferencia</option>
                       <option value="Rojas">Rojas</option>
@@ -545,7 +546,7 @@
                     <label for="deliveryTimeInput">Hora aproximada</label>
                     <input id="deliveryTimeInput" type="time" required>
                   </div>
-                  <div class="config-field">
+                  <div class="config-field" id="balloonsBaseWrapper">
                     <label for="includeBalloonsInput">Globos</label>
                     <select id="includeBalloonsInput">
                       <option value="No">No</option>
@@ -563,7 +564,7 @@
                       <option value="Mixtos">Mixtos</option>
                     </select>
                   </div>
-                  <div class="config-field full">
+                  <div class="config-field full" id="foodsWrapper">
                     <label for="foodsInput">Alimentos / preferencias</label>
                     <textarea id="foodsInput" placeholder="Ej: sin maní, sin lactosa, más frutas..."></textarea>
                   </div>
@@ -666,23 +667,24 @@
       { id: 201, name: 'Ramo Flores Amarillas', desc: 'Ramo de flores amarillas variadas con decoracion clasica.', price: '80.000', img: 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', category: 'Rosas', images: ['img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM (1).jpeg'], contents: ['Flores amarillas variadas', 'Astromelias o follaje', 'Mono y decoracion'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 202, name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium.', price: '120.000', img: 'IMG_0612.JPG', category: 'Rosas', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Colores disponibles: rojo, rosado, blanco y amarillo. No incluye domicilio.' },
       { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y mono decorativo.', price: '105.000', img: 'Floristeria.jpg', category: 'Rosas', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramo de 5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio.' },
-      { id: 210, name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de liston para conservar el detalle.', price: '130.000', img: 'IMG_0618.JPG', category: 'Rosas', images: ['IMG_0618.JPG', 'Floristeria.jpg'], contents: ['Ramo de rosas eternas', 'Acabado decorativo premium'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
+      { id: 210, name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de listón para conservar el detalle.', price: '130.000', img: 'IMG_0618.JPG', category: 'Rosas', images: ['IMG_0618.JPG', 'Floristeria.jpg'], contents: ['Ramo de rosas eternas', 'Moño y decoración'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 204, name: 'Ramo Cisne Girasoles', desc: 'Ramo con 5-6 girasoles en presentacion cisne.', price: '105.000', img: 'Floristeria.jpg', category: 'Ramos Mixtos', images: ['Floristeria.jpg', 'IMG_0618.JPG'], contents: ['5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
-      { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos para detalle doble.', price: '145.000', img: 'IMG_0618.JPG', category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Fresas o choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
+      { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos para detalle doble. Con girasoles $145.000 o con rosas $160.000.', price: '145.000', img: 'IMG_0618.JPG', stock: false, category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Astromelias o Follaje', 'Fresas o Choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio. Precio varía según presentación.' },
       { id: 206, name: 'Ramo Cisne mas Corazon de Chocolate', desc: 'Ramo romantico con corazon de chocolate incluido.', price: '175.000', img: 'IMG_0612.JPG', category: 'Ramos Mixtos', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Corazon de chocolate', 'Envoltura y mono'], shipping: '0', prepTime: '5 horas', note: 'Version con Ferreros o Adros disponible' },
-      { id: 207, name: 'Ramillete Solitario', desc: 'Ramillete sencillo para un detalle rapido y bonito.', price: '40.000', img: 'Floristeria.jpg', category: 'Floristeria Especiales', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramillete de flores amarillas', 'Lazo', 'Tarjeta'], shipping: '0', prepTime: '2 horas', note: 'No incluye domicilio' },
+      { id: 207, name: 'Ramillete Solitario', desc: 'Ramillete sencillo para un detalle rápido y bonito. Sin fresas $40.000 — con fresas $80.000.', price: '40.000', img: 'Floristeria.jpg', category: 'Floristeria Especiales', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramillete de flores amarillas', 'Tarjeta', 'Lazo', 'Fondo alusivo'], shipping: '0', prepTime: '2 horas', note: 'Precio varía con fresas. No incluye domicilio' },
       { id: 208, name: 'Ramo Buchon 22 Rosas', desc: 'Ramo buchon elegante para ocasiones especiales.', price: '130.000', img: 'IMG_0618.JPG', category: 'Floristeria Especiales', images: ['IMG_0618.JPG', 'IMG_0612.JPG'], contents: ['22 rosas', 'Empaque premium', 'Decoracion y lazo'], shipping: '0', prepTime: '5-6 horas', note: 'Papel coreano segun disponibilidad' },
       { id: 209, name: 'Ramo Buchon 36 Rosas', desc: 'Version amplia de ramo buchon con mayor volumen.', price: '210.000', img: 'IMG_0612.JPG', category: 'Floristeria Especiales', images: ['IMG_0612.JPG', 'IMG_0618.JPG'], contents: ['36 rosas', 'Empaque premium', 'Acabado de lujo'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' },
       // fresas
       { id: 301, name: 'Corazon Mini Dulce', desc: 'Caja corazon con fresas decoradas y rosas eternas.', price: '105.000', img: 'Fresas.jpg', category: 'Cajas de Fresas', images: ['Fresas.jpg', 'IMG_0612.JPG'], contents: ['Fresas cubiertas de chocolate', 'Rosas eternas', 'Caja en forma de corazon', 'Lazo y tarjeta'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
-      { id: 302, name: 'Caja Corazon Sorpresa', desc: 'Corazon de chocolate con fresas y presentacion decorada.', price: '130.000', img: 'IMG_0612.JPG', category: 'Cajas de Fresas', images: ['IMG_0612.JPG', 'Fresas.jpg', 'IMG_0618.JPG'], contents: ['Fresas decoradas', 'Corazon sorpresa de chocolate', 'Caja decorada', 'Tarjeta personalizada'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
+      { id: 302, name: 'Caja Corazón Sorpresa', desc: 'Corazón de chocolate con fresas y presentación decorada. Clásica $130.000 o versión #2 con corazón de chocolate $110.000.', price: '130.000', img: 'IMG_0612.JPG', category: 'Cajas de Fresas', images: ['IMG_0612.JPG', 'Fresas.jpg', 'IMG_0618.JPG'], contents: ['Fresas decoradas', 'Corazón sorpresa de chocolate', 'Caja decorada', 'Tarjeta personalizada'], shipping: '0', prepTime: '4 horas', note: 'Versión #2: +3 rosas eternas y corazón totalmente de chocolate. No incluye domicilio' },
       { id: 303, name: 'Corazon Becca', desc: 'Caja corazon premium con 18 fresas cubiertas.', price: '195.000', img: 'IMG_0618.JPG', category: 'Cajas de Fresas', images: ['IMG_0618.JPG', 'Fresas.jpg'], contents: ['18 fresas cubiertas con chocolate', 'Rosas', 'Caja corazon', 'Mono y decoracion'], shipping: '0', prepTime: '5 horas', note: 'No incluye domicilio' },
-      { id: 304, name: 'Dear Box', desc: 'Caja con fresas decoradas, rosas de liston y vino espumoso.', price: '85.000', img: 'Fresas.jpg', category: 'Tazas y Mensajes', images: ['Fresas.jpg', 'IMG_0618.JPG'], contents: ['4-5 rosas tipo eternas', '4 fresas decoradas', 'Vino espumoso JP Chenet', 'Caja, mono y tarjeta'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
+      { id: 304, name: 'Dear Box', desc: 'Caja con rosas eternas, fresas decoradas y vino espumoso. Con vino $95.000 — sin vino $75.000.', price: '95.000', img: 'Fresas.jpg', category: 'Tazas y Mensajes', images: ['Fresas.jpg', 'IMG_0618.JPG'], contents: ['4-5 rosas tipo eternas, de listón', '4 fresas decoradas', 'JP Chenet vino espumoso (opcional)', 'Caja', 'Moño y tarjeta'], shipping: '0', prepTime: '4 horas', note: 'Colores: rosado y rojo. No incluye domicilio' },
       { id: 305, name: 'Mary Box', desc: 'Detalle compacto con rosas, vela y decoracion especial.', price: '55.000', img: 'IMG_0618.JPG', category: 'Tazas y Mensajes', images: ['IMG_0618.JPG', 'Fresas.jpg'], contents: ['4-5 rosas tipo eternas', 'Vela decorativa', 'Caja con lazo y tarjeta'], shipping: '0', prepTime: '3 horas', note: 'No incluye domicilio' },
-      { id: 306, name: 'Luz Box', desc: 'Caja iluminada con rosas y chocolates.', price: '75.000', img: 'IMG_0612.JPG', category: 'Tazas y Mensajes', images: ['IMG_0612.JPG', 'Fresas.jpg'], contents: ['4 rosas naturales', '6 Ferreros', '2 chocolates', 'Caja con tarjeta'], shipping: '0', prepTime: '3 horas', note: 'No incluye domicilio' },
+      { id: 306, name: 'Luz Box', desc: 'Caja con rosas naturales, Ferreros y chocolates.', price: '80.000', img: 'IMG_0612.JPG', category: 'Tazas y Mensajes', images: ['IMG_0612.JPG', 'Fresas.jpg'], contents: ['4 Rosas naturales', '6 Ferreros', '2 Chocolates sujetos a disponibilidad', 'Caja', 'Tarjeta personalizada y decoración'], shipping: '0', prepTime: '3 horas', note: 'No incluye domicilio' },
       { id: 307, name: 'Lovable Box', desc: 'Caja con flores amarillas y fresas decoradas.', price: '110.000', img: 'Fresas.jpg', category: 'Fresas Personalizados', images: ['Fresas.jpg', 'IMG_0612.JPG', 'IMG_0618.JPG'], contents: ['5 flores amarillas', '8 fresas decoradas', 'Bebida Te Hatsu', 'Empaque lovable'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
       { id: 308, name: 'Love Box Deluxe', desc: 'Ramo, fresas y chocolates en formato premium.', price: '190.000', img: 'IMG_0612.JPG', category: 'Fresas Personalizados', images: ['IMG_0612.JPG', 'Fresas.jpg', 'IMG_0618.JPG'], contents: ['Ramo de 12 rosas', '6 fresas u oreos decoradas', '2 cajas Ferrero x4', 'Vino espumoso', 'Caja deluxe'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' },
       { id: 309, name: 'Corazon Deluxe', desc: 'Edicion premium con mas de 100 rosas y extras.', price: '500.000', img: 'IMG_0618.JPG', category: 'Fresas Personalizados', images: ['IMG_0618.JPG', 'Fresas.jpg'], contents: ['Diseno con mas de 100 rosas', 'Palabra personalizada con rosas', 'Globo love', 'Opciones con bebida y peluche'], shipping: '0', prepTime: '6-8 horas', note: 'Versiones de 550.000 y 650.000 disponibles' },
+      { id: 310, name: 'Love Box', desc: 'Ramo de 12 rosas con fresas o Choco-Oreos en caja decorada. Caja rosada, blanca o roja.', price: '155.000', img: 'IMG_0612.JPG', category: 'Fresas Personalizados', images: ['IMG_0612.JPG', 'Fresas.jpg', 'IMG_0618.JPG'], contents: ['Ramo de 12 rosas con Astromelias o Follaje', 'Envoltura', 'Moño y decoración', '6 fresas o Oreos cubiertas con chocolate decoradas'], shipping: '0', prepTime: '4-5 horas', note: 'Colores disponibles: caja rosada, blanca o roja. No incluye domicilio' },
       // anchetas
       { id: 101, name: 'Caja de Suenos', desc: 'Detalle tipo ancheta con desayuno ligero y decoracion especial.', price: '100.000', img: 'Anchetas.JPG', category: 'Anchetas y Desayunos', images: ['Anchetas.JPG', 'IMG_0612.JPG'], contents: ['Jugo de naranja', 'Rollos de jamon y queso', 'Parfait con yogurt griego', 'Ensalada de frutas', 'Quesillo y marshmallows', 'Caja, tarjeta y decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
       { id: 102, name: 'Desayuno Aurora', desc: 'Bandeja dulce con frutas, waffle y opcion de globos.', price: '110.000', img: 'IMG_0618.JPG', category: 'Anchetas y Desayunos', images: ['IMG_0618.JPG', 'Anchetas.JPG', 'IMG_0612.JPG'], contents: ['Cafe frio sabor caramelo o jugo natural', 'Waffle en forma de corazon', 'Parfait con yogurt griego', 'Fresa decorada', 'Quesillo y caja decorada'], shipping: '0', prepTime: '4-5 horas', note: 'Version con globos disponible' },
@@ -691,9 +693,113 @@
       { id: 105, name: 'M de Devocion', desc: 'Caja de regalo con fresas decoradas y tema especial.', price: '105.000', img: 'IMG_0612.JPG', category: 'Cajas Especiales', images: ['IMG_0612.JPG', 'Anchetas.JPG'], contents: ['Fresas cubiertas de chocolate rosa', 'Rosas eternas decorativas', 'Vela y detalle tematico', 'Caja en forma de M', 'Lazo y tarjeta'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 106, name: 'Dear Box Adore', desc: 'Caja premium con rosas de liston y vino espumoso.', price: '85.000', img: 'IMG_0618.JPG', category: 'Cajas Especiales', images: ['IMG_0618.JPG', 'IMG_0612.JPG', 'Anchetas.JPG'], contents: ['4-5 rosas tipo eternas', 'Vino espumoso JP Chenet', 'Caja decorada', 'Mono y tarjeta'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
       { id: 107, name: 'Combo Querida', desc: 'Combo de alto impacto para celebraciones especiales.', price: '360.000', img: 'Anchetas.JPG', category: 'Combos y Premium', images: ['Anchetas.JPG', 'IMG_0618.JPG', 'IMG_0612.JPG'], contents: ['Caja Love corazon', 'Caja Sweetbox', 'Decoracion especial', 'Tarjeta personalizada'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' },
-      { id: 108, name: 'Lovable Combo con Peluche', desc: 'Flores y fresas con opcion de peluche por tamano.', price: '210.000', img: 'IMG_0618.JPG', category: 'Combos y Premium', images: ['IMG_0618.JPG', 'Anchetas.JPG'], contents: ['5 flores amarillas', '8 fresas decoradas', 'Bebida Te Hatsu', 'Presentacion combo lovable'], shipping: '0', prepTime: '4-5 horas', note: 'Peluche de 40, 60 cm o 1 metro disponible' },
+      { id: 108, name: 'Lovable Combo con Peluche', desc: 'Flores y fresas con opción de peluche. Sin peluche $110.000 — desde $210.000 con peluche.', price: '110.000', img: 'IMG_0618.JPG', category: 'Combos y Premium', images: ['IMG_0618.JPG', 'Anchetas.JPG'], contents: ['5 flores amarillas', '8 fresas decoradas', 'Bebida Te Hatsu', 'Presentacion combo lovable'], shipping: '0', prepTime: '4-5 horas', note: 'Peluche de 40, 60 cm o 1 metro disponible' },
       { id: 109, name: 'Love Box Deluxe Ancheta', desc: 'Ramo, fresas y chocolates en caja premium.', price: '230.000', img: 'IMG_0612.JPG', category: 'Combos y Premium', images: ['IMG_0612.JPG', 'Anchetas.JPG', 'IMG_0618.JPG'], contents: ['Ramo de 12 rosas con follaje', '6 fresas u oreos decoradas', '2 cajas Ferrero x4', 'Vino espumoso', 'Caja decorada'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' }
     ];
+
+    // ── PRODUCT CONFIG ──────────────────────────────────────────────────────────
+    // hasFlowers: show flower-color selector
+    // hasBalloons: show balloon options (desayunos/anchetas)
+    // hasFoods: show food-preference field
+    // stock: false = mark as agotado
+    // variants: price variants [ { name, price } ]
+    const PRODUCT_CONFIG = {
+      // Desayunos
+      1:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      2:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      3:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      4:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      5:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      6:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      7:  { hasFlowers: true,  hasBalloons: true,  hasFoods: true  },
+      8:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      9:  { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      // Floristería
+      201: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      202: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      203: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      204: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      205: { hasFlowers: true,  hasBalloons: false, hasFoods: true,  stock: false,
+             variants: [{ name: 'Con Girasoles', price: '145.000' }, { name: 'Con Rosas', price: '160.000' }] },
+      206: { hasFlowers: true,  hasBalloons: false, hasFoods: true  },
+      207: { hasFlowers: true,  hasBalloons: false, hasFoods: false,
+             variants: [{ name: 'Sin Fresas', price: '40.000' }, { name: 'Con Fresas', price: '80.000' }] },
+      208: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      209: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      210: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      // Fresas / Cajas
+      301: { hasFlowers: false, hasBalloons: false, hasFoods: true  },
+      302: { hasFlowers: false, hasBalloons: false, hasFoods: true,
+             variants: [{ name: 'Clásica', price: '130.000' }, { name: '#2 – Con Corazón de Chocolate', price: '110.000' }] },
+      303: { hasFlowers: false, hasBalloons: false, hasFoods: true  },
+      304: { hasFlowers: false, hasBalloons: false, hasFoods: true,
+             variants: [{ name: 'Con Vino JP Chenet', price: '95.000' }, { name: 'Sin Vino', price: '75.000' }] },
+      305: { hasFlowers: false, hasBalloons: false, hasFoods: false },
+      306: { hasFlowers: false, hasBalloons: false, hasFoods: false },
+      307: { hasFlowers: true,  hasBalloons: false, hasFoods: true  },
+      308: { hasFlowers: true,  hasBalloons: false, hasFoods: true  },
+      309: { hasFlowers: true,  hasBalloons: false, hasFoods: true  },
+      310: { hasFlowers: true,  hasBalloons: false, hasFoods: true  },
+      // Anchetas
+      101: { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      102: { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      103: { hasFlowers: false, hasBalloons: true,  hasFoods: true  },
+      104: { hasFlowers: false, hasBalloons: false, hasFoods: true  },
+      105: { hasFlowers: false, hasBalloons: false, hasFoods: true  },
+      106: { hasFlowers: false, hasBalloons: false, hasFoods: false },
+      107: { hasFlowers: false, hasBalloons: false, hasFoods: true  },
+      108: { hasFlowers: true,  hasBalloons: false, hasFoods: true,
+             variants: [{ name: 'Sin Peluche', price: '110.000' }, { name: 'Con Peluche 40 cm', price: '210.000' },
+                        { name: 'Con Peluche 60 cm', price: '270.000' }, { name: 'Con Peluche 1 metro', price: '400.000' }] },
+      109: { hasFlowers: true,  hasBalloons: false, hasFoods: true  }
+    };
+
+    function getProductConfig(id) {
+      return PRODUCT_CONFIG[id] || { hasFlowers: false, hasBalloons: false, hasFoods: false };
+    }
+
+    function applyCustomizerConfig(cfg) {
+      const show = (id, visible) => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = visible ? '' : 'none';
+      };
+      show('roseColorWrapper',   cfg.hasFlowers);
+      show('balloonsBaseWrapper', cfg.hasBalloons);
+      show('balloonTypeWrapper',  false); // always start hidden; toggled on balloon select
+      show('foodsWrapper',        cfg.hasFoods);
+      // Reset balloons to No when hidden
+      if (!cfg.hasBalloons) {
+        const bi = document.getElementById('includeBalloonsInput');
+        if (bi) bi.value = 'No';
+      }
+    }
+
+    function renderVariantField(cfg) {
+      const wrapper = document.getElementById('variantWrapper');
+      if (!wrapper) return;
+      if (cfg.variants && cfg.variants.length > 0) {
+        wrapper.innerHTML = `
+          <div class="config-field full" style="margin-bottom:6px;">
+            <label for="variantInput" style="color:#c2185b;font-weight:800;">Presentación / Variante</label>
+            <select id="variantInput" onchange="updatePriceFromVariant()" required>
+              ${cfg.variants.map((v, i) => `<option value="${i}">${v.name} — $${v.price}</option>`).join('')}
+            </select>
+          </div>`;
+        updatePriceFromVariant();
+      } else {
+        wrapper.innerHTML = '';
+      }
+    }
+
+    function updatePriceFromVariant() {
+      const variantInput = document.getElementById('variantInput');
+      if (!variantInput) return;
+      const cfg = getProductConfig(currentProduct.id);
+      if (!cfg.variants) return;
+      const v = cfg.variants[parseInt(variantInput.value || '0', 10)];
+      if (v) document.getElementById('productPrice').textContent = `$${v.price}`;
+    }
+    // ────────────────────────────────────────────────────────────────────────────
 
     function parsePriceToNumber(raw) {
       if (typeof raw === 'number') return raw;
@@ -764,10 +870,11 @@
       document.getElementById('productPrep').textContent = currentProduct.prepTime;
       document.getElementById('productCategory').textContent = currentProduct.category;
 
+      const cfg = getProductConfig(currentProduct.id);
       const stockPill = document.getElementById('stockPill');
-      if (currentProduct.stock === false) {
+      if (currentProduct.stock === false || cfg.stock === false) {
         stockPill.className = 'stock-pill out';
-        stockPill.textContent = 'Sin stock';
+        stockPill.textContent = 'Agotado';
       } else {
         stockPill.className = 'stock-pill in';
         stockPill.textContent = 'Disponible';
@@ -779,6 +886,8 @@
         .join('');
 
       renderMainMedia();
+      applyCustomizerConfig(cfg);
+      renderVariantField(cfg);
       renderRelated();
     }
 
@@ -819,7 +928,9 @@
     }
 
     function addToCart() {
-      if (currentProduct.stock === false) {
+      const cfg = getProductConfig(currentProduct.id);
+      const isOutOfStock = cfg.stock === false || currentProduct.stock === false;
+      if (isOutOfStock) {
         alert('Este producto está sin stock por ahora.');
         return;
       }
@@ -834,18 +945,27 @@
         return;
       }
 
+      // Resolve active price (variant may override base price)
+      let activePrice = currentProduct.price;
+      let selectedVariantName = '';
+      const variantInput = document.getElementById('variantInput');
+      if (cfg.variants && cfg.variants.length > 0 && variantInput) {
+        const v = cfg.variants[parseInt(variantInput.value || '0', 10)];
+        if (v) { activePrice = v.price; selectedVariantName = v.name; }
+      }
+
       const qty = Math.max(1, Math.min(10, parseInt(document.getElementById('qtyInput').value, 10) || 1));
       const deliveryType = (document.getElementById('deliveryType').value || 'Estandar').trim();
       const occasion = (document.getElementById('occasionInput').value || '').trim();
       const recipientName = (document.getElementById('recipientNameInput').value || '').trim();
       const senderName = (document.getElementById('senderNameInput').value || '').trim();
       const paymentMethod = (document.getElementById('paymentMethodInput').value || '').trim();
-      const roseColor = (document.getElementById('roseColorInput').value || '').trim();
+      const roseColor = cfg.hasFlowers ? (document.getElementById('roseColorInput').value || '').trim() : '';
       const deliveryDate = (document.getElementById('deliveryDateInput').value || '').trim();
       const deliveryTime = (document.getElementById('deliveryTimeInput').value || '').trim();
-      const includeBalloons = (document.getElementById('includeBalloonsInput').value || 'No').trim();
-      const balloonType = (document.getElementById('balloonTypeInput').value || '').trim();
-      const foods = (document.getElementById('foodsInput').value || '').trim();
+      const includeBalloons = cfg.hasBalloons ? (document.getElementById('includeBalloonsInput').value || 'No').trim() : 'No';
+      const balloonType = cfg.hasBalloons ? (document.getElementById('balloonTypeInput').value || '').trim() : '';
+      const foods = cfg.hasFoods ? (document.getElementById('foodsInput').value || '').trim() : '';
       const note = (document.getElementById('noteInput').value || '').trim();
       const deliveryAddress = (document.getElementById('deliveryAddressInput').value || '').trim();
       const extraNotes = (document.getElementById('extraNotesInput').value || '').trim();
@@ -858,7 +978,7 @@
       if (!deliveryDate) missingRequired.push('Fecha de entrega');
       if (!deliveryTime) missingRequired.push('Hora aproximada');
       if (!deliveryAddress) missingRequired.push('Dirección de entrega');
-      if (includeBalloons === 'Sí' && !balloonType) missingRequired.push('Tipo de globos');
+      if (cfg.hasBalloons && includeBalloons === 'Sí' && !balloonType) missingRequired.push('Tipo de globos');
 
       if (missingRequired.length) {
         status.textContent = `Faltan campos obligatorios: ${missingRequired.join(', ')}`;
@@ -869,6 +989,7 @@
       const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
 
       const configKey = JSON.stringify({
+        variant: selectedVariantName,
         deliveryType,
         occasion,
         recipientName,
@@ -892,23 +1013,24 @@
         cart.push({
           id: currentProduct.id,
           name: currentProduct.name,
-          price: currentProduct.price,
+          price: activePrice,
           img: currentProduct.img,
           category: currentProduct.category,
           qty,
           configKey,
           customization: {
+            variant: selectedVariantName || null,
             deliveryType,
             occasion,
             recipientName,
             senderName,
             paymentMethod,
-            roseColor,
+            roseColor: roseColor || null,
             deliveryDate,
             deliveryTime,
             includeBalloons,
-            balloonType,
-            foods,
+            balloonType: balloonType || null,
+            foods: foods || null,
             note,
             deliveryAddress,
             extraNotes
