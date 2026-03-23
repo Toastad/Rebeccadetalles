@@ -47,6 +47,26 @@ button:disabled, .btn:disabled {
   cursor: not-allowed;
 }
 
+/* After-press feedback animation */
+@keyframes pressReleasePop {
+  0% {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  35% {
+    transform: translateY(-1px) scale(1.035);
+    filter: brightness(1.08);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+.after-press {
+  animation: pressReleasePop 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Primary Button */
 .btn-primary, button.w3-pink, .w3-button.w3-pink {
   background: var(--pink-dark) !important;
