@@ -3,124 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Saludables - Detalles Barranquilla</title>
-  <link rel="stylesheet" href="estilos-principal.css">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins|Dancing+Script">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    body,h1,h2,h3,h4 {font-family: "Montserrat", sans-serif}
-    .topbar { position: fixed; top: 0; left: 0; width: 100vw; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #E91E63; box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 13px; }
-    .logo { font-weight: 700; color: white; }
-    .topnav { display: flex; gap: 16px; align-items: center; }
-    .topnav a { color: white; text-decoration: none; font-weight: 600; }
-    .cart-icon { color: white; font-size: 20px; text-decoration: none; position: relative; }
-    .cart-count { background: #FFD700; color: #333; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; position: absolute; top: -8px; right: -8px; }
-    .banner-img-container { margin-top: 50px; margin-bottom: 24px; position: relative; width: 100%; height: 420px; overflow: hidden; border-radius: 10px; }
-    .banner-img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .banner-text-overlay { position: absolute; top: 28px; left: 36px; z-index: 2; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); max-width: 70%; }
-    .container { max-width: 1200px; margin: 26px auto; padding: 0 18px; }
-    .section-title { font-size: 28px; margin: 24px 0 16px 0; color: #333; }
-    .products-grid { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; }
-    .product-card { background: white; border-radius: 12px; overflow: hidden; flex: 1 1 calc(33.33% - 16px); min-width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; }
-    .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
-    .product-card img { width: 100%; height: 200px; object-fit: cover; }
-    .product-info { padding: 16px; }
-    .product-info h3 { margin: 0 0 6px 0; font-size: 18px; color: #333; }
-    .product-desc { margin: 0 0 12px 0; font-size: 14px; color: #666; min-height: 40px; }
-    .product-price { font-size: 20px; font-weight: bold; color: #E91E63; margin: 12px 0; }
-    .add-cart-btn { background: #E91E63; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; }
-    .add-cart-btn:hover, .btn-buy:hover { background: #c2185b; }
-    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow: auto; }
-    .modal-content { background-color: #fff; margin: 5% auto; padding: 0; border-radius: 12px; max-width: 600px; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
-    .modal-header { background: linear-gradient(135deg, #E91E63 0%, #c2185b 100%); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px 12px 0 0; }
-    .modal-body { padding: 24px; }
-    .close-btn { color: white; font-size: 28px; font-weight: bold; cursor: pointer; background: none; border: none; padding: 0; }
-    .detail-item { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
-    .detail-item:last-child { border-bottom: none; }
-    .detail-label { font-weight: bold; color: #E91E63; font-size: 14px; }
-    .detail-value { color: #333; margin-top: 4px; }
-    .detail-value ul { margin: 8px 0; padding-left: 20px; }
-    .modal-footer { padding: 20px; border-top: 1px solid #eee; display: flex; gap: 12px; }
-    .modal-footer button { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
-    .btn-buy { background: #E91E63; color: white; }
-    .btn-cancel { background: #f0f0f0; color: #333; }
-    .modal-carousel { position: relative; width: 100%; height: 300px; background: #f9f9f9; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
-    .carousel-container { position: relative; width: 100%; height: 100%; }
-    .carousel-slide { display: none; width: 100%; height: 100%; }
-    .carousel-slide.active { display: block; }
-    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-    .image-lightbox { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
-    .lightbox-content { margin: auto; display: block; max-width: 90%; max-height: 90vh; margin-top: 5vh; }
-    .lightbox-close { position: absolute; top: 30px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; }
-    .carousel-button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 16px; font-size: 18px; cursor: pointer; border-radius: 4px; z-index: 10; }
-    .carousel-prev { left: 8px; }
-    .carousel-next { right: 8px; }
-    .carousel-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
-    .dot.active { background: rgba(255,255,255,0.9); }
-    .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 2px solid #E91E63; z-index: 999; padding: 8px 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.1); }
-    .bottom-nav a, .bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 0; color: #E91E63; text-decoration: none; background: none; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
-    .bottom-nav i { font-size: 20px; }
-    .bottom-nav .badge { position: absolute; background: #FFD700; color: #333; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; top: 2px; }
-    @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .product-card { flex: 1 1 100%; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } }
-  </style>
-</head>
-<body>
+  <title>Saludables - Redirigiendo</title>
+  <meta http-equiv="refresh" content="0; url=anchetas.html" />
   <script>
     window.location.replace('anchetas.html');
   </script>
-  <header class="topbar"><div class="logo">Detalles Barranquilla 🎁</div><nav class="topnav"><a href="Catalogo.html">← Catalogo</a><a href="carrito.html" class="cart-icon"><i class="fa fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a></nav></header>
-  <div class="banner-img-container"><img src="Saludables.JPG" alt="Saludables"><div class="banner-text-overlay"><h1 style="color:white; margin:0; font-size:32px;">Saludables</h1><p style="color:white; margin-top:8px; font-size:16px;">Bandejas frescas, opciones ligeras y regalos de bienestar</p></div></div>
-  <main class="container"><section><h2 class="section-title">Bandejas Saludables</h2><div class="products-grid" id="bandejas"></div></section><section><h2 class="section-title">Opciones Veganas</h2><div class="products-grid" id="veganos"></div></section><section><h2 class="section-title">Combos Wellness</h2><div class="products-grid" id="wellness"></div></section></main>
-  <div id="imageLightbox" class="image-lightbox" onclick="closeLightbox()"><span class="lightbox-close" onclick="closeLightbox()">&times;</span><img class="lightbox-content" id="lightboxImg" src="" alt="Imagen completa"></div>
-  <div id="productModal" class="modal"><div class="modal-content"><div class="modal-header"><h2 id="modalTitle">Detalles del Producto</h2><button class="close-btn" onclick="closeModal()">&times;</button></div><div id="carouselContainer" style="display:none;"><div class="modal-carousel"><div class="carousel-container" id="carouselSlides"></div><button class="carousel-button carousel-prev" onclick="changeSlide(-1)">&#10094;</button><button class="carousel-button carousel-next" onclick="changeSlide(1)">&#10095;</button><div class="carousel-dots" id="carouselDots"></div></div></div><div class="modal-body" id="modalBody"></div><div class="modal-footer"><button class="btn-buy" onclick="buyFromModal()"><i class="fa fa-shopping-cart"></i> Agregar al Carrito</button><button class="btn-cancel" onclick="closeModal()">Cerrar</button></div></div></div>
-  <div class="bottom-nav"><a href="tienda.html" title="Ir a Tienda"><i class="fa fa-shopping-bag"></i><span>Tienda</span></a><button onclick="toggleSearchMobile()" title="Buscar"><i class="fa fa-search"></i><span>Buscar</span></button><a href="carrito.html" style="position:relative;" title="Mi Carrito"><i class="fa fa-shopping-cart"></i><span id="bottomNavCartCount" class="badge" style="display:none;">0</span><span>Carrito</span></a><a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473" target="_blank" title="Contacto WhatsApp"><i class="fa fa-whatsapp"></i><span>Contacto</span></a></div>
-  <script>
-    const productos = {
-      bandejas: [
-        { id: 401, name: 'Bandeja Fresh Morning', desc: 'Frutas, yogurt y snacks ligeros para un detalle balanceado.', price: '85.000', img: 'Saludables.JPG', category: 'Bandejas Saludables', images: ['Saludables.JPG', 'IMG_0618.JPG'], contents: ['Frutas frescas', 'Yogurt natural', 'Granola', 'Jugo funcional', 'Tarjeta'], shipping: '10.000', prepTime: '3 horas' },
-        { id: 402, name: 'Canasta Vital', desc: 'Seleccion de frutas premium y detalles saludables.', price: '110.000', img: 'IMG_0618.JPG', category: 'Bandejas Saludables', images: ['IMG_0618.JPG', 'Saludables.JPG', 'IMG_0612.JPG'], contents: ['Frutas premium', 'Mix de nueces', 'Bebida natural', 'Empaque decorativo'], shipping: '12.000', prepTime: '4 horas' }
-      ],
-      veganos: [
-        { id: 403, name: 'Box Vegano Natural', desc: 'Opcion sin lacteos con frutas, semillas y snacks conscientes.', price: '95.000', img: 'Saludables.JPG', category: 'Opciones Veganas', images: ['Saludables.JPG', 'IMG_0612.JPG'], contents: ['Wrap vegano', 'Frutas frescas', 'Mix de semillas', 'Barra artesanal', 'Dedicatoria'], shipping: '10.000', prepTime: '4 horas' },
-        { id: 404, name: 'Regalo Plant Based', desc: 'Detalle wellness ideal para sorprender con un enfoque saludable.', price: '120.000', img: 'IMG_0612.JPG', category: 'Opciones Veganas', images: ['IMG_0612.JPG', 'Saludables.JPG'], contents: ['Sandwich vegano', 'Bebida vegetal', 'Fruta de temporada', 'Caja premium'], shipping: '12.000', prepTime: '4-5 horas' }
-      ],
-      wellness: [
-        { id: 405, name: 'Combo Detox Deluxe', desc: 'Arreglo con frutas, jugo verde y snacks ligeros.', price: '130.000', img: 'IMG_0618.JPG', category: 'Combos Wellness', images: ['IMG_0618.JPG', 'Saludables.JPG', 'IMG_0612.JPG'], contents: ['Jugo verde', 'Frutas variadas', 'Snack integral', 'Tarjeta personalizada', 'Decoracion natural'], shipping: '12.000', prepTime: '4-5 horas' },
-        { id: 406, name: 'Wellness Premium', desc: 'Combo saludable con presentacion elegante y mensaje especial.', price: '145.000', img: 'Saludables.JPG', category: 'Combos Wellness', images: ['Saludables.JPG', 'IMG_0618.JPG'], contents: ['Canasta saludable', 'Mix de frutos secos', 'Bebida premium', 'Empaque deluxe'], shipping: '15.000', prepTime: '5 horas', note: 'Se puede ajustar segun restricciones alimentarias.' }
-      ]
-    };
-    let currentProduct = null;
-    let currentSlide = 0;
-    function renderProducts(){ Object.keys(productos).forEach(category => { const container = document.getElementById(category); container.innerHTML = productos[category].map(p => `<div class="product-card"><img src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p><div class="product-price">$${p.price}</div><button class="add-cart-btn" onclick="openModal(${p.id})"><i class="fa fa-eye"></i> Ver Detalles</button></div></div>`).join(''); }); }
-    function openModal(productId){ currentProduct = null; currentSlide = 0; for (let category in productos) { const product = productos[category].find(p => p.id === productId); if (product) { currentProduct = product; break; } } if (!currentProduct) return; document.getElementById('modalTitle').textContent = currentProduct.name; const carouselContainer = document.getElementById('carouselContainer'); if (currentProduct.images && currentProduct.images.length > 0) { carouselContainer.style.display = 'block'; document.getElementById('carouselSlides').innerHTML = currentProduct.images.map((img, idx) => `<div class="carousel-slide ${idx === 0 ? 'active' : ''}"><img src="${img}" alt="Imagen ${idx + 1}" onclick="event.stopPropagation(); openImageLightbox('${img}')"></div>`).join(''); document.getElementById('carouselDots').innerHTML = currentProduct.images.map((_, idx) => `<div class="dot ${idx === 0 ? 'active' : ''}" onclick="goToSlide(${idx})"></div>`).join(''); } else { carouselContainer.style.display = 'none'; } let contentsHtml = '<ul>'; currentProduct.contents.forEach(item => { contentsHtml += `<li>${item}</li>`; }); contentsHtml += '</ul>'; let modalBody = ''; if (currentProduct.note) { modalBody += `<div class="detail-item" style="background:#fff3cd; border-left:4px solid #ffc107; padding:12px; border-radius:4px;"><div class="detail-label">Nota</div><div class="detail-value">${currentProduct.note}</div></div>`; } modalBody += `<div class="detail-item"><div class="detail-label">Contenido</div><div class="detail-value">${contentsHtml}</div></div><div class="detail-item"><div class="detail-label">Precio</div><div class="detail-value">$${currentProduct.price}</div></div><div class="detail-item"><div class="detail-label">Costo de Envio</div><div class="detail-value">$${currentProduct.shipping}</div></div><div class="detail-item"><div class="detail-label">Tiempo de Preparacion</div><div class="detail-value">${currentProduct.prepTime}</div></div><div class="detail-item"><div class="detail-label">Categoria</div><div class="detail-value">${currentProduct.category}</div></div>`; document.getElementById('modalBody').innerHTML = modalBody; document.getElementById('productModal').style.display = 'block'; }
-    function changeSlide(n){ if (!currentProduct || !currentProduct.images) return; currentSlide += n; if (currentSlide >= currentProduct.images.length) currentSlide = 0; if (currentSlide < 0) currentSlide = currentProduct.images.length - 1; updateCarousel(); }
-    function goToSlide(n){ if (!currentProduct || !currentProduct.images) return; currentSlide = n; updateCarousel(); }
-    function updateCarousel(){ document.querySelectorAll('.carousel-slide').forEach((slide, idx) => slide.classList.toggle('active', idx === currentSlide)); document.querySelectorAll('.dot').forEach((dot, idx) => dot.classList.toggle('active', idx === currentSlide)); }
-    function openImageLightbox(imgSrc){ document.getElementById('lightboxImg').src = imgSrc; document.getElementById('imageLightbox').style.display = 'block'; }
-    function closeLightbox(){ document.getElementById('imageLightbox').style.display = 'none'; }
-    function closeModal(){ document.getElementById('productModal').style.display = 'none'; currentProduct = null; }
-    function buyFromModal(){ if (!currentProduct) return; addToCart(currentProduct.id, currentProduct.name, currentProduct.price, currentProduct.img, currentProduct.category); closeModal(); }
-    function addToCart(id, name, price, img, category){ const cart = JSON.parse(localStorage.getItem('detallesCart')) || []; const existing = cart.find(item => item.id === id); if (existing) existing.qty++; else cart.push({ id, name, price, img, category, qty: 1 }); localStorage.setItem('detallesCart', JSON.stringify(cart)); updateCartCount(); trackEvent('add_to_cart'); alert(`${name} agregado al carrito`); }
-    function updateCartCount(){ const cart = JSON.parse(localStorage.getItem('detallesCart')) || []; const total = cart.reduce((sum, item) => sum + item.qty, 0); document.getElementById('cartCount').textContent = total; const bottomBadge = document.getElementById('bottomNavCartCount'); if (bottomBadge) { bottomBadge.textContent = total; bottomBadge.style.display = total > 0 ? 'flex' : 'none'; } }
-    function toggleSearchMobile() {
-      window.location.href = 'tienda.html#search';
-    }
-    renderProducts(); updateCartCount(); window.onclick = function(event){ const modal = document.getElementById('productModal'); if (event.target === modal) closeModal(); };
-  </script>
-  <script>
-    window.trackEvent = window.trackEvent || function(name) {
-      try {
-        const key = 'detallesAnalytics';
-        const data = JSON.parse(localStorage.getItem(key) || '{}');
-        data[name] = (data[name] || 0) + 1;
-        data._last = new Date().toISOString();
-        localStorage.setItem(key, JSON.stringify(data));
-      } catch (e) {}
-    };
-  </script>
+</head>
+<body>
+  <p>Redirigiendo a <a href="anchetas.html">Anchetas y Detalles</a>...</p>
 </body>
 </html>
-
-

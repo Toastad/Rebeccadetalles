@@ -209,14 +209,16 @@
     .modal-carousel{position:relative;width:100%;height:360px;background:#f9f9f9}
     .carousel-slide{display:none;width:100%;height:100%}
     .carousel-slide.active{display:block}
-    .carousel-slide img{width:100%;height:100%;object-fit:cover}
+    .carousel-slide img,.carousel-slide video{width:100%;height:100%;object-fit:cover}
+    .carousel-slide video{background:#000}
     .carousel-prev,.carousel-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);color:#fff;border:none;padding:10px;border-radius:4px;cursor:pointer}
     .carousel-prev{left:8px}.carousel-next{right:8px}
     .carousel-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
     .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.6);cursor:pointer}
     .dot.active{background:#fff}
     .image-lightbox{display:none;position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.85);align-items:center;justify-content:center}
-    .image-lightbox img{max-width:92%;max-height:86vh}
+    .lightbox-content{width:min(92vw,980px);max-height:86vh;display:flex;align-items:center;justify-content:center}
+    .lightbox-content img,.lightbox-content video{max-width:100%;max-height:86vh}
     /* Account Modal Styles */
     .account-modal { display:none; position:fixed; z-index:5000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); overflow:auto; }
     .account-modal-content { background:#fff; margin:5% auto; border-radius:12px; max-width:450px; box-shadow:0 12px 40px rgba(0,0,0,0.3); overflow:hidden; }
@@ -286,55 +288,58 @@
     <!-- Image Lightbox -->
     <div id="imageLightbox" class="image-lightbox" onclick="closeLightbox()" role="dialog" aria-hidden="true">
       <span class="close-light" onclick="closeLightbox()">&times;</span>
-      <img id="lightboxImg" src="" alt="Imagen" />
+      <div id="lightboxContent" class="lightbox-content" onclick="event.stopPropagation()"></div>
     </div>
 
   </div>
 
   <script>
-    // Datos de productos centralizados (mismo formato que desayunos.html)
+    // Datos de productos centralizados de todas las categorias actuales (sin tocar placeholders)
     const productos = {
-      clasicos: [
-        { 
-          id: 1, 
-          name: 'Desayuno Rebecca Deluxe', 
-          desc: 'Desayuno premium con waffles, parfait y sorpresas especiales', 
-          price: '230.000', 
-          img: 'img/rebecca-deluxe-3.jpg',
-          category: 'Premium',
-          images: ['img/rebecca-deluxe-1.jpg', 'img/rebecca-deluxe-2.jpg', 'img/rebecca-deluxe-3.jpg', 'img/rebecca-deluxe-4.jpg'],
-          contents: [
-            'Café frío sabor o Jugo natural de naranja',
-            'Yogurt o Leche',
-            'Waffles en forma de corazón bañados en chocolate y sprinkles',
-            'Arándanos y fresas',
-            'Parfait en copa de vidrio',
-            'Fresa decorada',
-            'Sándwich de Jamón y queso',
-            'Ensalada de frutas',
-            'Galletas',
-            'Ferrero Roche o Adro',
-            'Mug personalizado con la palabra Mamá',
-            'Florero de vidrio',
-            'Bouquet de globos',
-            'Caja, tarjeta y decoración'
-          ], 
-          shipping: '0', 
-          prepTime: '4-5 horas',
-          note: 'No incluye domicilio'
-        },
+      desayunos: [
+        { id: 1, name: 'Desayuno Rebecca Deluxe', desc: 'Desayuno premium con waffles, parfait y sorpresas especiales', price: '230.000', img: 'img/rebecca-deluxe-3.jpg', category: 'Premium', images: ['img/rebecca-deluxe-1.jpg', 'img/rebecca-deluxe-2.jpg', 'img/rebecca-deluxe-3.jpg', 'img/rebecca-deluxe-4.jpg'], contents: ['Café frío sabor o Jugo natural de naranja', 'Yogurt o Leche', 'Waffles en forma de corazón bañados en chocolate y sprinkles', 'Arándanos y fresas', 'Parfait en copa de vidrio', 'Fresa decorada', 'Sándwich de Jamón y queso', 'Ensalada de frutas', 'Galletas', 'Ferrero Roche o Adro', 'Mug personalizado con la palabra Mamá', 'Florero de vidrio', 'Bouquet de globos', 'Caja, tarjeta y decoración'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
         { id: 2, name: 'Frutas y Delicias', desc: 'Selección de frutas frescas y yogur', price: '55.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Selección de frutas frescas y yogur'], shipping: '5.000', prepTime: '30 minutos' },
-        { id: 3, name: 'Desayuno con Globos', desc: 'Bandeja completa + globos decorativos', price: '65.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Todo del Desayuno Tradicional', 'Pastel pequeño', '3 globos de colores', 'Tarjeta personalizada'], shipping: '8.000', prepTime: '2-3 horas' }
-      ],
-      premium: [
+        { id: 3, name: 'Desayuno con Globos', desc: 'Bandeja completa + globos decorativos', price: '65.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Todo del Desayuno Tradicional', 'Pastel pequeño', '3 globos de colores', 'Tarjeta personalizada'], shipping: '8.000', prepTime: '2-3 horas' },
         { id: 4, name: 'Bandeja Premium', desc: 'Frutas, pasteles, quesos y aceitunas', price: '85.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Tabla de quesos variados', 'Frutas exóticas', 'Aceitunas finas', 'Panes artesanales', 'Mermeladas importadas', 'Café premium'], shipping: '10.000', prepTime: '3-4 horas' },
         { id: 5, name: 'Desayuno Sorpresa Deluxe', desc: 'Incluye champaña, fresas y chocolates', price: '120.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Botella de champaña', 'Fresas bañadas en chocolate', 'Chocolates belgas', 'Quesos premium', 'Frutas del bosque', 'Croissants franceses'], shipping: '12.000', prepTime: '4-5 horas' },
-        { id: 6, name: 'Mesa Ejecutiva', desc: 'Variedad de pasteles, frutas y bebidas', price: '150.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Variedad de pasteles gourmet', 'Café espresso + cappuccino', 'Zumos naturales', 'Tabla de quesos premium', 'Frutas tropicales', 'Panettone italiano'], shipping: '15.000', prepTime: '5-6 horas' }
-      ],
-      combos: [
+        { id: 6, name: 'Mesa Ejecutiva', desc: 'Variedad de pasteles, frutas y bebidas', price: '150.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Variedad de pasteles gourmet', 'Café espresso + cappuccino', 'Zumos naturales', 'Tabla de quesos premium', 'Frutas tropicales', 'Panettone italiano'], shipping: '15.000', prepTime: '5-6 horas' },
         { id: 7, name: 'Combo Romántico', desc: 'Desayuno + rosas + nota personalizada', price: '95.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['Todo del Desayuno Premium', '6 rosas rojas frescas', 'Nota personalizada', 'Vela aromática', 'Decoración especial'], shipping: '10.000', prepTime: '4-5 horas' },
         { id: 8, name: 'Combo Cumpleaños', desc: 'Desayuno + globos + sorpresa especial', price: '110.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['Desayuno completo', '5 globos con helio', 'Pastel de cumpleaños pequeño', 'Detalle sorpresa temático', 'Adornos temáticos'], shipping: '12.000', prepTime: '5-6 horas' },
         { id: 9, name: 'Combo Empresarial', desc: 'Desayuno para 4 personas + café', price: '180.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['4 desayunos completos', 'Café para 4 personas', 'Té variado', 'Jugo natural', 'Pasteles para compartir', 'Servilletas y cubiertos'], shipping: '15.000', prepTime: '6-7 horas' }
+      ],
+      floristeria: [
+        { id: 201, name: 'Ramo Flores Amarillas', desc: 'Ramo de flores amarillas variadas con decoracion clasica.', price: '80.000', img: 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', category: 'Rosas', images: ['img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM (1).jpeg'], videos: ['img/floristeria/WhatsApp Video 2026-03-22 at 2.44.54 PM.mp4'], contents: ['Flores amarillas variadas', 'Astromelias o follaje', 'Mono y decoracion'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
+        { id: 202, name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium.', price: '120.000', img: 'IMG_0612.JPG', category: 'Rosas', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Colores disponibles: rojo, rosado, blanco y amarillo. No incluye domicilio.' },
+        { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y moño decorativo.', price: '105.000', img: 'Floristeria.jpg', category: 'Rosas', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramo de 5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio.' },
+        { id: 210, name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de liston para conservar el detalle.', price: '130.000', img: 'IMG_0618.JPG', category: 'Rosas', images: ['IMG_0618.JPG', 'Floristeria.jpg'], contents: ['Ramo de rosas eternas', 'Acabado decorativo premium'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
+        { id: 204, name: 'Ramo Cisne Girasoles', desc: 'Ramo con 5-6 girasoles en presentacion cisne.', price: '105.000', img: 'Floristeria.jpg', category: 'Ramos Mixtos', images: ['Floristeria.jpg', 'IMG_0618.JPG'], contents: ['5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
+        { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos para detalle doble.', price: '145.000', img: 'IMG_0618.JPG', category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Fresas o choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
+        { id: 206, name: 'Ramo Cisne mas Corazon de Chocolate', desc: 'Ramo romantico con corazon de chocolate incluido.', price: '175.000', img: 'IMG_0612.JPG', category: 'Ramos Mixtos', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Corazon de chocolate', 'Envoltura y mono'], shipping: '0', prepTime: '5 horas', note: 'Version con Ferreros o Adros disponible' },
+        { id: 207, name: 'Ramillete Solitario', desc: 'Ramillete sencillo para un detalle rapido y bonito.', price: '40.000', img: 'Floristeria.jpg', category: 'Especiales', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramillete de flores amarillas', 'Lazo', 'Tarjeta'], shipping: '0', prepTime: '2 horas', note: 'No incluye domicilio' },
+        { id: 208, name: 'Ramo Buchon 22 Rosas', desc: 'Ramo buchon elegante para ocasiones especiales.', price: '130.000', img: 'IMG_0618.JPG', category: 'Especiales', images: ['IMG_0618.JPG', 'IMG_0612.JPG'], contents: ['22 rosas', 'Empaque premium', 'Decoracion y lazo'], shipping: '0', prepTime: '5-6 horas', note: 'Papel coreano segun disponibilidad' },
+        { id: 209, name: 'Ramo Buchon 36 Rosas', desc: 'Version amplia de ramo buchon con mayor volumen.', price: '210.000', img: 'IMG_0612.JPG', category: 'Especiales', images: ['IMG_0612.JPG', 'IMG_0618.JPG'], contents: ['36 rosas', 'Empaque premium', 'Acabado de lujo'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' }
+      ],
+      fresas: [
+        { id: 301, name: 'Corazon Mini Dulce', desc: 'Caja corazon con fresas decoradas y rosas eternas.', price: '105.000', img: 'Fresas.jpg', category: 'Cajas de Fresas', images: ['Fresas.jpg', 'IMG_0612.JPG'], contents: ['Fresas cubiertas de chocolate', 'Rosas eternas', 'Caja en forma de corazon', 'Lazo y tarjeta'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
+        { id: 302, name: 'Caja Corazon Sorpresa', desc: 'Corazon de chocolate con fresas y presentacion decorada.', price: '130.000', img: 'IMG_0612.JPG', category: 'Cajas de Fresas', images: ['IMG_0612.JPG', 'Fresas.jpg', 'IMG_0618.JPG'], contents: ['Fresas decoradas', 'Corazon sorpresa de chocolate', 'Caja decorada', 'Tarjeta personalizada'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
+        { id: 303, name: 'Corazon Becca', desc: 'Caja corazon premium con 18 fresas cubiertas.', price: '195.000', img: 'IMG_0618.JPG', category: 'Cajas de Fresas', images: ['IMG_0618.JPG', 'Fresas.jpg'], contents: ['18 fresas cubiertas con chocolate', 'Rosas', 'Caja corazon', 'Mono y decoracion'], shipping: '0', prepTime: '5 horas', note: 'No incluye domicilio' },
+        { id: 304, name: 'Dear Box', desc: 'Caja con fresas decoradas, rosas de liston y vino espumoso.', price: '85.000', img: 'Fresas.jpg', category: 'Tazas y Mensajes', images: ['Fresas.jpg', 'IMG_0618.JPG'], contents: ['4-5 rosas tipo eternas', '4 fresas decoradas', 'Vino espumoso JP Chenet', 'Caja, mono y tarjeta'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
+        { id: 305, name: 'Mary Box', desc: 'Detalle compacto con rosas, vela y decoracion especial.', price: '55.000', img: 'IMG_0618.JPG', category: 'Tazas y Mensajes', images: ['IMG_0618.JPG', 'Fresas.jpg'], contents: ['4-5 rosas tipo eternas', 'Vela decorativa', 'Caja con lazo y tarjeta'], shipping: '0', prepTime: '3 horas', note: 'No incluye domicilio' },
+        { id: 306, name: 'Luz Box', desc: 'Caja iluminada con rosas y chocolates.', price: '75.000', img: 'IMG_0612.JPG', category: 'Tazas y Mensajes', images: ['IMG_0612.JPG', 'Fresas.jpg'], contents: ['4 rosas naturales', '6 Ferreros', '2 chocolates', 'Caja con tarjeta'], shipping: '0', prepTime: '3 horas', note: 'No incluye domicilio' },
+        { id: 307, name: 'Lovable Box', desc: 'Caja con flores amarillas y fresas decoradas.', price: '110.000', img: 'Fresas.jpg', category: 'Personalizados', images: ['Fresas.jpg', 'IMG_0612.JPG', 'IMG_0618.JPG'], contents: ['5 flores amarillas', '8 fresas decoradas', 'Bebida Te Hatsu', 'Empaque lovable'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
+        { id: 308, name: 'Love Box Deluxe', desc: 'Ramo, fresas y chocolates en formato premium.', price: '190.000', img: 'IMG_0612.JPG', category: 'Personalizados', images: ['IMG_0612.JPG', 'Fresas.jpg', 'IMG_0618.JPG'], contents: ['Ramo de 12 rosas', '6 fresas u oreos decoradas', '2 cajas Ferrero x4', 'Vino espumoso', 'Caja deluxe'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' },
+        { id: 309, name: 'Corazon Deluxe', desc: 'Edicion premium con mas de 100 rosas y extras.', price: '500.000', img: 'IMG_0618.JPG', category: 'Personalizados', images: ['IMG_0618.JPG', 'Fresas.jpg'], contents: ['Diseno con mas de 100 rosas', 'Palabra personalizada con rosas', 'Globo love', 'Opciones con bebida y peluche'], shipping: '0', prepTime: '6-8 horas', note: 'Versiones de 550.000 y 650.000 disponibles' }
+      ],
+      anchetas: [
+        { id: 101, name: 'Caja de Suenos', desc: 'Detalle tipo ancheta con desayuno ligero y decoracion especial.', price: '100.000', img: 'Anchetas.JPG', category: 'Anchetas y Desayunos', images: ['Anchetas.JPG', 'IMG_0612.JPG'], contents: ['Jugo de naranja', 'Rollos de jamon y queso', 'Parfait con yogurt griego', 'Ensalada de frutas', 'Quesillo y marshmallows', 'Caja, tarjeta y decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
+        { id: 102, name: 'Desayuno Aurora', desc: 'Bandeja dulce con frutas, waffle y opcion de globos.', price: '110.000', img: 'IMG_0618.JPG', category: 'Anchetas y Desayunos', images: ['IMG_0618.JPG', 'Anchetas.JPG', 'IMG_0612.JPG'], contents: ['Cafe frio sabor caramelo o jugo natural', 'Waffle en forma de corazon', 'Parfait con yogurt griego', 'Fresa decorada', 'Quesillo y caja decorada'], shipping: '0', prepTime: '4-5 horas', note: 'Version con globos disponible' },
+        { id: 103, name: 'Desayuno Buzon de Amor', desc: 'Desayuno premium con opcion de globos para fechas especiales.', price: '130.000', img: 'IMG_0612.JPG', category: 'Anchetas y Desayunos', images: ['IMG_0612.JPG', 'Anchetas.JPG'], contents: ['Jugo de naranja', 'Club sandwich', 'Parfait con yogurt griego', 'Brownie decorado', 'Ensalada de frutas', 'Caja, tarjeta y decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio' },
+        { id: 104, name: 'M de Amor', desc: 'Caja en forma de M con quesos, frutas y toque romantico.', price: '95.000', img: 'Anchetas.JPG', category: 'Cajas Especiales', images: ['Anchetas.JPG', 'IMG_0618.JPG'], contents: ['Seleccion de quesos artesanales', 'Crackers', 'Frutas frescas', 'Caja en forma de M', 'Lazo y tarjeta'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
+        { id: 105, name: 'M de Devocion', desc: 'Caja de regalo con fresas decoradas y tema especial.', price: '105.000', img: 'IMG_0612.JPG', category: 'Cajas Especiales', images: ['IMG_0612.JPG', 'Anchetas.JPG'], contents: ['Fresas cubiertas de chocolate rosa', 'Rosas eternas decorativas', 'Vela y detalle tematico', 'Caja en forma de M', 'Lazo y tarjeta'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
+        { id: 106, name: 'Dear Box Adore', desc: 'Caja premium con rosas de liston y vino espumoso.', price: '85.000', img: 'IMG_0618.JPG', category: 'Cajas Especiales', images: ['IMG_0618.JPG', 'IMG_0612.JPG', 'Anchetas.JPG'], contents: ['4-5 rosas tipo eternas', 'Vino espumoso JP Chenet', 'Caja decorada', 'Mono y tarjeta'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
+        { id: 107, name: 'Combo Querida', desc: 'Combo de alto impacto para celebraciones especiales.', price: '360.000', img: 'Anchetas.JPG', category: 'Combos y Premium', images: ['Anchetas.JPG', 'IMG_0618.JPG', 'IMG_0612.JPG'], contents: ['Caja Love corazon', 'Caja Sweetbox', 'Decoracion especial', 'Tarjeta personalizada'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' },
+        { id: 108, name: 'Lovable Combo con Peluche', desc: 'Flores y fresas con opcion de peluche por tamano.', price: '210.000', img: 'IMG_0618.JPG', category: 'Combos y Premium', images: ['IMG_0618.JPG', 'Anchetas.JPG'], contents: ['5 flores amarillas', '8 fresas decoradas', 'Bebida Te Hatsu', 'Presentacion combo lovable'], shipping: '0', prepTime: '4-5 horas', note: 'Peluche de 40, 60 cm o 1 metro disponible' },
+        { id: 109, name: 'Love Box Deluxe', desc: 'Ramo, fresas y chocolates en caja premium.', price: '230.000', img: 'IMG_0612.JPG', category: 'Combos y Premium', images: ['IMG_0612.JPG', 'Anchetas.JPG', 'IMG_0618.JPG'], contents: ['Ramo de 12 rosas con follaje', '6 fresas u oreos decoradas', '2 cajas Ferrero x4', 'Vino espumoso', 'Caja decorada'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' }
       ]
     };
 
@@ -346,7 +351,14 @@
 
     // Helper: get flattened products
     function getAllProducts(){
-      return [].concat(productos.clasicos || [], productos.premium || [], productos.combos || []);
+      return Object.values(productos).flat();
+    }
+
+    function getProductMedia(product){
+      const imageMedia = (product.images || []).map(src => ({ type: 'image', src }));
+      const videoMedia = (product.videos || []).map(src => ({ type: 'video', src }));
+      const merged = imageMedia.concat(videoMedia);
+      return merged.length ? merged : [{ type: 'image', src: product.img }];
     }
 
     function render(list){
@@ -505,10 +517,12 @@
       const dots = document.getElementById('carouselDots');
       Array.from(carousel.querySelectorAll('.carousel-slide')).forEach(el=>el.remove());
       dots.innerHTML = '';
-      const images = (p.images && p.images.length) ? p.images : [p.img];
-      images.forEach((imgSrc, idx)=>{
+      const mediaItems = getProductMedia(p);
+      mediaItems.forEach((item, idx)=>{
         const slide = document.createElement('div'); slide.className = 'carousel-slide';
-        slide.innerHTML = `<img src="${imgSrc}" alt="${p.name} Image ${idx+1}" onclick="openLightbox('${imgSrc}', event)" />`;
+        slide.innerHTML = item.type === 'video'
+          ? `<video src="${item.src}" autoplay muted loop playsinline preload="metadata" onclick="openMediaLightbox('video', '${item.src}', event)"></video>`
+          : `<img src="${item.src}" alt="${p.name} Image ${idx+1}" onclick="openMediaLightbox('image', '${item.src}', event)" />`;
         carousel.insertBefore(slide, carousel.querySelector('.carousel-prev'));
         const dot = document.createElement('div'); dot.className = 'dot'; dot.onclick = ()=>goToSlide(idx); dots.appendChild(dot);
       });
@@ -529,8 +543,17 @@
     function goToSlide(n){ currentSlide = n; updateCarousel(); }
     function updateCarousel(){ const slides = document.querySelectorAll('.carousel-slide'); const dots = document.querySelectorAll('.dot'); slides.forEach((s,i)=> s.classList.toggle('active', i===currentSlide)); dots.forEach((d,i)=> d.classList.toggle('active', i===currentSlide)); }
 
-    function openLightbox(src, ev){ ev.stopPropagation(); const lb = document.getElementById('imageLightbox'); document.getElementById('lightboxImg').src = src; lb.style.display = 'flex'; }
-    function closeLightbox(){ const lb = document.getElementById('imageLightbox'); lb.style.display = 'none'; }
+    function openMediaLightbox(type, src, ev){
+      if(ev) ev.stopPropagation();
+      const lb = document.getElementById('imageLightbox');
+      const content = document.getElementById('lightboxContent');
+      content.innerHTML = type === 'video'
+        ? `<video src="${src}" autoplay muted loop playsinline preload="metadata"></video>`
+        : `<img src="${src}" alt="Imagen ampliada" />`;
+      lb.style.display = 'flex';
+    }
+    function openLightbox(src, ev){ openMediaLightbox('image', src, ev); }
+    function closeLightbox(){ const lb = document.getElementById('imageLightbox'); document.getElementById('lightboxContent').innerHTML = ''; lb.style.display = 'none'; }
     function closeModal(){ document.getElementById('productModal').style.display = 'none'; currentProduct = null; }
 
     // Cart functions (localStorage)
