@@ -546,6 +546,24 @@
     .btn-cancel { background:#f0f0f0; color:#333; }
     .btn-cancel:hover { background:#e0e0e0; }
     .form-success { color:#4caf50; font-size:14px; margin-top:12px; text-align:center; }
+
+    /* Nuevo Footer Styles */
+    .footer-main { background:#e8dad2; padding:48px 24px 32px; text-align:center; }
+    .footer-content { max-width:1200px; margin:0 auto; }
+    .footer-top { display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px; margin-bottom:40px; align-items:start; }
+    .footer-section { text-align:center; }
+    .footer-section h3 { color:#9b7a5a; font-size:18px; font-weight:600; margin:0 0 12px 0; letter-spacing:1px; }
+    .footer-section p, .footer-section a { color:#5c4a3f; font-size:14px; margin:8px 0; text-decoration:none; }
+    .footer-section a:hover { color:#9b7a5a; }
+    .footer-logo { text-align:center; }
+    .footer-logo-text { font-size:28px; font-weight:bold; color:#9b7a5a; font-family:Dancing Script, cursive; }
+    .footer-logo-icon { font-size:48px; color:#d4a574; margin:8px 0; }
+    .footer-tagline { font-family:Dancing Script, cursive; color:#9b7a5a; font-size:18px; margin:32px 0 24px 0; }
+    .footer-socials { display:flex; gap:20px; justify-content:center; margin:24px 0; }
+    .footer-socials a { color:#9b7a5a; font-size:24px; text-decoration:none; transition:color 0.3s; }
+    .footer-socials a:hover { color:#d4a574; }
+    .footer-bottom { background:#e8dad2; padding:16px 24px; text-align:center; color:#5c4a3f; font-size:12px; border-top:1px solid #d4c5b9; }
+    @media (max-width:900px) { .footer-top { grid-template-columns:1fr; gap:24px; } }
   </style>
 </head>
 <body class="w3-content" style="max-width:1200px">
@@ -695,7 +713,7 @@
             <li>Nequi</li>
             <li>Daviplata</li>
             <li>Transferencia</li>
-            <li>Efectivo contraentrega (según zona)</li>
+            <li>Llaves <bre-b>bre-b</bre-b></li>
           </ul>
         </div>
         <div class="info-card">
@@ -753,31 +771,46 @@
       </div>
     </div>
 
-    <footer class="w3-padding-64 w3-light-grey w3-small w3-center" id="contacto">
-      <div class="w3-row-padding">
-        <div class="w3-col s4">
-          <h4>Contacto</h4>
-          <form>
-            <p><input class="w3-input w3-border" type="text" placeholder="Nombre" required></p>
-            <p><input class="w3-input w3-border" type="text" placeholder="Correo" required></p>
-            <p><input class="w3-input w3-border" type="text" placeholder="Mensaje" required></p>
-            <button type="submit" class="w3-button w3-block w3-pink">Enviar</button>
-          </form>
+    <!-- Nuevo Footer con diseño MORENITA -->
+    <footer class="footer-main" id="contacto">
+      <div class="footer-content">
+        <div class="footer-top">
+          <!-- Contacto (Izquierda) -->
+          <div class="footer-section">
+            <h3>CONTACTO</h3>
+            <p><i class="fa fa-whatsapp" style="margin-right:8px; color:#9b7a5a;"></i> WhatsApp: (+57) 302 314 4445</p>
+            <p><i class="fa fa-envelope" style="margin-right:8px; color:#9b7a5a;"></i> morenita.floresfresassorpresas@gmail.com</p>
+          </div>
+
+          <!-- Logo (Centro) -->
+          <div class="footer-logo">
+            <div class="footer-logo-icon">💐</div>
+            <div class="footer-logo-text">MORENITA</div>
+            <p style="font-size:11px; color:#9b7a5a; margin-top:4px; letter-spacing:0.5px;">FLORES, FRESAS & SORPRESAS</p>
+          </div>
+
+          <!-- Explora (Derecha) -->
+          <div class="footer-section">
+            <h3>EXPLORA</h3>
+            <p><a href="desayunos.html">Desayunos</a></p>
+            <p><a href="floristeria.html">Arreglos florales</a></p>
+            <p><a href="fresas.html">Box y licores</a></p>
+          </div>
         </div>
-        <div class="w3-col s4">
-          <h4>Sobre Nosotros</h4>
-          <p>En <b>Detalles Barranquilla</b> creemos que cada regalo cuenta una historia.</p>
-        </div>
-        <div class="w3-col s4">
-          <h4>Síguenos</h4>
-          <i class="fa fa-facebook-official w3-hover-opacity w3-large"></i>
-          <i class="fa fa-instagram w3-hover-opacity w3-large"></i>
-          <i class="fa fa-whatsapp w3-hover-opacity w3-large"></i>
+
+        <!-- Tagline -->
+        <div class="footer-tagline">Partícipes de tus momentos especiales</div>
+
+        <!-- Redes Sociales -->
+        <div class="footer-socials">
+          <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fa fa-instagram"></i></a>
+          <a href="https://wa.me/573195400473" target="_blank" title="WhatsApp"><i class="fa fa-whatsapp"></i></a>
         </div>
       </div>
     </footer>
 
-    <div class="w3-black w3-center w3-padding-24">© 2025 Detalles Barranquilla</div>
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">Desayunos, Flores, Fresas y Detalles Valledupar | Diseño de página Web por <a href="#" style="color:#9b7a5a; text-decoration:underline;">Dokui</a></div>
   </div>
 
   <!-- Bottom Navigation Bar - Solo en móvil -->
