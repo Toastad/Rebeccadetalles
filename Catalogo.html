@@ -922,58 +922,19 @@
     }
   </script>
 
-  <!-- Account Modal (Login / Crear Cuenta) -->
-
   <script>
-    function openAccountModal(){
-      document.getElementById('accountModal').style.display = 'block';
-      switchTab('login');
-    }
+    window.trackEvent = window.trackEvent || function(name) {
+      try {
+        const key = 'detallesAnalytics';
+        const data = JSON.parse(localStorage.getItem(key) || '{}');
+        data[name] = (data[name] || 0) + 1;
+        data._last = new Date().toISOString();
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {}
+    };
+  </script>
 
-    function closeAccountModal(){
-      document.getElementById('accountModal').style.display = 'none';
-    }
-
-    function switchTab(tab){
-      const loginForm = document.getElementById('loginForm');
-      const signupForm = document.getElementById('signupForm');
-      const loginTabBtn = document.getElementById('loginTabBtn');
-      const signupTabBtn = document.getElementById('signupTabBtn');
-
-      if(tab === 'login'){
-        loginForm.style.display = 'block';
-        signupForm.style.display = 'none';
-        loginTabBtn.style.borderBottomColor = '#E91E63';
-        loginTabBtn.style.color = '#333';
-        signupTabBtn.style.borderBottomColor = 'transparent';
-        signupTabBtn.style.color = '#ccc';
-      } else {
-        loginForm.style.display = 'none';
-        signupForm.style.display = 'block';
-        loginTabBtn.style.borderBottomColor = 'transparent';
-        loginTabBtn.style.color = '#ccc';
-        signupTabBtn.style.borderBottomColor = '#E91E63';
-        signupTabBtn.style.color = '#333';
-      }
-    }
-
-    function handleLogin(event){
-      event.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      const errorEl = document.getElementById('loginError');
-
-      // Verificar si la cuenta existe
-      const savedUser = localStorage.getItem('userAccount');
-      const savedPassword = localStorage.getItem('userPassword');
-
-      if(!savedUser){
-        errorEl.textContent = 'No existe una cuenta con ese email. Crea una nueva.';
-        errorEl.style.display = 'block';
-        return;
-      }
-
-    // authentication removed
-            </div>
+</body>
+</html>
 
 
