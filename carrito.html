@@ -334,18 +334,6 @@
 
   <script>
     const WHATSAPP_NUMBER = '573195400473';
-    const CHECKOUT_STORAGE_KEY = 'detallesCheckout';
-
-    // Definir costos adicionales por personalización
-    const SURCHARGE_PRICES = {
-      balloons: 10000,           // Agregar globos
-      balloonHelium: 5000,       // Globos de helio (adicional)
-      balloonMetallic: 3000,     // Globos metálicos (adicional)
-      cardMessage: 5000,         // Mensaje personalizado en tarjeta
-      foodPreferences: 8000,     // Alimentos personalizados/restricciones
-      roseColor: 0,              // Color de rosa (sin costo extra)
-      delivery: 15000            // Costo base de entrega
-    };
 
     function parsePriceToNumber(priceText) {
       // Keep only digits to support values like 230.000 or $230,000
@@ -357,230 +345,33 @@
       return Number(value || 0).toLocaleString('es-CO');
     }
 
-    function calculateSurcharges() {
-      const details = getCheckoutDetails ? getCheckoutDetails() : {
-        includeBalloons: document.getElementById('includeBalloons')?.value || '',
-        balloonType: document.getElementById('balloonType')?.value || '',
-        cardMessage: document.getElementById('cardMessage')?.value || '',
-        foods: document.getElementById('foods')?.value || '',
-        deliveryAddress: document.getElementById('deliveryAddress')?.value || ''
+
+    function getCustomizationEntries(customization) {
+      const labels = {
+        deliveryType: 'Envío elegido',
+        occasion: 'Ocasión',
+        recipientName: 'Recibe',
+        senderName: 'Envía',
+        paymentMethod: 'Método de pago',
+        roseColor: 'Color de rosas',
+        deliveryDate: 'Fecha de entrega',
+        deliveryTime: 'Hora aproximada',
+        includeBalloons: 'Globos',
+        balloonType: 'Tipo de globos',
+        foods: 'Alimentos/preferencias',
+        note: 'Mensaje de tarjeta',
+        deliveryAddress: 'Dirección',
+        extraNotes: 'Notas adicionales'
       };
 
-      let surcharges = {};
-      surcharges.balloons = (details.includeBalloons === 'Sí') ? SURCHARGE_PRICES.balloons : 0;
-
-      surcharges.balloonType = 0;
-      if (details.includeBalloons === 'Sí' && details.balloonType) {
-        if (details.balloonType === 'Helio') {
-          surcharges.balloonType = SURCHARGE_PRICES.balloonHelium;
-        } else if (details.balloonType === 'Metálicos') {
-          surcharges.balloonType = SURCHARGE_PRICES.balloonMetallic;
-        }
-      }
-
-      surcharges.cardMessage = (details.cardMessage && details.cardMessage.trim().length > 10) ? SURCHARGE_PRICES.cardMessage : 0;
-      surcharges.foodPreferences = (details.foods && details.foods.trim().length > 5) ? SURCHARGE_PRICES.foodPreferences : 0;
-      surcharges.delivery = (details.deliveryAddress && details.deliveryAddress.trim().length > 5) ? SURCHARGE_PRICES.delivery : 0;
-
-      return surcharges;
-    }
-
-    function getTotalSurcharges() {
-      const surcharges = calculateSurcharges();
-      return Object.values(surcharges).reduce((sum, val) => sum + val, 0);
-    }
-
-    function getCheckoutDetails() {
-      const saved = JSON.parse(localStorage.getItem(CHECKOUT_STORAGE_KEY)) || {};
-      return {
-        occasion: saved.occasion || '',
-        recipientName: saved.recipientName || '',
-        senderName: saved.senderName || '',
-        paymentMethod: saved.paymentMethod || '',
-        deliveryDate: saved.deliveryDate || '',
-        deliveryTime: saved.deliveryTime || '',
-        roseColor: saved.roseColor || '',
-        includeBalloons: saved.includeBalloons || '',
-        balloonType: saved.balloonType || '',
-        foods: saved.foods || '',
-        cardMessage: saved.cardMessage || '',
-        deliveryAddress: saved.deliveryAddress || '',
-        extraNotes: saved.extraNotes || ''
-      };
-    }
-
-    function saveCheckoutDetailsFromForm() {
-      const ids = [
-        'occasion', 'recipientName', 'senderName', 'paymentMethod', 'deliveryDate', 'deliveryTime',
-        'roseColor', 'includeBalloons', 'balloonType', 'foods', 'cardMessage',
-        'deliveryAddress', 'extraNotes'
-      ];
-
-      const details = {};
-      ids.forEach((id) => {
-        const el = document.getElementById(id);
-        details[id] = el ? el.value.trim() : '';
-      });
-
-      localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(details));
-      return details;
-    }
-
-    function toggleBalloonTypeField() {
-      const includeBalloons = document.getElementById('includeBalloons')?.value || '';
-      const balloonTypeField = document.getElementById('balloonTypeField');
-      if (balloonTypeField) {
-        if (includeBalloons === 'Sí') {
-          balloonTypeField.style.display = 'block';
-        } else {
-          balloonTypeField.style.display = 'none';
-          document.getElementById('balloonType').value = '';
-        }
-      }
-    }
-
-    function restoreCheckoutDetails() {
-      const details = getCheckoutDetails();
-      Object.entries(details).forEach(([key, value]) => {
-        const el = document.getElementById(key);
-        if (el) {
-          el.value = value;
-          el.addEventListener('input', () => {
-            saveCheckoutDetailsFromForm();
-            updatePriceBreakdown();
-          });
-          el.addEventListener('change', () => {
-            saveCheckoutDetailsFromForm();
-            updatePriceBreakdown();
-            if (key === 'includeBalloons') {
-              toggleBalloonTypeField();
-            }
-          });
-        }
-      });
-      toggleBalloonTypeField();
-    }
-
-    function setMinDeliveryDate() {
-      const dateInput = document.getElementById('deliveryDate');
-      if (!dateInput) return;
-
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      dateInput.min = `${yyyy}-${mm}-${dd}`;
-    }
-
-    function validateCheckout(details) {
-      const errors = [];
-      const requiredFields = [
-        { key: 'occasion', label: 'Ocasión' },
-        { key: 'recipientName', label: 'Nombre de quien recibe' },
-        { key: 'paymentMethod', label: 'Método de pago' },
-        { key: 'deliveryDate', label: 'Fecha de entrega' },
-        { key: 'deliveryAddress', label: 'Dirección de entrega' }
-      ];
-
-      requiredFields.forEach((field) => {
-        if (!details[field.key] || !String(details[field.key]).trim()) {
-          errors.push(`- ${field.label}`);
-        }
-      });
-
-      if (details.deliveryDate) {
-        const now = new Date();
-        const selected = new Date(`${details.deliveryDate}T${details.deliveryTime || '00:00'}`);
-        if (selected < now) {
-          errors.push('- Fecha y hora de entrega deben ser futuras');
-        }
-      }
-
-      if (details.includeBalloons === 'Sí' && !details.balloonType) {
-        errors.push('- Debes elegir tipo de globos si seleccionaste globos');
-      }
-
-      return errors;
-    }
-
-    function updatePriceBreakdown() {
-      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
-      let cartTotal = 0;
-
-      cart.forEach((item) => {
-        const unitPrice = parsePriceToNumber(item.price);
-        cartTotal += (unitPrice * item.qty);
-      });
-
-      const surcharges = calculateSurcharges();
-      const totalSurcharges = getTotalSurcharges();
-      const finalTotal = cartTotal + totalSurcharges;
-
-      const breakdownEl = document.getElementById('priceBreakdown');
-      if (breakdownEl) {
-        let breakdownHtml = `
-          <div style="margin-top:8px; padding:12px; background:#f9f9f9; border-radius:6px; font-size:13px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <span>Subtotal de productos:</span>
-              <span>$${formatCOP(cartTotal)}</span>
-            </div>
-        `;
-
-        if (surcharges.balloons > 0) {
-          breakdownHtml += `
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
-              <span style="margin-left:12px;">+ Globos:</span>
-              <span>$${formatCOP(surcharges.balloons)}</span>
-            </div>
-          `;
-        }
-
-        if (surcharges.balloonType > 0) {
-          breakdownHtml += `
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
-              <span style="margin-left:12px;">+ Tipo de globos:</span>
-              <span>$${formatCOP(surcharges.balloonType)}</span>
-            </div>
-          `;
-        }
-
-        if (surcharges.cardMessage > 0) {
-          breakdownHtml += `
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
-              <span style="margin-left:12px;">+ Mensaje en tarjeta:</span>
-              <span>$${formatCOP(surcharges.cardMessage)}</span>
-            </div>
-          `;
-        }
-
-        if (surcharges.foodPreferences > 0) {
-          breakdownHtml += `
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#666;">
-              <span style="margin-left:12px;">+ Alimentos personalizados:</span>
-              <span>$${formatCOP(surcharges.foodPreferences)}</span>
-            </div>
-          `;
-        }
-
-        if (surcharges.delivery > 0) {
-          breakdownHtml += `
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#666;">
-              <span style="margin-left:12px;">+ Envío:</span>
-              <span>$${formatCOP(surcharges.delivery)}</span>
-            </div>
-          `;
-        }
-
-        breakdownHtml += `
-            <div style="display:flex; justify-content:space-between; font-weight:bold; color:#E91E63; border-top:1px solid #ddd; padding-top:6px;">
-              <span>TOTAL FINAL:</span>
-              <span>$${formatCOP(finalTotal)}</span>
-            </div>
-          </div>
-        `;
-
-        breakdownEl.innerHTML = breakdownHtml;
-      }
+      return Object.entries(labels)
+        .map(([key, label]) => {
+          const value = (customization && customization[key]) ? String(customization[key]).trim() : '';
+          if (!value) return null;
+          if (key === 'includeBalloons' && value === 'No') return null;
+          return { label, value };
+        })
+        .filter(Boolean);
     }
 
     function loadCart() {
@@ -588,16 +379,20 @@
       const cartContent = document.getElementById('cartContent');
 
       const buildItemCustomizationHtml = (item) => {
-        if (!item || !item.customization) return '';
-        const details = [];
-        if (item.customization.deliveryType) details.push(`Envío: ${item.customization.deliveryType}`);
-        if (item.customization.occasion) details.push(`Ocasión: ${item.customization.occasion}`);
-        if (item.customization.note) details.push(`Mensaje: ${item.customization.note}`);
-        if (!details.length) return '';
+        const entries = getCustomizationEntries(item.customization || {});
+        if (!entries.length) return '';
+        const preview = entries.slice(0, 4);
+        const remaining = entries.length - preview.length;
 
-        return `<div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">${details
-          .map(text => `<span style="font-size:12px; background:#fff3f8; color:#ad1457; border:1px solid #f5c7dc; border-radius:999px; padding:4px 8px;">${text}</span>`)
-          .join('')}</div>`;
+        const chips = preview
+          .map(entry => `<span style="font-size:12px; background:#fff3f8; color:#ad1457; border:1px solid #f5c7dc; border-radius:999px; padding:4px 8px;">${entry.label}: ${entry.value}</span>`)
+          .join('');
+
+        const more = remaining > 0
+          ? `<span style="font-size:12px; color:#666;">+${remaining} más</span>`
+          : '';
+
+        return `<div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">${chips}${more}</div>`;
       };
 
       if (cart.length === 0) {
@@ -644,105 +439,10 @@
           </div>
           <div class="summary-row">
             <span>Envío:</span>
-            <span>Calcular</span>
+            <span>Definido por producto</span>
           </div>
           <div class="summary-row summary-total">
-            <span>Total base:</span>
-            <span id="tempTotal">$${formatCOP(total)}</span>
-          </div>
-          <div id="priceBreakdown"></div>
-          <div class="customization-box">
-            <h3>Personaliza tu pedido</h3>
-            <div class="customization-grid">
-              <div class="customization-field">
-                <label for="occasion">Ocasión</label>
-                <select id="occasion">
-                  <option value="">Seleccionar</option>
-                  <option value="Cumpleaños">Cumpleaños</option>
-                  <option value="Aniversario">Aniversario</option>
-                  <option value="Romántico">Romántico</option>
-                  <option value="Día de la Madre">Día de la Madre</option>
-                  <option value="Día del Padre">Día del Padre</option>
-                  <option value="Nacimiento">Nacimiento</option>
-                  <option value="Graduación">Graduación</option>
-                  <option value="Agradecimiento">Agradecimiento</option>
-                  <option value="Otro">Otro</option>
-                </select>
-              </div>
-              <div class="customization-field">
-                <label for="roseColor">Color de rosas</label>
-                <select id="roseColor">
-                  <option value="">Sin preferencia</option>
-                  <option value="Rojas">Rojas</option>
-                  <option value="Rosadas">Rosadas</option>
-                  <option value="Blancas">Blancas</option>
-                  <option value="Amarillas">Amarillas</option>
-                  <option value="Mixtas">Mixtas</option>
-                </select>
-              </div>
-              <div class="customization-field">
-                <label for="includeBalloons">Globos</label>
-                <select id="includeBalloons">
-                  <option value="">Sin definir</option>
-                  <option value="Sí">Sí</option>
-                  <option value="No">No</option>
-                </select>
-              </div>
-              <div id="balloonTypeField" class="customization-field" style="display:none;">
-                <label for="balloonType">Tipo de globos</label>
-                <select id="balloonType">
-                  <option value="">Sin preferencia</option>
-                  <option value="Helio">Helio</option>
-                  <option value="Metálicos">Metálicos</option>
-                  <option value="Látex">Látex</option>
-                  <option value="Burbuja transparente">Burbuja transparente</option>
-                  <option value="Mixtos">Mixtos</option>
-                </select>
-              </div>
-              <div class="customization-field">
-                <label for="recipientName">Nombre de quien recibe</label>
-                <input id="recipientName" type="text" placeholder="Ej: Laura" />
-              </div>
-              <div class="customization-field">
-                <label for="senderName">Nombre de quien envía</label>
-                <input id="senderName" type="text" placeholder="Ej: Carlos" />
-              </div>
-              <div class="customization-field">
-                <label for="paymentMethod">Método de pago</label>
-                <select id="paymentMethod">
-                  <option value="">Seleccionar</option>
-                  <option value="Nequi">Nequi</option>
-                  <option value="Daviplata">Daviplata</option>
-                  <option value="Transferencia">Transferencia</option>
-                  <option value="Efectivo">Efectivo</option>
-                </select>
-              </div>
-              <div class="customization-field">
-                <label for="deliveryDate">Fecha de entrega</label>
-                <input id="deliveryDate" type="date" />
-              </div>
-              <div class="customization-field">
-                <label for="deliveryTime">Hora aproximada</label>
-                <input id="deliveryTime" type="time" />
-              </div>
-              <div class="customization-field customization-field-full">
-                <label for="foods">Alimentos / preferencias</label>
-                <textarea id="foods" placeholder="Ej: Sin maní, incluir más frutas, sin lactosa..."></textarea>
-              </div>
-              <div class="customization-field customization-field-full">
-                <label for="cardMessage">Mensaje para la tarjeta</label>
-                <textarea id="cardMessage" placeholder="Escribe aquí el mensaje que va en la carta"></textarea>
-              </div>
-              <div class="customization-field customization-field-full">
-                <label for="deliveryAddress">Dirección de entrega</label>
-                <textarea id="deliveryAddress" placeholder="Barrio, dirección, referencias"></textarea>
-              </div>
-              <div class="customization-field customization-field-full">
-                <label for="extraNotes">Notas adicionales</label>
-                <textarea id="extraNotes" placeholder="Cualquier detalle extra que debamos tener en cuenta"></textarea>
-              </div>
-            </div>
-            <p class="customization-hint">Estos detalles se incluirán automáticamente en tu mensaje de WhatsApp.</p>
+            <span>$${formatCOP(total)}</span>
           </div>
           <button class="checkout-btn" onclick="checkoutWhatsApp()">Confirmar y Enviar por WhatsApp</button>
           <button class="clear-cart-btn" onclick="clearCart()">Limpiar carrito</button>
@@ -750,9 +450,6 @@
         </div>`;
 
       cartContent.innerHTML = html;
-      restoreCheckoutDetails();
-      setMinDeliveryDate();
-      updatePriceBreakdown();
     }
 
     function updateQty(idx, change) {
@@ -781,7 +478,6 @@
       if (!ok) return;
 
       localStorage.removeItem('detallesCart');
-      localStorage.removeItem(CHECKOUT_STORAGE_KEY);
       loadCart();
       updateBottomNavCart();
     }
@@ -794,61 +490,26 @@
         return;
       }
 
-      const details = saveCheckoutDetailsFromForm();
-      const validationErrors = validateCheckout(details);
-
-      if (validationErrors.length) {
-        alert(`Completa la información obligatoria:\n\n${validationErrors.join('\n')}`);
-        return;
-      }
-
       let total = 0;
       const lines = cart.map((item, index) => {
         const unitPrice = parsePriceToNumber(item.price);
         const itemTotal = unitPrice * item.qty;
         total += itemTotal;
         const itemLines = [`${index + 1}. ${item.name} x${item.qty} - $${formatCOP(itemTotal)}`];
-        if (item.customization?.deliveryType) itemLines.push(`   - Envío elegido: ${item.customization.deliveryType}`);
-        if (item.customization?.occasion) itemLines.push(`   - Ocasión: ${item.customization.occasion}`);
-        if (item.customization?.note) itemLines.push(`   - Mensaje: ${item.customization.note}`);
+        const customizationEntries = getCustomizationEntries(item.customization || {});
+        customizationEntries.forEach((entry) => {
+          itemLines.push(`   - ${entry.label}: ${entry.value}`);
+        });
         return itemLines.join('\n');
       });
-
-      const surcharges = calculateSurcharges();
-      const totalSurcharges = getTotalSurcharges();
-      const finalTotal = total + totalSurcharges;
-
-      const customizationLines = [];
-      if (details.occasion) customizationLines.push(`- Ocasión: ${details.occasion}`);
-      if (details.recipientName) customizationLines.push(`- Recibe: ${details.recipientName}`);
-      if (details.senderName) customizationLines.push(`- Envía: ${details.senderName}`);
-      if (details.paymentMethod) customizationLines.push(`- Método de pago: ${details.paymentMethod}`);
-      if (details.deliveryDate) customizationLines.push(`- Fecha de entrega: ${details.deliveryDate}`);
-      if (details.deliveryTime) customizationLines.push(`- Hora aproximada: ${details.deliveryTime}`);
-      if (details.roseColor) customizationLines.push(`- Color de rosas: ${details.roseColor}`);
-      if (details.includeBalloons) customizationLines.push(`- Globos: ${details.includeBalloons}`);
-      if (details.balloonType) customizationLines.push(`- Tipo de globos: ${details.balloonType}`);
-      if (details.foods) customizationLines.push(`- Alimentos/preferencias: ${details.foods}`);
-      if (details.cardMessage) customizationLines.push(`- Mensaje para tarjeta: ${details.cardMessage}`);
-      if (details.deliveryAddress) customizationLines.push(`- Dirección de entrega: ${details.deliveryAddress}`);
-      if (details.extraNotes) customizationLines.push(`- Notas adicionales: ${details.extraNotes}`);
-      customizationLines.push(''); // Espacio
-      customizationLines.push('Desglose de precios:');
-      customizationLines.push(`- Subtotal de productos: $${formatCOP(total)}`);
-      if (surcharges.balloons > 0) customizationLines.push(`- Globos: $${formatCOP(surcharges.balloons)}`);
-      if (surcharges.balloonType > 0) customizationLines.push(`- Tipo de globos: $${formatCOP(surcharges.balloonType)}`);
-      if (surcharges.cardMessage > 0) customizationLines.push(`- Mensaje en tarjeta: $${formatCOP(surcharges.cardMessage)}`);
-      if (surcharges.foodPreferences > 0) customizationLines.push(`- Alimentos personalizados: $${formatCOP(surcharges.foodPreferences)}`);
-      if (surcharges.delivery > 0) customizationLines.push(`- Envío: $${formatCOP(surcharges.delivery)}`);
-      customizationLines.push(`- TOTAL FINAL: $${formatCOP(finalTotal)}`);
 
       const message = [
         'Hola, quiero realizar este pedido:',
         '',
         ...lines,
         '',
-        'Personalización del pedido:',
-        ...(customizationLines.length ? customizationLines : ['- Sin detalles adicionales']),
+        'Total estimado del pedido:',
+        `- $${formatCOP(total)}`,
         '',
         'Quedo atento(a) para confirmar disponibilidad y domicilio.'
       ].join('\n');

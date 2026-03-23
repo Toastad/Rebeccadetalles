@@ -189,13 +189,41 @@
       border: 1px solid #f2d5e1;
       background: linear-gradient(180deg, #fff, #fff7fb);
       border-radius: 12px;
-      padding: 12px;
+      padding: 0;
     }
+    .customizer-dropdown {
+      border-radius: 12px;
+      overflow: hidden;
+      border: none;
+      margin: 0;
+    }
+    .customizer-dropdown > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, #fff7fb, #fff);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      color: #c2185b;
+      font-size: 15px;
+      border-bottom: 1px solid #f2d5e1;
+    }
+    .customizer-dropdown > summary::-webkit-details-marker { display: none; }
+    .customizer-dropdown > summary .caret {
+      font-size: 16px;
+      transition: transform 0.24s ease;
+    }
+    .customizer-dropdown[open] > summary .caret { transform: rotate(180deg); }
     .config-title {
       margin: 0 0 10px;
       color: #c2185b;
       font-size: 15px;
       font-weight: 800;
+    }
+    .config-content {
+      padding: 12px;
     }
     .config-grid {
       display: grid;
@@ -281,15 +309,15 @@
 
     .content-card {
       background: #fff;
-      margin-top: 18px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
-      padding: 16px;
+      margin-top: 12px;
+      border-radius: 10px;
+      border: 1px solid #efefef;
+      padding: 12px;
     }
     .content-card h3 {
-      margin: 0 0 12px;
+      margin: 0 0 10px;
       color: #222;
-      font-size: 22px;
+      font-size: 18px;
     }
     .content-list {
       margin: 0;
@@ -435,35 +463,116 @@
           </div>
 
           <div class="config-box">
-            <h3 class="config-title">Personaliza este detalle</h3>
-            <div class="config-grid">
-              <div class="config-field">
-                <label for="qtyInput">Cantidad</label>
-                <input id="qtyInput" type="number" min="1" max="10" value="1">
+            <details class="customizer-dropdown" id="customizerDropdown">
+              <summary>
+                <span>Customizar detalle (requerido)</span>
+                <span class="caret"><i class="fa fa-chevron-down"></i></span>
+              </summary>
+              <div class="config-content">
+                <div class="config-grid">
+                  <div class="config-field">
+                    <label for="qtyInput">Cantidad</label>
+                    <input id="qtyInput" type="number" min="1" max="10" value="1">
+                  </div>
+                  <div class="config-field">
+                    <label for="deliveryType">Tipo de envío</label>
+                    <select id="deliveryType">
+                      <option value="Estandar">Estandar</option>
+                      <option value="Rapido">Rapido (+$8.000)</option>
+                      <option value="Programado">Programado (+$4.000)</option>
+                    </select>
+                  </div>
+                  <div class="config-field full">
+                    <label for="occasionInput">Ocasión</label>
+                    <input id="occasionInput" type="text" placeholder="Cumpleaños, aniversario, sorpresa..." required>
+                  </div>
+                  <div class="config-field">
+                    <label for="recipientNameInput">Nombre de quien recibe</label>
+                    <input id="recipientNameInput" type="text" placeholder="Ej: Laura" required>
+                  </div>
+                  <div class="config-field">
+                    <label for="senderNameInput">Nombre de quien envía</label>
+                    <input id="senderNameInput" type="text" placeholder="Ej: Carlos" required>
+                  </div>
+                  <div class="config-field">
+                    <label for="paymentMethodInput">Método de pago</label>
+                    <select id="paymentMethodInput" required>
+                      <option value="">Seleccionar</option>
+                      <option value="Nequi">Nequi</option>
+                      <option value="Daviplata">Daviplata</option>
+                      <option value="Transferencia">Transferencia</option>
+                      <option value="Tarjeta">Tarjeta</option>
+                      <option value="Efectivo">Efectivo</option>
+                    </select>
+                  </div>
+                  <div class="config-field">
+                    <label for="roseColorInput">Color de rosas</label>
+                    <select id="roseColorInput">
+                      <option value="Sin preferencia">Sin preferencia</option>
+                      <option value="Rojas">Rojas</option>
+                      <option value="Rosadas">Rosadas</option>
+                      <option value="Blancas">Blancas</option>
+                      <option value="Amarillas">Amarillas</option>
+                      <option value="Mixtas">Mixtas</option>
+                    </select>
+                  </div>
+                  <div class="config-field">
+                    <label for="deliveryDateInput">Fecha de entrega</label>
+                    <input id="deliveryDateInput" type="date" required>
+                  </div>
+                  <div class="config-field">
+                    <label for="deliveryTimeInput">Hora aproximada</label>
+                    <input id="deliveryTimeInput" type="time" required>
+                  </div>
+                  <div class="config-field">
+                    <label for="includeBalloonsInput">Globos</label>
+                    <select id="includeBalloonsInput">
+                      <option value="No">No</option>
+                      <option value="Sí">Sí</option>
+                    </select>
+                  </div>
+                  <div class="config-field" id="balloonTypeWrapper" style="display:none;">
+                    <label for="balloonTypeInput">Tipo de globos</label>
+                    <select id="balloonTypeInput">
+                      <option value="">Seleccionar</option>
+                      <option value="Helio">Helio</option>
+                      <option value="Metálicos">Metálicos</option>
+                      <option value="Látex">Látex</option>
+                      <option value="Burbuja transparente">Burbuja transparente</option>
+                      <option value="Mixtos">Mixtos</option>
+                    </select>
+                  </div>
+                  <div class="config-field full">
+                    <label for="foodsInput">Alimentos / preferencias</label>
+                    <textarea id="foodsInput" placeholder="Ej: sin maní, sin lactosa, más frutas..."></textarea>
+                  </div>
+                  <div class="config-field full">
+                    <label for="noteInput">Mensaje para tarjeta</label>
+                    <textarea id="noteInput" placeholder="Escribe un mensaje breve para acompañar el detalle"></textarea>
+                  </div>
+                  <div class="config-field full">
+                    <label for="deliveryAddressInput">Dirección de entrega</label>
+                    <textarea id="deliveryAddressInput" placeholder="Barrio, dirección y referencias" required></textarea>
+                  </div>
+                  <div class="config-field full">
+                    <label for="extraNotesInput">Notas adicionales</label>
+                    <textarea id="extraNotesInput" placeholder="Cualquier detalle extra que debamos tener en cuenta"></textarea>
+                  </div>
+                </div>
               </div>
-              <div class="config-field">
-                <label for="deliveryType">Tipo de envío</label>
-                <select id="deliveryType">
-                  <option value="Estandar">Estandar</option>
-                  <option value="Rapido">Rapido (+$8.000)</option>
-                  <option value="Programado">Programado (+$4.000)</option>
-                </select>
-              </div>
-              <div class="config-field full">
-                <label for="occasionInput">Ocasión</label>
-                <input id="occasionInput" type="text" placeholder="Cumpleaños, aniversario, sorpresa...">
-              </div>
-              <div class="config-field full">
-                <label for="noteInput">Mensaje para tarjeta</label>
-                <textarea id="noteInput" placeholder="Escribe un mensaje breve para acompañar el detalle"></textarea>
-              </div>
-            </div>
+            </details>
+
             <div class="cta-row">
               <button class="btn-main" id="addCartBtn"><i class="fa fa-shopping-cart"></i> Agregar al carrito</button>
               <button class="btn-light" onclick="window.location.href='carrito.html'">Ir al carrito</button>
             </div>
             <div id="statusMsg" class="status-msg"></div>
           </div>
+
+          <section class="content-card">
+            <h3>Información del detalle</h3>
+            <ul id="contentList" class="content-list"></ul>
+          </section>
 
           <div class="trust-row">
             <div class="trust-card"><i class="fa fa-lock"></i><br>Compra segura</div>
@@ -472,11 +581,6 @@
           </div>
         </div>
       </article>
-    </section>
-
-    <section class="content-card">
-      <h3>Contenido del detalle</h3>
-      <ul id="contentList" class="content-list"></ul>
     </section>
 
     <section class="related-section">
@@ -641,17 +745,65 @@
         return;
       }
 
+      const customizerDropdown = document.getElementById('customizerDropdown');
+      const status = document.getElementById('statusMsg');
+      if (!customizerDropdown.open) {
+        status.textContent = 'Debes abrir y completar el menú de customizar antes de agregar.';
+        status.style.color = '#c62828';
+        customizerDropdown.open = true;
+        customizerDropdown.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
       const qty = Math.max(1, Math.min(10, parseInt(document.getElementById('qtyInput').value, 10) || 1));
       const deliveryType = (document.getElementById('deliveryType').value || 'Estandar').trim();
       const occasion = (document.getElementById('occasionInput').value || '').trim();
+      const recipientName = (document.getElementById('recipientNameInput').value || '').trim();
+      const senderName = (document.getElementById('senderNameInput').value || '').trim();
+      const paymentMethod = (document.getElementById('paymentMethodInput').value || '').trim();
+      const roseColor = (document.getElementById('roseColorInput').value || '').trim();
+      const deliveryDate = (document.getElementById('deliveryDateInput').value || '').trim();
+      const deliveryTime = (document.getElementById('deliveryTimeInput').value || '').trim();
+      const includeBalloons = (document.getElementById('includeBalloonsInput').value || 'No').trim();
+      const balloonType = (document.getElementById('balloonTypeInput').value || '').trim();
+      const foods = (document.getElementById('foodsInput').value || '').trim();
       const note = (document.getElementById('noteInput').value || '').trim();
+      const deliveryAddress = (document.getElementById('deliveryAddressInput').value || '').trim();
+      const extraNotes = (document.getElementById('extraNotesInput').value || '').trim();
+
+      const missingRequired = [];
+      if (!occasion) missingRequired.push('Ocasión');
+      if (!recipientName) missingRequired.push('Nombre de quien recibe');
+      if (!senderName) missingRequired.push('Nombre de quien envía');
+      if (!paymentMethod) missingRequired.push('Método de pago');
+      if (!deliveryDate) missingRequired.push('Fecha de entrega');
+      if (!deliveryTime) missingRequired.push('Hora aproximada');
+      if (!deliveryAddress) missingRequired.push('Dirección de entrega');
+      if (includeBalloons === 'Sí' && !balloonType) missingRequired.push('Tipo de globos');
+
+      if (missingRequired.length) {
+        status.textContent = `Faltan campos obligatorios: ${missingRequired.join(', ')}`;
+        status.style.color = '#c62828';
+        return;
+      }
 
       const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
 
       const configKey = JSON.stringify({
         deliveryType,
         occasion,
-        note
+        recipientName,
+        senderName,
+        paymentMethod,
+        roseColor,
+        deliveryDate,
+        deliveryTime,
+        includeBalloons,
+        balloonType,
+        foods,
+        note,
+        deliveryAddress,
+        extraNotes
       });
 
       const existing = cart.find(item => item.id === currentProduct.id && item.configKey === configKey);
@@ -666,18 +818,58 @@
           category: currentProduct.category,
           qty,
           configKey,
-          customization: { deliveryType, occasion, note }
+          customization: {
+            deliveryType,
+            occasion,
+            recipientName,
+            senderName,
+            paymentMethod,
+            roseColor,
+            deliveryDate,
+            deliveryTime,
+            includeBalloons,
+            balloonType,
+            foods,
+            note,
+            deliveryAddress,
+            extraNotes
+          }
         });
       }
 
       localStorage.setItem('detallesCart', JSON.stringify(cart));
       updateCartCount();
 
-      const status = document.getElementById('statusMsg');
       status.textContent = 'Producto agregado al carrito con tu personalización.';
+      status.style.color = '#1a8f4e';
       window.setTimeout(() => {
         status.textContent = '';
       }, 1800);
+    }
+
+    function toggleBalloonTypeVisibility() {
+      const value = document.getElementById('includeBalloonsInput')?.value || 'No';
+      const wrapper = document.getElementById('balloonTypeWrapper');
+      const balloonType = document.getElementById('balloonTypeInput');
+      if (!wrapper || !balloonType) return;
+
+      if (value === 'Sí') {
+        wrapper.style.display = 'flex';
+      } else {
+        wrapper.style.display = 'none';
+        balloonType.value = '';
+      }
+    }
+
+    function setMinDeliveryDate() {
+      const dateInput = document.getElementById('deliveryDateInput');
+      if (!dateInput) return;
+
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      dateInput.min = `${yyyy}-${mm}-${dd}`;
     }
 
     function updateCartCount() {
@@ -696,8 +888,11 @@
     }
 
     document.getElementById('addCartBtn').addEventListener('click', addToCart);
+    document.getElementById('includeBalloonsInput').addEventListener('change', toggleBalloonTypeVisibility);
 
     renderProduct();
+    setMinDeliveryDate();
+    toggleBalloonTypeVisibility();
     updateCartCount();
 
     window.trackEvent = window.trackEvent || function(name) {
