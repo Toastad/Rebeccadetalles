@@ -587,6 +587,19 @@
       const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
       const cartContent = document.getElementById('cartContent');
 
+      const buildItemCustomizationHtml = (item) => {
+        if (!item || !item.customization) return '';
+        const details = [];
+        if (item.customization.deliveryType) details.push(`Envío: ${item.customization.deliveryType}`);
+        if (item.customization.occasion) details.push(`Ocasión: ${item.customization.occasion}`);
+        if (item.customization.note) details.push(`Mensaje: ${item.customization.note}`);
+        if (!details.length) return '';
+
+        return `<div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">${details
+          .map(text => `<span style="font-size:12px; background:#fff3f8; color:#ad1457; border:1px solid #f5c7dc; border-radius:999px; padding:4px 8px;">${text}</span>`)
+          .join('')}</div>`;
+      };
+
       if (cart.length === 0) {
         cartContent.innerHTML = `
           <div class="empty-cart">
@@ -611,6 +624,7 @@
             <div class="item-info">
               <h4>${item.name}</h4>
               <p>${item.category}</p>
+              ${buildItemCustomizationHtml(item)}
             </div>
             <div class="item-price">$${item.price}</div>
             <div class="item-qty">
@@ -793,7 +807,11 @@
         const unitPrice = parsePriceToNumber(item.price);
         const itemTotal = unitPrice * item.qty;
         total += itemTotal;
-        return `${index + 1}. ${item.name} x${item.qty} - $${formatCOP(itemTotal)}`;
+        const itemLines = [`${index + 1}. ${item.name} x${item.qty} - $${formatCOP(itemTotal)}`];
+        if (item.customization?.deliveryType) itemLines.push(`   - Envío elegido: ${item.customization.deliveryType}`);
+        if (item.customization?.occasion) itemLines.push(`   - Ocasión: ${item.customization.occasion}`);
+        if (item.customization?.note) itemLines.push(`   - Mensaje: ${item.customization.note}`);
+        return itemLines.join('\n');
       });
 
       const surcharges = calculateSurcharges();

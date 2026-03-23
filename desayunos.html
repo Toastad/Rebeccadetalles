@@ -152,6 +152,114 @@
     .add-cart-btn:active {
       transform: translateY(0) scale(0.98);
     }
+    .product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .view-details-btn {
+      background: #fff;
+      color: #c2185b;
+      border: 1.5px solid #f2bfd2;
+      border-radius: 8px;
+      padding: 11px 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.24s ease;
+    }
+    .view-details-btn:hover {
+      border-color: #E91E63;
+      background: #fff5f9;
+      transform: translateY(-1px);
+    }
+    .quick-customizer {
+      margin-top: 12px;
+      border: 1px solid #f3d4df;
+      border-radius: 12px;
+      padding: 12px;
+      background: linear-gradient(180deg, #fff, #fff8fb);
+      display: none;
+      animation: revealCustomizer 220ms ease;
+    }
+    .quick-customizer.open {
+      display: block;
+    }
+    @keyframes revealCustomizer {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .quick-customizer-title {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #c2185b;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+    .quick-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .quick-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .quick-field.full {
+      grid-column: 1 / -1;
+    }
+    .quick-field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #5f5f5f;
+    }
+    .quick-field input,
+    .quick-field select,
+    .quick-field textarea {
+      width: 100%;
+      border: 1px solid #e8dbe0;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+    }
+    .quick-field textarea {
+      min-height: 64px;
+      resize: vertical;
+    }
+    .stock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-top: 8px;
+      letter-spacing: 0.15px;
+      width: fit-content;
+    }
+    .stock-pill.in {
+      background: #ebfff3;
+      color: #1a8f4e;
+      border: 1px solid #bdeccf;
+    }
+    .stock-pill.out {
+      background: #fff1f1;
+      color: #c62828;
+      border: 1px solid #f0b5b5;
+    }
+    .inline-msg {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+    }
+    .inline-msg.ok {
+      color: #1b8f4e;
+      font-weight: 700;
+    }
     /* Modal Styles */
     .modal {
       display: none;
@@ -451,6 +559,8 @@
       .banner-img-container { height: 220px; margin-top: 60px; }
       .product-card { flex: 1 1 100%; }
       .modal-carousel { height: 250px; }
+      .product-actions { grid-template-columns: 1fr; }
+      .quick-fields { grid-template-columns: 1fr; }
     }
 
     /* Account Modal Styles */
@@ -607,13 +717,105 @@
               <h3>${p.name}</h3>
               <p class="product-desc">${p.desc}</p>
               <div class="product-price">$${p.price}</div>
-              <button class="add-cart-btn" onclick="openModal(${p.id})">
-                <i class="fa fa-eye"></i> Ver Detalles
-              </button>
+              <span class="stock-pill ${p.stock === false ? 'out' : 'in'}">${p.stock === false ? 'Sin stock' : 'Disponible hoy'}</span>
+              <div class="product-actions">
+                <button class="view-details-btn" onclick="openModal(${p.id})">
+                  <i class="fa fa-eye"></i> Ver detalle
+                </button>
+                <button class="add-cart-btn" onclick="toggleCustomizer(${p.id})">
+                  <i class="fa fa-sliders"></i> Personalizar
+                </button>
+              </div>
+              <div class="quick-customizer" id="customizer-${p.id}">
+                <p class="quick-customizer-title">Configura y agrega este detalle</p>
+                <div class="quick-fields">
+                  <div class="quick-field">
+                    <label for="qty-${p.id}">Cantidad</label>
+                    <input id="qty-${p.id}" type="number" min="1" max="10" value="1">
+                  </div>
+                  <div class="quick-field">
+                    <label for="delivery-${p.id}">Tipo de envío</label>
+                    <select id="delivery-${p.id}">
+                      <option value="Estandar">Estandar</option>
+                      <option value="Rapido">Rapido</option>
+                      <option value="Programado">Programado</option>
+                    </select>
+                  </div>
+                  <div class="quick-field full">
+                    <label for="occasion-${p.id}">Ocasion</label>
+                    <input id="occasion-${p.id}" type="text" placeholder="Cumpleaños, aniversario, sorpresa...">
+                  </div>
+                  <div class="quick-field full">
+                    <label for="msg-${p.id}">Mensaje corto (opcional)</label>
+                    <textarea id="msg-${p.id}" placeholder="Ej: Te amo, feliz día..."></textarea>
+                  </div>
+                </div>
+                <button class="add-cart-btn" style="margin-top:10px;" onclick="addConfiguredToCart(${p.id})">
+                  <i class="fa fa-shopping-cart"></i> Agregar personalizado
+                </button>
+                <div class="inline-msg" id="msg-ok-${p.id}"></div>
+              </div>
             </div>
           </div>
         `).join('');
       });
+    }
+
+    function findProductById(productId) {
+      for (let category in productos) {
+        const product = productos[category].find(p => p.id === productId);
+        if (product) return product;
+      }
+      return null;
+    }
+
+    function toggleCustomizer(productId) {
+      const panels = document.querySelectorAll('.quick-customizer');
+      panels.forEach(panel => {
+        if (panel.id !== `customizer-${productId}`) {
+          panel.classList.remove('open');
+        }
+      });
+
+      const current = document.getElementById(`customizer-${productId}`);
+      if (!current) return;
+      current.classList.toggle('open');
+      if (current.classList.contains('open')) {
+        const qtyInput = document.getElementById(`qty-${productId}`);
+        if (qtyInput) qtyInput.focus();
+      }
+    }
+
+    function addConfiguredToCart(productId) {
+      const product = findProductById(productId);
+      if (!product) return;
+      if (product.stock === false) {
+        alert('Este producto esta sin stock por ahora.');
+        return;
+      }
+
+      const qtyValue = parseInt(document.getElementById(`qty-${productId}`).value, 10);
+      const qty = Number.isFinite(qtyValue) ? Math.max(1, Math.min(10, qtyValue)) : 1;
+      const deliveryType = (document.getElementById(`delivery-${productId}`).value || 'Estandar').trim();
+      const occasion = (document.getElementById(`occasion-${productId}`).value || '').trim();
+      const note = (document.getElementById(`msg-${productId}`).value || '').trim();
+
+      addToCart(product, {
+        qty,
+        deliveryType,
+        occasion,
+        note
+      });
+
+      const okMsg = document.getElementById(`msg-ok-${productId}`);
+      if (okMsg) {
+        okMsg.textContent = 'Listo: producto agregado con tu configuracion.';
+        okMsg.classList.add('ok');
+        window.setTimeout(() => {
+          okMsg.textContent = '';
+          okMsg.classList.remove('ok');
+        }, 1800);
+      }
     }
 
     function getProductMedia(product) {
@@ -757,23 +959,50 @@
 
     function buyFromModal() {
       if (!currentProduct) return;
-      addToCart(currentProduct.id, currentProduct.name, currentProduct.price, currentProduct.img, currentProduct.category);
+      addToCart(currentProduct, { qty: 1, deliveryType: 'Estandar', occasion: '', note: '' });
       closeModal();
     }
 
-    function addToCart(id, name, price, img, category) {
+    function addToCart(product, customization) {
       const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
-      const existing = cart.find(item => item.id === id);
+      const normalized = {
+        qty: Math.max(1, parseInt(customization?.qty, 10) || 1),
+        deliveryType: (customization?.deliveryType || 'Estandar').trim(),
+        occasion: (customization?.occasion || '').trim(),
+        note: (customization?.note || '').trim()
+      };
+
+      const configKey = JSON.stringify({
+        deliveryType: normalized.deliveryType,
+        occasion: normalized.occasion,
+        note: normalized.note
+      });
+
+      const existing = cart.find(item => item.id === product.id && item.configKey === configKey);
       
       if (existing) {
-        existing.qty++;
+        existing.qty += normalized.qty;
       } else {
-        cart.push({ id, name, price, img, category, qty: 1 });
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          img: product.img,
+          category: product.category,
+          qty: normalized.qty,
+          configKey,
+          customization: {
+            deliveryType: normalized.deliveryType,
+            occasion: normalized.occasion,
+            note: normalized.note
+          }
+        });
       }
       
       localStorage.setItem('detallesCart', JSON.stringify(cart));
       updateCartCount();
-      trackEvent('add_to_cart'); alert(`${name} agregado al carrito`);
+      updateBottomNavCart();
+      trackEvent('add_to_cart');
     }
 
     function updateCartCount() {
