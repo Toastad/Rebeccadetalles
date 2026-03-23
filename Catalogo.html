@@ -639,6 +639,124 @@
       font-size: 13px;
     }
 
+    /* Secciones compactas de oferta y pedidos especiales */
+    .mini-section {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .mini-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #f2d8e3;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    }
+    .mini-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    .mini-body {
+      padding: 10px 12px 12px;
+    }
+    .mini-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #c2185b;
+      background: #ffe7f1;
+      border-radius: 999px;
+      padding: 4px 8px;
+      margin-bottom: 8px;
+    }
+    .mini-title {
+      margin: 0;
+      font-size: 15px;
+      color: #333;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    .mini-sub {
+      margin: 6px 0 0 0;
+      color: #666;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .request-strip {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .request-box,
+    .discount-box {
+      background: #fff;
+      border: 1px solid #f0d8e1;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .request-box h4,
+    .discount-box h4 {
+      margin: 0 0 8px 0;
+      color: #c2185b;
+      font-size: 16px;
+    }
+    .request-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .request-tags a {
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      color: #c2185b;
+      border: 1px solid #efbfd2;
+      background: #fff5fa;
+      border-radius: 999px;
+      padding: 6px 10px;
+      transition: all 0.2s ease;
+    }
+    .request-tags a:hover {
+      background: #ffe8f2;
+      border-color: #e59ab8;
+    }
+    .discount-box p {
+      margin: 0;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.4;
+    }
+    .discount-box .discount-highlight {
+      display: inline-block;
+      margin-top: 8px;
+      background: #fff1c9;
+      color: #8a5c00;
+      border: 1px solid #f0deaa;
+      border-radius: 8px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .info-cards {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -719,7 +837,9 @@
 
     @media (max-width: 900px) {
       .info-cards,
-      .testimonials-grid {
+      .testimonials-grid,
+      .mini-grid,
+      .request-strip {
         grid-template-columns: 1fr;
       }
     }
@@ -860,6 +980,59 @@
           <h3>Anchetas y Detalles</h3>
           <p>Desde $55.000</p>
         </a>
+      </div>
+    </div>
+
+    <div class="w3-container w3-padding-16 mini-section" id="ofertas-especiales">
+      <h2 class="w3-center w3-text-pink" style="margin-bottom:6px;">Ofertas y Especiales</h2>
+      <p class="w3-center w3-text-grey" style="margin:0;">Opciones rápidas para pedir hoy</p>
+
+      <div class="mini-grid">
+        <a href="floristeria.html" class="mini-card">
+          <img src="Floristeria.jpg" alt="Oferta floristeria">
+          <div class="mini-body">
+            <span class="mini-badge">Oferta</span>
+            <h3 class="mini-title">Ramillete Solitario desde $40.000</h3>
+            <p class="mini-sub">Versión con fresas disponible por $80.000.</p>
+          </div>
+        </a>
+
+        <a href="fresas.html" class="mini-card">
+          <img src="Fresas.jpg" alt="Oferta dear box">
+          <div class="mini-body">
+            <span class="mini-badge">Top pedido</span>
+            <h3 class="mini-title">Dear Box con o sin vino</h3>
+            <p class="mini-sub">Con vino $95.000 o sin vino $75.000.</p>
+          </div>
+        </a>
+
+        <a href="anchetas.html" class="mini-card">
+          <img src="Anchetas.JPG" alt="Oferta lovable combo">
+          <div class="mini-body">
+            <span class="mini-badge">Personalizable</span>
+            <h3 class="mini-title">Lovable Combo sin o con peluche</h3>
+            <p class="mini-sub">Base $110.000, elige tamaño de peluche.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="request-strip">
+        <div class="request-box">
+          <h4>Ideas especiales para pedir</h4>
+          <p style="margin:0; font-size:13px; color:#555;">Si no ves tu idea en catálogo, la cotizamos por WhatsApp:</p>
+          <div class="request-tags">
+            <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473?text=Hola%2C%20quiero%20cotizar%20una%20Dear%20Box%20personalizada" target="_blank">Dear Box personalizada</a>
+            <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473?text=Hola%2C%20quiero%20un%20ramo%20con%20color%20espec%C3%ADfico" target="_blank">Ramo por color</a>
+            <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473?text=Hola%2C%20quiero%20agregar%20globo%20y%20mensaje%20especial" target="_blank">Globo y mensaje</a>
+            <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473?text=Hola%2C%20quiero%20un%20combo%20de%20cumplea%C3%B1os%20a%20medida" target="_blank">Combo de cumpleaños</a>
+          </div>
+        </div>
+
+        <div class="discount-box">
+          <h4>Descuentos disponibles</h4>
+          <p>Pregúntanos por descuentos para pedidos anticipados, combos dobles o fechas especiales.</p>
+          <span class="discount-highlight">Ejemplo: 5% OFF en pedidos con 48h de anticipación</span>
+        </div>
       </div>
     </div>
 
