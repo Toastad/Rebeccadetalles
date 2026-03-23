@@ -365,4 +365,18 @@ a.link-clean:hover {
   }
 }
 
+/* Mobile: fix logo cascade bug (inline <style> defines logo after its @media, overriding it) */
+@media (max-width: 600px) {
+  .logo {
+    font-size: 20px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 64px);
+  }
+  .topbar {
+    padding: 6px 10px !important;
+  }
+}
+
 /* Desktop floating right-side navigation removed: menu moved into sidebar */
