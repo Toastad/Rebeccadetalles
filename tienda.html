@@ -389,7 +389,7 @@
             <p class="w3-text-grey">${p.desc || ''}</p>
             <p class="w3-text-pink"><b>$${p.price}</b></p>
           </div>`;
-        card.onclick = () => openProductModal(p.id);
+        card.onclick = () => goToProduct(p.id);
         productsEl.appendChild(card);
       });
     }
@@ -521,6 +521,23 @@
     let currentSlide = 0;
 
     function findProductById(id){ return getAllProducts().find(p => String(p.id) === String(id)); }
+
+    function getOriginFromId(id) {
+      const n = Number(id);
+      if (n >= 101 && n <= 199) return 'anchetas';
+      if (n >= 201 && n <= 299) return 'floristeria';
+      if (n >= 301 && n <= 399) return 'fresas';
+      return 'desayunos';
+    }
+
+    function goToProduct(id) {
+      const p = findProductById(id);
+      const newOrigin = getOriginFromId(id);
+      if (p) {
+        localStorage.setItem('detallesSelectedProduct', JSON.stringify({ origin: newOrigin, product: p }));
+      }
+      window.location.href = `producto.html?origen=${newOrigin}&id=${id}`;
+    }
 
     function openProductModal(id){
       const p = findProductById(id); if(!p) return;
