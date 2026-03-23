@@ -197,6 +197,29 @@
       z-index: 2;
       text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
     }
+    .hero-cta {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(135deg, #E91E63, #d81b60);
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      border-radius: 999px;
+      padding: 11px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 8px 18px rgba(233, 30, 99, 0.35);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+    }
+    .hero-cta:hover {
+      text-decoration: none;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(233, 30, 99, 0.42);
+      filter: brightness(1.04);
+    }
+    .hero-cta:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 6px 14px rgba(233, 30, 99, 0.3);
+    }
     @media (max-width: 1024px) {
       .banner-text-overlay {
         top: 80px;
@@ -236,7 +259,7 @@
         font-size: 13px !important;
         margin: 8px 0 0 0 !important;
       }
-      .banner-text-overlay .w3-button {
+      .banner-text-overlay .hero-cta {
         padding: 10px 16px !important;
         font-size: 12px !important;
       }
@@ -756,7 +779,7 @@
       <img src="IMG_0618.JPG" alt="Detalles Barranquilla">
       <div class="banner-text-overlay">
         <h1 class="w3-jumbo">Regala Momentos Especiales</h1>
-        <p><a href="#catalogo" class="btn-primary" style="display:inline-block;text-decoration:none;">Ver Catálogo</a></p>
+        <p><a href="#catalogo" class="hero-cta">Ver Catálogo</a></p>
       </div>
     </div>
 
