@@ -80,7 +80,7 @@
       background: #fff;
       border-radius: 14px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      overflow: hidden;
+      overflow: visible;
     }
     .main-media {
       width: 100%;
@@ -95,6 +95,20 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+    .slide-in-image {
+      animation: mediaSlideIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, opacity;
+    }
+    @keyframes mediaSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(14px) scale(1.02);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
     }
     .thumb-strip {
       display: flex;
@@ -193,7 +207,7 @@
     }
     .customizer-dropdown {
       border-radius: 12px;
-      overflow: hidden;
+      overflow: visible;
       border: none;
       margin: 0;
     }
@@ -224,6 +238,7 @@
     }
     .config-content {
       padding: 12px;
+      overflow: visible;
     }
     .config-grid {
       display: grid;
@@ -348,6 +363,12 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.07);
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .related-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.11);
     }
     .related-card img { width: 100%; height: 160px; object-fit: cover; }
     .related-info { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
@@ -656,7 +677,22 @@
     const params = new URLSearchParams(window.location.search);
     const productId = Number(params.get('id') || 0);
     const origin = (params.get('origen') || 'desayunos').toLowerCase();
-    const currentProduct = PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
+
+    function getSelectedProductFromStorage() {
+      try {
+        const raw = localStorage.getItem('detallesSelectedProduct');
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.product) return null;
+        if (Number(parsed.product.id) !== productId) return null;
+        return parsed.product;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    const selectedFromStorage = getSelectedProductFromStorage();
+    const currentProduct = selectedFromStorage || PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
 
     const originMap = {
       desayunos: 'desayunos.html',
@@ -673,7 +709,7 @@
     let currentMedia = productMedia[0];
 
     function renderMainMedia() {
-      document.getElementById('mainMediaWrap').innerHTML = `<img src="${currentMedia}" alt="${currentProduct.name}">`;
+      document.getElementById('mainMediaWrap').innerHTML = `<img class="slide-in-image" src="${currentMedia}" alt="${currentProduct.name}">`;
       const thumbStrip = document.getElementById('thumbStrip');
       thumbStrip.innerHTML = productMedia
         .map(src => `<button class="thumb-btn ${src === currentMedia ? 'active' : ''}" onclick="setMainMedia('${src}')"><img src="${src}" alt="Miniatura"></button>`)
@@ -723,13 +759,12 @@
       const list = related.length ? related : fallback;
 
       document.getElementById('relatedGrid').innerHTML = list.map(item => `
-        <article class="related-card">
+        <article class="related-card" onclick="goToProduct(${item.id})">
           <img src="${item.img}" alt="${item.name}">
           <div class="related-info">
             <h4>${item.name}</h4>
             <p>${item.desc}</p>
             <span class="price">$${item.price}</span>
-            <button class="btn-main" onclick="goToProduct(${item.id})">Ver producto</button>
           </div>
         </article>
       `).join('');

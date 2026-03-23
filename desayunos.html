@@ -718,14 +718,6 @@
               <p class="product-desc">${p.desc}</p>
               <div class="product-price">$${p.price}</div>
               <span class="stock-pill ${p.stock === false ? 'out' : 'in'}">${p.stock === false ? 'Sin stock' : 'Disponible hoy'}</span>
-              <div class="product-actions" onclick="event.stopPropagation()">
-                <button class="view-details-btn" onclick="goToProduct(${p.id})">
-                  <i class="fa fa-eye"></i> Ver producto
-                </button>
-                <button class="add-cart-btn" onclick="goToProduct(${p.id})">
-                  <i class="fa fa-sliders"></i> Ver y personalizar
-                </button>
-              </div>
             </div>
           </div>
         `).join('');
@@ -733,6 +725,13 @@
     }
 
     function goToProduct(productId) {
+      const selected = findProductById(productId);
+      if (selected) {
+        localStorage.setItem('detallesSelectedProduct', JSON.stringify({
+          origin: 'desayunos',
+          product: selected
+        }));
+      }
       window.location.href = `producto.html?origen=desayunos&id=${productId}`;
     }
 

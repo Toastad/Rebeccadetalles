@@ -109,7 +109,9 @@
     };
     let currentProduct = null;
     let currentSlide = 0;
-    function renderProducts(){ Object.keys(productos).forEach(category => { const container = document.getElementById(category); container.innerHTML = productos[category].map(p => `<div class="product-card"><img src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p><div class="product-price">$${p.price}</div><button class="add-cart-btn" onclick="openModal(${p.id})"><i class="fa fa-eye"></i> Ver Detalles</button></div></div>`).join(''); }); }
+    function findProductById(productId){ for (let category in productos) { const product = productos[category].find(p => p.id === productId); if (product) return product; } return null; }
+    function goToProduct(productId){ const selected = findProductById(productId); if (selected) { localStorage.setItem('detallesSelectedProduct', JSON.stringify({ origin: 'floristeria', product: selected })); } window.location.href = `producto.html?origen=floristeria&id=${productId}`; }
+    function renderProducts(){ Object.keys(productos).forEach(category => { const container = document.getElementById(category); container.innerHTML = productos[category].map(p => `<div class="product-card" onclick="goToProduct(${p.id})" style="cursor:pointer;"><img src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p><div class="product-price">$${p.price}</div></div></div>`).join(''); }); }
     function getProductMedia(product){
       const imageMedia = (product.images || []).map(src => ({ type: 'image', src }));
       const videoMedia = (product.videos || []).map(src => ({ type: 'video', src }));
