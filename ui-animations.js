@@ -25,17 +25,14 @@
     style.id = "page-transition-styles";
     style.textContent = [
       "html.page-transition-enabled body {",
-      "  transition: opacity " + PAGE_TRANSITION_MS + "ms ease, transform " + PAGE_TRANSITION_MS + "ms ease;",
+      "  transition: opacity " + PAGE_TRANSITION_MS + "ms ease;",
       "}",
       "html.page-transition-enabled body.page-fade-in,",
       "html.page-transition-enabled body.page-fade-out {",
       "  opacity: 0;",
-      "  transform: translateY(6px);",
       "}",
       "@media (prefers-reduced-motion: reduce) {",
       "  html.page-transition-enabled body { transition: opacity 80ms linear; }",
-      "  html.page-transition-enabled body.page-fade-in,",
-      "  html.page-transition-enabled body.page-fade-out { transform: none; }",
       "}"
     ].join("\n");
     document.head.appendChild(style);
