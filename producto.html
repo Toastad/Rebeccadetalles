@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Producto - Detalles Barranquilla</title>
+  <link rel="stylesheet" href="estilos-principal.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins|Dancing+Script">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body,h1,h2,h3,h4,p,button,input,select,textarea { font-family: "Montserrat", sans-serif; }
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: #E91E63;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-weight: 700;
+      color: white;
+      font-family: 'Dancing Script', cursive;
+      font-size: 30px;
+      text-decoration: none;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .topnav { display: flex; gap: 14px; align-items: center; }
+    .cart-icon {
+      color: white;
+      font-size: 20px;
+      text-decoration: none;
+      position: relative;
+    }
+    .cart-count {
+      background: #FFD700;
+      color: #333;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+    .product-page {
+      max-width: 1180px;
+      margin: 72px auto 24px;
+      padding: 0 14px;
+    }
+    .breadcrumbs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .breadcrumbs a { color: #c2185b; text-decoration: none; font-weight: 600; }
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1.06fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .gallery-card,
+    .info-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .main-media {
+      width: 100%;
+      height: 440px;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .thumb-strip {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      overflow-x: auto;
+      border-top: 1px solid #f0f0f0;
+    }
+    .thumb-btn {
+      width: 72px;
+      height: 72px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      padding: 0;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+    .thumb-btn.active { border-color: #E91E63; }
+    .thumb-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .info-body { padding: 18px; }
+    .stock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: 0.15px;
+    }
+    .stock-pill.in {
+      background: #ebfff3;
+      color: #1a8f4e;
+      border: 1px solid #bdeccf;
+    }
+    .stock-pill.out {
+      background: #fff1f1;
+      color: #c62828;
+      border: 1px solid #f0b5b5;
+    }
+    .product-title { margin: 0; font-size: 30px; color: #222; }
+    .product-desc { margin: 8px 0 14px; color: #666; line-height: 1.45; }
+    .price-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .price-main {
+      font-size: 34px;
+      color: #E91E63;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .promo {
+      background: #fff5da;
+      color: #9f5b00;
+      border: 1px solid #f0deaa;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .meta-item {
+      background: #fafafa;
+      border: 1px solid #efefef;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 13px;
+      color: #444;
+    }
+    .meta-item strong { color: #c2185b; display: block; margin-bottom: 2px; }
+
+    .config-box {
+      margin-top: 10px;
+      border: 1px solid #f2d5e1;
+      background: linear-gradient(180deg, #fff, #fff7fb);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .config-title {
+      margin: 0 0 10px;
+      color: #c2185b;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+    .config-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .config-field.full { grid-column: 1 / -1; }
+    .config-field label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 700;
+    }
+    .config-field input,
+    .config-field select,
+    .config-field textarea {
+      border: 1px solid #e7dce1;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+    }
+    .config-field textarea { min-height: 74px; resize: vertical; }
+
+    .cta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .btn-main {
+      border: none;
+      border-radius: 9px;
+      background: #E91E63;
+      color: #fff;
+      font-weight: 800;
+      padding: 13px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(233, 30, 99, 0.26);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .btn-main:hover { background: #c2185b; transform: translateY(-1px); box-shadow: 0 12px 24px rgba(233,30,99,0.3); }
+    .btn-light {
+      border: 1.5px solid #e0e0e0;
+      border-radius: 9px;
+      background: #fff;
+      color: #333;
+      font-weight: 700;
+      padding: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-light:hover { border-color: #c2185b; color: #c2185b; }
+    .status-msg {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #1a8f4e;
+      font-weight: 700;
+      min-height: 18px;
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .trust-card {
+      border: 1px solid #ececec;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+    .trust-card i { color: #E91E63; font-size: 18px; margin-bottom: 5px; }
+
+    .content-card {
+      background: #fff;
+      margin-top: 18px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+      padding: 16px;
+    }
+    .content-card h3 {
+      margin: 0 0 12px;
+      color: #222;
+      font-size: 22px;
+    }
+    .content-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #4f4f4f;
+      line-height: 1.5;
+    }
+
+    .related-section {
+      margin-top: 22px;
+      margin-bottom: 80px;
+    }
+    .related-title {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: #222;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .related-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+    }
+    .related-card img { width: 100%; height: 160px; object-fit: cover; }
+    .related-info { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .related-info h4 { margin: 0; font-size: 16px; color: #333; }
+    .related-info p { margin: 0; font-size: 13px; color: #666; }
+    .related-info .price { font-weight: 800; color: #E91E63; }
+
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top: 2px solid #E91E63;
+      z-index: 999;
+      padding: 8px 0;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
+    .bottom-nav a, .bottom-nav button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 0;
+      color: #E91E63;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 12px;
+    }
+    .bottom-nav i { font-size: 20px; }
+    .bottom-nav .badge {
+      position: absolute;
+      background: #FFD700;
+      color: #333;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      top: 2px;
+    }
+
+    @media (max-width: 980px) {
+      .product-layout { grid-template-columns: 1fr; }
+      .main-media { height: 320px; }
+      .related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .topbar { padding: 6px 10px; }
+      .logo { font-size: 22px; white-space: nowrap; }
+      .product-page { margin-top: 58px; }
+      .product-title { font-size: 25px; }
+      .price-main { font-size: 30px; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .config-grid { grid-template-columns: 1fr; }
+      .cta-row { grid-template-columns: 1fr; }
+      .trust-row { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: 1fr; }
+      .bottom-nav { display: flex; justify-content: space-around; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="Catalogo.html" class="logo">Detalles Barranquilla</a>
+    <nav class="topnav">
+      <a href="carrito.html" class="cart-icon">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="product-page">
+    <div class="breadcrumbs">
+      <a id="crumbOrigin" href="desayunos.html">Volver</a>
+      <span>/</span>
+      <span id="crumbCurrent">Producto</span>
+    </div>
+
+    <section class="product-layout">
+      <article class="gallery-card">
+        <div class="main-media" id="mainMediaWrap"></div>
+        <div class="thumb-strip" id="thumbStrip"></div>
+      </article>
+
+      <article class="info-card">
+        <div class="info-body">
+          <span id="stockPill" class="stock-pill in">Disponible</span>
+          <h1 id="productTitle" class="product-title">Producto</h1>
+          <p id="productDesc" class="product-desc"></p>
+
+          <div class="price-row">
+            <div id="productPrice" class="price-main">$0</div>
+            <div class="promo">Promo: envío económico visible antes de pagar</div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-item"><strong>Envío estimado</strong><span id="productShipping"></span></div>
+            <div class="meta-item"><strong>Preparación</strong><span id="productPrep"></span></div>
+            <div class="meta-item"><strong>Categoría</strong><span id="productCategory"></span></div>
+            <div class="meta-item"><strong>Compra segura</strong>Pago por transferencia o efectivo</div>
+          </div>
+
+          <div class="config-box">
+            <h3 class="config-title">Personaliza este detalle</h3>
+            <div class="config-grid">
+              <div class="config-field">
+                <label for="qtyInput">Cantidad</label>
+                <input id="qtyInput" type="number" min="1" max="10" value="1">
+              </div>
+              <div class="config-field">
+                <label for="deliveryType">Tipo de envío</label>
+                <select id="deliveryType">
+                  <option value="Estandar">Estandar</option>
+                  <option value="Rapido">Rapido (+$8.000)</option>
+                  <option value="Programado">Programado (+$4.000)</option>
+                </select>
+              </div>
+              <div class="config-field full">
+                <label for="occasionInput">Ocasión</label>
+                <input id="occasionInput" type="text" placeholder="Cumpleaños, aniversario, sorpresa...">
+              </div>
+              <div class="config-field full">
+                <label for="noteInput">Mensaje para tarjeta</label>
+                <textarea id="noteInput" placeholder="Escribe un mensaje breve para acompañar el detalle"></textarea>
+              </div>
+            </div>
+            <div class="cta-row">
+              <button class="btn-main" id="addCartBtn"><i class="fa fa-shopping-cart"></i> Agregar al carrito</button>
+              <button class="btn-light" onclick="window.location.href='carrito.html'">Ir al carrito</button>
+            </div>
+            <div id="statusMsg" class="status-msg"></div>
+          </div>
+
+          <div class="trust-row">
+            <div class="trust-card"><i class="fa fa-lock"></i><br>Compra segura</div>
+            <div class="trust-card"><i class="fa fa-credit-card"></i><br>Transferencia, Nequi o efectivo</div>
+            <div class="trust-card"><i class="fa fa-refresh"></i><br>Política clara de cambios</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="content-card">
+      <h3>Contenido del detalle</h3>
+      <ul id="contentList" class="content-list"></ul>
+    </section>
+
+    <section class="related-section">
+      <h3 class="related-title">También te puede gustar</h3>
+      <div id="relatedGrid" class="related-grid"></div>
+    </section>
+  </main>
+
+  <div class="bottom-nav">
+    <a href="tienda.html" title="Ir a Tienda">
+      <i class="fa fa-shopping-bag"></i>
+      <span>Tienda</span>
+    </a>
+    <button onclick="window.location.href='tienda.html#search'" title="Buscar">
+      <i class="fa fa-search"></i>
+      <span>Buscar</span>
+    </button>
+    <a href="carrito.html" style="position:relative;" title="Mi Carrito">
+      <i class="fa fa-shopping-cart"></i>
+      <span id="bottomNavCartCount" class="badge">0</span>
+      <span>Carrito</span>
+    </a>
+    <a onclick="window.trackEvent && window.trackEvent('whatsapp_click')" href="https://wa.me/573195400473" target="_blank" title="Contacto WhatsApp">
+      <i class="fa fa-whatsapp"></i>
+      <span>Contacto</span>
+    </a>
+  </div>
+
+  <script>
+    const PRODUCTS = [
+      {
+        id: 1,
+        name: 'Desayuno Rebecca Deluxe',
+        desc: 'Desayuno premium con waffles, parfait y sorpresas especiales',
+        price: '230.000',
+        img: 'img/rebecca-deluxe-3.jpg',
+        category: 'Premium',
+        images: ['img/rebecca-deluxe-1.jpg', 'img/rebecca-deluxe-2.jpg', 'img/rebecca-deluxe-3.jpg', 'img/rebecca-deluxe-4.jpg'],
+        contents: [
+          'Café frío sabor o jugo natural de naranja',
+          'Yogurt o leche',
+          'Waffles en forma de corazón con chocolate y sprinkles',
+          'Arándanos y fresas',
+          'Parfait en copa de vidrio',
+          'Sandwich de jamón y queso',
+          'Bouquet de globos',
+          'Caja, tarjeta y decoración'
+        ],
+        shipping: '0',
+        prepTime: '4-5 horas',
+        note: 'No incluye domicilio'
+      },
+      { id: 2, name: 'Frutas y Delicias', desc: 'Selección de frutas frescas y yogur', price: '55.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Selección de frutas frescas y yogur'], shipping: '5.000', prepTime: '30 minutos' },
+      { id: 3, name: 'Desayuno con Globos', desc: 'Bandeja completa + globos decorativos', price: '65.000', img: 'Desayunos.jpg', category: 'Clásicos', contents: ['Todo del desayuno tradicional', 'Pastel pequeño', '3 globos de colores', 'Tarjeta personalizada'], shipping: '8.000', prepTime: '2-3 horas' },
+      { id: 4, name: 'Bandeja Premium', desc: 'Frutas, pasteles, quesos y aceitunas', price: '85.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Tabla de quesos variados', 'Frutas exóticas', 'Aceitunas finas', 'Panes artesanales'], shipping: '10.000', prepTime: '3-4 horas' },
+      { id: 5, name: 'Desayuno Sorpresa Deluxe', desc: 'Incluye champaña, fresas y chocolates', price: '120.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Botella de champaña', 'Fresas bañadas en chocolate', 'Croissants franceses'], shipping: '12.000', prepTime: '4-5 horas' },
+      { id: 6, name: 'Mesa Ejecutiva', desc: 'Variedad de pasteles, frutas y bebidas', price: '150.000', img: 'Desayunos.jpg', category: 'Premium', contents: ['Pasteles gourmet', 'Café y cappuccino', 'Frutas tropicales'], shipping: '15.000', prepTime: '5-6 horas' },
+      { id: 7, name: 'Combo Romántico', desc: 'Desayuno + rosas + nota personalizada', price: '95.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['Desayuno premium', '6 rosas rojas', 'Nota personalizada'], shipping: '10.000', prepTime: '4-5 horas' },
+      { id: 8, name: 'Combo Cumpleaños', desc: 'Desayuno + globos + sorpresa especial', price: '110.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['Desayuno completo', '5 globos con helio', 'Pastel pequeño'], shipping: '12.000', prepTime: '5-6 horas' },
+      { id: 9, name: 'Combo Empresarial', desc: 'Desayuno para 4 personas + café', price: '180.000', img: 'Desayunos.jpg', category: 'Combos', contents: ['4 desayunos completos', 'Café para 4 personas', 'Pasteles para compartir'], shipping: '15.000', prepTime: '6-7 horas' }
+    ];
+
+    function parsePriceToNumber(raw) {
+      if (typeof raw === 'number') return raw;
+      if (!raw) return 0;
+      return Number(String(raw).replace(/\./g, '').replace(/,/g, '.')) || 0;
+    }
+
+    function formatCOP(value) {
+      return new Intl.NumberFormat('es-CO').format(value || 0);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = Number(params.get('id') || 0);
+    const origin = (params.get('origen') || 'desayunos').toLowerCase();
+    const currentProduct = PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
+
+    const originMap = {
+      desayunos: 'desayunos.html',
+      anchetas: 'anchetas.html',
+      fresas: 'fresas.html',
+      floristeria: 'floristeria.html',
+      tienda: 'tienda.html'
+    };
+
+    const productMedia = (currentProduct.images && currentProduct.images.length)
+      ? currentProduct.images
+      : [currentProduct.img];
+
+    let currentMedia = productMedia[0];
+
+    function renderMainMedia() {
+      document.getElementById('mainMediaWrap').innerHTML = `<img src="${currentMedia}" alt="${currentProduct.name}">`;
+      const thumbStrip = document.getElementById('thumbStrip');
+      thumbStrip.innerHTML = productMedia
+        .map(src => `<button class="thumb-btn ${src === currentMedia ? 'active' : ''}" onclick="setMainMedia('${src}')"><img src="${src}" alt="Miniatura"></button>`)
+        .join('');
+    }
+
+    function setMainMedia(src) {
+      currentMedia = src;
+      renderMainMedia();
+    }
+
+    function renderProduct() {
+      document.getElementById('crumbOrigin').href = originMap[origin] || 'desayunos.html';
+      document.getElementById('crumbCurrent').textContent = currentProduct.name;
+      document.getElementById('productTitle').textContent = currentProduct.name;
+      document.getElementById('productDesc').textContent = currentProduct.desc;
+      document.getElementById('productPrice').textContent = `$${currentProduct.price}`;
+      document.getElementById('productShipping').textContent = currentProduct.shipping === '0'
+        ? 'No incluye domicilio'
+        : `$${currentProduct.shipping}`;
+      document.getElementById('productPrep').textContent = currentProduct.prepTime;
+      document.getElementById('productCategory').textContent = currentProduct.category;
+
+      const stockPill = document.getElementById('stockPill');
+      if (currentProduct.stock === false) {
+        stockPill.className = 'stock-pill out';
+        stockPill.textContent = 'Sin stock';
+      } else {
+        stockPill.className = 'stock-pill in';
+        stockPill.textContent = 'Disponible';
+      }
+
+      const contentList = document.getElementById('contentList');
+      contentList.innerHTML = (currentProduct.contents || [])
+        .map(item => `<li>${item}</li>`)
+        .join('');
+
+      renderMainMedia();
+      renderRelated();
+    }
+
+    function renderRelated() {
+      const related = PRODUCTS
+        .filter(p => p.id !== currentProduct.id && p.category === currentProduct.category)
+        .slice(0, 3);
+      const fallback = PRODUCTS.filter(p => p.id !== currentProduct.id).slice(0, 3);
+      const list = related.length ? related : fallback;
+
+      document.getElementById('relatedGrid').innerHTML = list.map(item => `
+        <article class="related-card">
+          <img src="${item.img}" alt="${item.name}">
+          <div class="related-info">
+            <h4>${item.name}</h4>
+            <p>${item.desc}</p>
+            <span class="price">$${item.price}</span>
+            <button class="btn-main" onclick="goToProduct(${item.id})">Ver producto</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function goToProduct(id) {
+      window.location.href = `producto.html?origen=${origin}&id=${id}`;
+    }
+
+    function addToCart() {
+      if (currentProduct.stock === false) {
+        alert('Este producto está sin stock por ahora.');
+        return;
+      }
+
+      const qty = Math.max(1, Math.min(10, parseInt(document.getElementById('qtyInput').value, 10) || 1));
+      const deliveryType = (document.getElementById('deliveryType').value || 'Estandar').trim();
+      const occasion = (document.getElementById('occasionInput').value || '').trim();
+      const note = (document.getElementById('noteInput').value || '').trim();
+
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+
+      const configKey = JSON.stringify({
+        deliveryType,
+        occasion,
+        note
+      });
+
+      const existing = cart.find(item => item.id === currentProduct.id && item.configKey === configKey);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          name: currentProduct.name,
+          price: currentProduct.price,
+          img: currentProduct.img,
+          category: currentProduct.category,
+          qty,
+          configKey,
+          customization: { deliveryType, occasion, note }
+        });
+      }
+
+      localStorage.setItem('detallesCart', JSON.stringify(cart));
+      updateCartCount();
+
+      const status = document.getElementById('statusMsg');
+      status.textContent = 'Producto agregado al carrito con tu personalización.';
+      window.setTimeout(() => {
+        status.textContent = '';
+      }, 1800);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
+      const total = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cartCount').textContent = total;
+      const badge = document.getElementById('bottomNavCartCount');
+      if (badge) {
+        if (total > 0) {
+          badge.textContent = total;
+          badge.style.display = 'flex';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    }
+
+    document.getElementById('addCartBtn').addEventListener('click', addToCart);
+
+    renderProduct();
+    updateCartCount();
+
+    window.trackEvent = window.trackEvent || function(name) {
+      try {
+        const key = 'detallesAnalytics';
+        const data = JSON.parse(localStorage.getItem(key) || '{}');
+        data[name] = (data[name] || 0) + 1;
+        data._last = new Date().toISOString();
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {}
+    };
+  </script>
+  <script src="ui-animations.js"></script>
+</body>
+</html>

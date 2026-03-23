@@ -711,54 +711,29 @@
       Object.keys(productos).forEach(category => {
         const container = document.getElementById(category);
         container.innerHTML = productos[category].map(p => `
-          <div class="product-card">
+          <div class="product-card" onclick="goToProduct(${p.id})" style="cursor:pointer;">
             <img src="${p.img}" alt="${p.name}">
             <div class="product-info">
               <h3>${p.name}</h3>
               <p class="product-desc">${p.desc}</p>
               <div class="product-price">$${p.price}</div>
               <span class="stock-pill ${p.stock === false ? 'out' : 'in'}">${p.stock === false ? 'Sin stock' : 'Disponible hoy'}</span>
-              <div class="product-actions">
-                <button class="view-details-btn" onclick="openModal(${p.id})">
-                  <i class="fa fa-eye"></i> Ver detalle
+              <div class="product-actions" onclick="event.stopPropagation()">
+                <button class="view-details-btn" onclick="goToProduct(${p.id})">
+                  <i class="fa fa-eye"></i> Ver producto
                 </button>
-                <button class="add-cart-btn" onclick="toggleCustomizer(${p.id})">
-                  <i class="fa fa-sliders"></i> Personalizar
+                <button class="add-cart-btn" onclick="goToProduct(${p.id})">
+                  <i class="fa fa-sliders"></i> Ver y personalizar
                 </button>
-              </div>
-              <div class="quick-customizer" id="customizer-${p.id}">
-                <p class="quick-customizer-title">Configura y agrega este detalle</p>
-                <div class="quick-fields">
-                  <div class="quick-field">
-                    <label for="qty-${p.id}">Cantidad</label>
-                    <input id="qty-${p.id}" type="number" min="1" max="10" value="1">
-                  </div>
-                  <div class="quick-field">
-                    <label for="delivery-${p.id}">Tipo de envío</label>
-                    <select id="delivery-${p.id}">
-                      <option value="Estandar">Estandar</option>
-                      <option value="Rapido">Rapido</option>
-                      <option value="Programado">Programado</option>
-                    </select>
-                  </div>
-                  <div class="quick-field full">
-                    <label for="occasion-${p.id}">Ocasion</label>
-                    <input id="occasion-${p.id}" type="text" placeholder="Cumpleaños, aniversario, sorpresa...">
-                  </div>
-                  <div class="quick-field full">
-                    <label for="msg-${p.id}">Mensaje corto (opcional)</label>
-                    <textarea id="msg-${p.id}" placeholder="Ej: Te amo, feliz día..."></textarea>
-                  </div>
-                </div>
-                <button class="add-cart-btn" style="margin-top:10px;" onclick="addConfiguredToCart(${p.id})">
-                  <i class="fa fa-shopping-cart"></i> Agregar personalizado
-                </button>
-                <div class="inline-msg" id="msg-ok-${p.id}"></div>
               </div>
             </div>
           </div>
         `).join('');
       });
+    }
+
+    function goToProduct(productId) {
+      window.location.href = `producto.html?origen=desayunos&id=${productId}`;
     }
 
     function findProductById(productId) {
@@ -767,55 +742,6 @@
         if (product) return product;
       }
       return null;
-    }
-
-    function toggleCustomizer(productId) {
-      const panels = document.querySelectorAll('.quick-customizer');
-      panels.forEach(panel => {
-        if (panel.id !== `customizer-${productId}`) {
-          panel.classList.remove('open');
-        }
-      });
-
-      const current = document.getElementById(`customizer-${productId}`);
-      if (!current) return;
-      current.classList.toggle('open');
-      if (current.classList.contains('open')) {
-        const qtyInput = document.getElementById(`qty-${productId}`);
-        if (qtyInput) qtyInput.focus();
-      }
-    }
-
-    function addConfiguredToCart(productId) {
-      const product = findProductById(productId);
-      if (!product) return;
-      if (product.stock === false) {
-        alert('Este producto esta sin stock por ahora.');
-        return;
-      }
-
-      const qtyValue = parseInt(document.getElementById(`qty-${productId}`).value, 10);
-      const qty = Number.isFinite(qtyValue) ? Math.max(1, Math.min(10, qtyValue)) : 1;
-      const deliveryType = (document.getElementById(`delivery-${productId}`).value || 'Estandar').trim();
-      const occasion = (document.getElementById(`occasion-${productId}`).value || '').trim();
-      const note = (document.getElementById(`msg-${productId}`).value || '').trim();
-
-      addToCart(product, {
-        qty,
-        deliveryType,
-        occasion,
-        note
-      });
-
-      const okMsg = document.getElementById(`msg-ok-${productId}`);
-      if (okMsg) {
-        okMsg.textContent = 'Listo: producto agregado con tu configuracion.';
-        okMsg.classList.add('ok');
-        window.setTimeout(() => {
-          okMsg.textContent = '';
-          okMsg.classList.remove('ok');
-        }, 1800);
-      }
     }
 
     function getProductMedia(product) {
