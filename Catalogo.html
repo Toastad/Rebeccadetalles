@@ -407,13 +407,17 @@
       /* Asegurar que enlaces de la derecha no queden sobre el sidebar */
       .w3-bar .w3-right { margin-right: 16px !important; }
     }
-    /* Evitar que el contenido principal quede debajo del header fijo */
+    /* Espaciado superior del contenido */
     #main-content {
-      margin-top: 56px !important;
+      margin-top: 8px !important;
+    }
+    @media (max-width: 1024px) {
+      #main-content {
+        margin-top: 52px !important;
+      }
     }
     @media (max-width: 600px) {
       #main-content {
-        margin-top: 52px !important;
         margin-bottom: 70px !important;
       }
 
@@ -436,11 +440,6 @@
       .w3-bar.w3-hide-large .w3-bar-item.w3-wide {
         text-align: center !important;
         width: 100% !important;
-      }
-
-      /* Ocultar mini-header interno (carrito + lupa) que repite la bottom-nav */
-      #main-content > header.w3-container {
-        display: none !important;
       }
     }
 
@@ -751,17 +750,6 @@
 
   <!-- PAGE CONTENT -->
   <div class="w3-main" style="margin-left:250px" id="main-content">
-
-    <header class="w3-container w3-xlarge w3-padding-8" style="min-height: auto;">
-      <p class="w3-left" style="margin: 6px 0;">Catálogo</p>
-      <p class="w3-right" style="margin: 6px 0;">
-        <a href="carrito.html" style="color: #333; text-decoration: none; position: relative;">
-          <i class="fa fa-shopping-cart w3-margin-right"></i>
-          <span id="headerCartCount" style="background: #FFD700; color: #333; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; position: absolute; top: 0px; right: 0;">0</span>
-        </a>
-        <i class="fa fa-search"></i>
-      </p>
-    </header>
 
     <!-- Banner -->
     <div class="banner-img-container">
