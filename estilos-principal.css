@@ -154,6 +154,27 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Buttons styled as anchors: never turn fuchsia on hover/active */
+a.hero-cta,
+a.btn-primary,
+a.btn,
+a[class*="btn-"],
+a.w3-button {
+  color: #fff !important;
+}
+a.hero-cta:hover,
+a.hero-cta:active,
+a.hero-cta:visited,
+a.btn-primary:hover,
+a.btn-primary:active,
+a[class*="btn-"]:hover,
+a[class*="btn-"]:active,
+a.w3-button:hover,
+a.w3-button:active {
+  color: #fff !important;
+  text-decoration: none;
+}
+
 a.link-clean:hover {
   text-decoration: none;
 }

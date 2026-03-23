@@ -210,8 +210,13 @@
       box-shadow: 0 8px 18px rgba(233, 30, 99, 0.35);
       transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
     }
-    .hero-cta:hover {
+    .hero-cta:hover,
+    .hero-cta:active,
+    .hero-cta:visited {
+      color: #fff !important;
       text-decoration: none;
+    }
+    .hero-cta:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 24px rgba(233, 30, 99, 0.42);
       filter: brightness(1.04);
