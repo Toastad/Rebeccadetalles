@@ -895,7 +895,7 @@
             <li>Nequi</li>
             <li>Daviplata</li>
             <li>Transferencia</li>
-            <li>Llaves <bre-b>bre-b</bre-b></li>
+            <li>Efectivo</li>
           </ul>
         </div>
         <div class="info-card">
@@ -1074,6 +1074,7 @@
     // Small product index used for sidebar live suggestions.
     // Keep this in sync with your central products; consider moving to a shared `productos.js` later.
     const productIndex = [
+      // Desayunos
       {name: 'Desayuno Rebecca Deluxe', desc: 'Desayuno premium con waffles, parfait y sorpresas especiales'},
       {name: 'Frutas y Delicias', desc: 'Selección de frutas frescas y yogur'},
       {name: 'Desayuno con Globos', desc: 'Bandeja completa + globos decorativos'},
@@ -1082,7 +1083,38 @@
       {name: 'Mesa Ejecutiva', desc: 'Variedad de pasteles, frutas y bebidas'},
       {name: 'Combo Romántico', desc: 'Desayuno + rosas + nota personalizada'},
       {name: 'Combo Cumpleaños', desc: 'Desayuno + globos + sorpresa especial'},
-      {name: 'Combo Empresarial', desc: 'Desayuno para 4 personas + café'}
+      {name: 'Combo Empresarial', desc: 'Desayuno para 4 personas + café'},
+      // Floristería
+      {name: 'Ramo Flores Amarillas', desc: 'Ramo de flores amarillas variadas con decoracion clasica'},
+      {name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium'},
+      {name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y mono decorativo'},
+      {name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de liston para conservar el detalle'},
+      {name: 'Ramo Cisne Girasoles', desc: 'Ramo con 5-6 girasoles en presentacion cisne'},
+      {name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos para detalle doble'},
+      {name: 'Ramo Cisne mas Corazon de Chocolate', desc: 'Ramo romantico con corazon de chocolate incluido'},
+      {name: 'Ramillete Solitario', desc: 'Ramillete sencillo para un detalle rapido y bonito'},
+      {name: 'Ramo Buchon 22 Rosas', desc: 'Ramo buchon elegante para ocasiones especiales'},
+      {name: 'Ramo Buchon 36 Rosas', desc: 'Version amplia de ramo buchon con mayor volumen'},
+      // Fresas y Cajas
+      {name: 'Corazon Mini Dulce', desc: 'Caja corazon con fresas decoradas y rosas eternas'},
+      {name: 'Caja Corazon Sorpresa', desc: 'Corazon de chocolate con fresas y presentacion decorada'},
+      {name: 'Corazon Becca', desc: 'Caja corazon premium con 18 fresas cubiertas'},
+      {name: 'Dear Box', desc: 'Caja con fresas decoradas, rosas de liston y vino espumoso'},
+      {name: 'Mary Box', desc: 'Detalle compacto con rosas, vela y decoracion especial'},
+      {name: 'Luz Box', desc: 'Caja iluminada con rosas y chocolates'},
+      {name: 'Lovable Box', desc: 'Caja con flores amarillas y fresas decoradas'},
+      {name: 'Love Box Deluxe', desc: 'Ramo, fresas y chocolates en formato premium'},
+      {name: 'Corazon Deluxe', desc: 'Edicion premium con mas de 100 rosas y extras'},
+      // Anchetas
+      {name: 'Caja de Suenos', desc: 'Detalle tipo ancheta con desayuno ligero y decoracion especial'},
+      {name: 'Desayuno Aurora', desc: 'Bandeja dulce con frutas, waffle y opcion de globos'},
+      {name: 'Desayuno Buzon de Amor', desc: 'Desayuno premium con opcion de globos para fechas especiales'},
+      {name: 'M de Amor', desc: 'Caja en forma de M con quesos, frutas y toque romantico'},
+      {name: 'M de Devocion', desc: 'Caja de regalo con fresas decoradas y tema especial'},
+      {name: 'Dear Box Adore', desc: 'Caja premium con rosas de liston y vino espumoso'},
+      {name: 'Combo Querida', desc: 'Combo de alto impacto para celebraciones especiales'},
+      {name: 'Lovable Combo con Peluche', desc: 'Flores y fresas con opcion de peluche por tamano'},
+      {name: 'Love Box Deluxe Ancheta', desc: 'Ramo, fresas y chocolates en caja premium'}
     ];
 
     function toggleSidebarSearch(){
