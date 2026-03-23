@@ -78,7 +78,8 @@
     .bottom-nav a:active, .bottom-nav button:active { transform: translateY(0) scale(0.97); }
     .bottom-nav i { font-size: 20px; }
     .bottom-nav .badge { position: absolute; background: #FFD700; color: #333; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; top: 2px; }
-    @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .product-card { flex: 1 1 100%; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } }
+    @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .products-grid { gap: 10px; } .product-card { flex: 1 1 calc(50% - 6px); min-width: 0; } .product-card img { height: 108px; } .product-info { padding: 8px; } .product-info h3 { font-size: 14px; margin-bottom: 4px; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px; } .product-desc { font-size: 11px; min-height: 30px; margin-bottom: 4px; } .product-price { font-size: 14px; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } }
+    @media (max-width: 380px) { .product-card img { height: 98px; } .product-info { padding: 7px; } }
   </style>
 </head>
 <body>
