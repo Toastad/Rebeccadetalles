@@ -182,6 +182,39 @@
       font-family: inherit;
       resize: vertical;
       background: #fff;
+      transition: border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+    }
+    .customization-field select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      border: 1.5px solid #e6d5dc;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #E91E63 50%),
+        linear-gradient(135deg, #E91E63 50%, transparent 50%),
+        linear-gradient(to right, #f9ecf1, #f9ecf1);
+      background-position:
+        calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px),
+        calc(100% - 2.3rem) 0.45rem;
+      background-size: 6px 6px, 6px 6px, 1px 1.6rem;
+      background-repeat: no-repeat;
+      padding-right: 44px;
+    }
+    .customization-field input:hover,
+    .customization-field select:hover,
+    .customization-field textarea:hover {
+      border-color: #d7a8b7;
+      background-color: #fff8fb;
+    }
+    .customization-field input:focus,
+    .customization-field select:focus,
+    .customization-field textarea:focus {
+      outline: none;
+      border-color: #E91E63;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.12);
+      background-color: #fff;
     }
     .customization-field textarea {
       min-height: 78px;
@@ -231,10 +264,17 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
-      transition: color 0.3s;
+      border-radius: 12px;
+      transition: transform 0.22s ease, color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
     }
     .bottom-nav a:hover, .bottom-nav button:hover {
       color: #c2185b;
+      background: rgba(233, 30, 99, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(233, 30, 99, 0.18);
+    }
+    .bottom-nav a:active, .bottom-nav button:active {
+      transform: translateY(0) scale(0.97);
     }
     .bottom-nav i {
       font-size: 20px;
@@ -282,8 +322,7 @@
 </head>
 <body class="w3-content" style="max-width:1200px">
   <header class="w3-bar w3-top w3-pink w3-xlarge" style="padding:8px 12px; position:fixed; width:100vw; left:0; top:0; z-index:1000; font-size:16px;">
-    <div class="w3-bar-item w3-wide" style="font-size:16px; padding: 4px 8px;">Detalles Barranquilla</div>
-    <a href="Catalogo.html" class="w3-bar-item w3-button w3-right" style="font-size:14px; padding: 4px 8px;">← Volver</a>
+    <a href="Catalogo.html" class="w3-bar-item w3-wide" style="font-family:'Dancing Script', cursive; font-size:28px; font-weight:700; padding: 2px 8px; color:#fff; text-decoration:none; letter-spacing:0.3px; text-shadow: 0 2px 6px rgba(0,0,0,0.18);">Detalles Barranquilla</a>
   </header>
 
   <div style="height:50px"></div>

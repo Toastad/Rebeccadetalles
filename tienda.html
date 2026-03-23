@@ -172,10 +172,17 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
-      transition: color 0.3s;
+      border-radius: 12px;
+      transition: transform 0.22s ease, color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
     }
     .bottom-nav a:hover, .bottom-nav button:hover {
       color: #c2185b;
+      background: rgba(233, 30, 99, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(233, 30, 99, 0.18);
+    }
+    .bottom-nav a:active, .bottom-nav button:active {
+      transform: translateY(0) scale(0.97);
     }
     .bottom-nav i {
       font-size: 20px;
@@ -246,8 +253,7 @@
 </head>
 <body class="w3-content" style="max-width:1200px">
   <header class="w3-bar w3-top w3-pink w3-xlarge" style="padding:8px 12px; font-size:16px;">
-    <div class="w3-bar-item w3-wide" style="font-size:16px; padding: 4px 8px;">Detalles Barranquilla</div>
-    <a href="Catalogo.html" class="w3-bar-item w3-button w3-right" style="font-size:14px; padding: 4px 8px;">Volver</a>
+    <a href="Catalogo.html" class="w3-bar-item w3-wide" style="font-family:'Dancing Script', cursive; font-size:28px; font-weight:700; padding: 2px 8px; color:#fff; text-decoration:none; letter-spacing:0.3px; text-shadow: 0 2px 6px rgba(0,0,0,0.18);">Detalles Barranquilla</a>
   </header>
 
   <div style="height:72px"></div>

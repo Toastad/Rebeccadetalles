@@ -11,9 +11,12 @@
   <style>
     body,h1,h2,h3,h4 {font-family: "Montserrat", sans-serif}
     .topbar { position: fixed; top: 0; left: 0; width: 100vw; z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #E91E63; box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 13px; }
-    .logo { font-weight: 700; color: white; }
+    .logo { font-weight: 700; color: white; font-family: 'Dancing Script', cursive; font-size: 30px; letter-spacing: 0.2px; text-shadow: 0 2px 6px rgba(0,0,0,0.2); text-decoration: none; transition: transform 0.2s ease, opacity 0.2s ease; }
+    .logo:hover { opacity: 0.92; transform: translateY(-1px); }
     .topnav { display: flex; gap: 16px; align-items: center; }
-    .topnav a { color: white; text-decoration: none; font-weight: 600; }
+    .topnav a { color: white; text-decoration: none; font-weight: 600; border-radius: 10px; padding: 6px 10px; transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease; }
+    .topnav a:hover { background: rgba(255,255,255,0.14); transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.14); }
+    .topnav a:active { transform: translateY(0) scale(0.97); }
     .cart-icon { color: white; font-size: 20px; text-decoration: none; position: relative; }
     .cart-count { background: #FFD700; color: #333; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; position: absolute; top: -8px; right: -8px; }
     .banner-img-container { margin-top: 50px; margin-bottom: 24px; position: relative; width: 100%; height: 420px; overflow: hidden; border-radius: 10px; }
@@ -70,14 +73,16 @@
     .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
     .dot.active { background: rgba(255,255,255,0.9); }
     .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 2px solid #E91E63; z-index: 999; padding: 8px 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.1); }
-    .bottom-nav a, .bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 0; color: #E91E63; text-decoration: none; background: none; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .bottom-nav a, .bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 0; color: #E91E63; text-decoration: none; background: none; border: none; cursor: pointer; font-size: 12px; font-weight: 600; border-radius: 12px; transition: transform 0.22s ease, color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease; }
+    .bottom-nav a:hover, .bottom-nav button:hover { color: #c2185b; background: rgba(233, 30, 99, 0.08); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(233, 30, 99, 0.18); }
+    .bottom-nav a:active, .bottom-nav button:active { transform: translateY(0) scale(0.97); }
     .bottom-nav i { font-size: 20px; }
     .bottom-nav .badge { position: absolute; background: #FFD700; color: #333; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; top: 2px; }
     @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .product-card { flex: 1 1 100%; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } }
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="logo">Detalles Barranquilla 🎁</div><nav class="topnav"><a href="Catalogo.html">← Catálogo</a><a href="carrito.html" class="cart-icon"><i class="fa fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a></nav></header>
+  <header class="topbar"><a href="Catalogo.html" class="logo">Detalles Barranquilla</a><nav class="topnav"><a href="carrito.html" class="cart-icon"><i class="fa fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a></nav></header>
   <div class="banner-img-container"><img src="Anchetas.JPG" alt="Anchetas y Detalles"><div class="banner-text-overlay"><h1 style="color:white; margin:0; font-size:32px;">Anchetas y Detalles</h1><p style="color:white; margin-top:8px; font-size:16px;">Categoria unificada: anchetas, saludables y otros detalles</p></div></div>
   <main class="container"><section><h2 class="section-title">Anchetas y Desayunos</h2><div class="products-grid" id="frutales"></div></section><section><h2 class="section-title">Cajas Especiales</h2><div class="products-grid" id="dulces"></div></section><section><h2 class="section-title">Combos y Premium</h2><div class="products-grid" id="mixtas"></div></section></main>
   <div id="imageLightbox" class="image-lightbox" onclick="closeLightbox()"><span class="lightbox-close" onclick="closeLightbox()">&times;</span><div class="lightbox-content" id="lightboxContent" onclick="event.stopPropagation()"></div></div>

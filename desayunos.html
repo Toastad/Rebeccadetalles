@@ -32,9 +32,12 @@
       .logo { font-size: 14px; }
       .topnav a { font-size: 12px; margin-left: 10px; }
     }
-    .logo { font-weight: 700; color: white; }
+    .logo { font-weight: 700; color: white; font-family: 'Dancing Script', cursive; font-size: 30px; letter-spacing: 0.2px; text-shadow: 0 2px 6px rgba(0,0,0,0.2); text-decoration: none; transition: transform 0.2s ease, opacity 0.2s ease; }
+    .logo:hover { opacity: 0.92; transform: translateY(-1px); }
     .topnav { display: flex; gap: 16px; align-items: center; }
-    .topnav a { color: white; text-decoration: none; font-weight: 600; }
+    .topnav a { color: white; text-decoration: none; font-weight: 600; border-radius: 10px; padding: 6px 10px; transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease; }
+    .topnav a:hover { background: rgba(255,255,255,0.14); transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.14); }
+    .topnav a:active { transform: translateY(0) scale(0.97); }
     .cart-icon { color: white; font-size: 20px; cursor: pointer; text-decoration: none; position: relative; }
     .cart-count {
       background: #FFD700;
@@ -413,10 +416,17 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
-      transition: color 0.3s;
+      border-radius: 12px;
+      transition: transform 0.22s ease, color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
     }
     .bottom-nav a:hover, .bottom-nav button:hover {
       color: #c2185b;
+      background: rgba(233, 30, 99, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(233, 30, 99, 0.18);
+    }
+    .bottom-nav a:active, .bottom-nav button:active {
+      transform: translateY(0) scale(0.97);
     }
     .bottom-nav i {
       font-size: 20px;
@@ -466,9 +476,8 @@
 
   <!-- HEADER -->
   <header class="topbar">
-    <div class="logo">Detalles Barranquilla 🎁</div>
+    <a href="Catalogo.html" class="logo">Detalles Barranquilla</a>
     <nav class="topnav">
-      <a href="Catalogo.html">← Catálogo</a>
       <a href="carrito.html" class="cart-icon">
         <i class="fa fa-shopping-cart"></i>
         <span class="cart-count" id="cartCount">0</span>

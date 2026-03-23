@@ -370,10 +370,47 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
-      transition: color 0.3s;
+      border-radius: 12px;
+      transition: transform 0.22s ease, color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
     }
     .bottom-nav a:hover, .bottom-nav button:hover {
       color: #c2185b;
+      background: rgba(233, 30, 99, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(233, 30, 99, 0.18);
+    }
+    .bottom-nav a:active, .bottom-nav button:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    .w3-sidebar .w3-bar-item.w3-button,
+    .w3-bar .w3-button {
+      border-radius: 10px;
+      transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .w3-sidebar .w3-bar-item.w3-button:hover,
+    .w3-bar .w3-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(233, 30, 99, 0.16);
+    }
+    .w3-sidebar .w3-bar-item.w3-button:active,
+    .w3-bar .w3-button:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    .brand-link {
+      font-family: 'Dancing Script', cursive;
+      font-size: 30px !important;
+      font-weight: 700;
+      color: #fff !important;
+      text-decoration: none;
+      letter-spacing: 0.2px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.22s ease, opacity 0.22s ease;
+    }
+    .brand-link:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
     }
     .bottom-nav i {
       font-size: 20px;
@@ -591,7 +628,7 @@
   </nav>
 
   <header class="w3-bar w3-top w3-hide-large w3-pink w3-xlarge" style="padding: 6px 12px;">
-    <div class="w3-bar-item w3-padding-24 w3-wide" style="font-size: 14px; padding: 4px 8px !important;">Detalles Barranquilla</div>
+    <a href="Catalogo.html" class="w3-bar-item w3-padding-24 w3-wide brand-link" style="padding: 2px 8px !important;">Detalles Barranquilla</a>
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right" style="padding: 6px 10px !important;" onclick="w3_open()"><i class="fa fa-bars"></i></a>
   </header>
 
