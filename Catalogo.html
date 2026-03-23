@@ -547,22 +547,23 @@
     .btn-cancel:hover { background:#e0e0e0; }
     .form-success { color:#4caf50; font-size:14px; margin-top:12px; text-align:center; }
 
-    /* Nuevo Footer Styles */
-    .footer-main { background:#fff; padding:48px 24px 32px; text-align:center; border-top:2px solid #E91E63; }
+    /* Nuevo Footer Styles - Diseño Único */
+    .footer-main { background:#fff; padding:40px 24px 32px; border-top:3px solid #E91E63; }
     .footer-content { max-width:1200px; margin:0 auto; }
-    .footer-top { display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px; margin-bottom:40px; align-items:start; }
-    .footer-section { text-align:center; }
-    .footer-section h3 { color:#E91E63; font-size:18px; font-weight:600; margin:0 0 12px 0; letter-spacing:1px; }
-    .footer-section p, .footer-section a { color:#333; font-size:14px; margin:8px 0; text-decoration:none; }
-    .footer-section a:hover { color:#E91E63; font-weight:500; }
-    .footer-logo { text-align:center; }
-    .footer-logo-text { font-size:28px; font-weight:bold; color:#E91E63; font-family:Dancing Script, cursive; }
-    .footer-logo-icon { font-size:48px; color:#F7C5CC; margin:8px 0; }
-    .footer-tagline { font-family:Dancing Script, cursive; color:#E91E63; font-size:18px; margin:32px 0 24px 0; }
-    .footer-socials { display:flex; gap:20px; justify-content:center; margin:24px 0; }
-    .footer-socials a { color:#E91E63; font-size:24px; text-decoration:none; transition:color 0.3s; }
-    .footer-socials a:hover { color:#F7C5CC; }
-    .footer-bottom { background:#f9f9f9; padding:16px 24px; text-align:center; color:#666; font-size:12px; border-top:1px solid #f0f0f0; }
+    .footer-top { display:grid; grid-template-columns:auto 1fr; gap:48px; margin-bottom:32px; align-items:flex-start; }
+    .footer-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+    .footer-section { text-align:left; }
+    .footer-section h3 { color:#E91E63; font-size:16px; font-weight:700; margin:0 0 16px 0; text-transform:uppercase; letter-spacing:0.5px; }
+    .footer-section p, .footer-section a { color:#555; font-size:13px; margin:10px 0; text-decoration:none; line-height:1.6; }
+    .footer-section a:hover { color:#E91E63; font-weight:600; }
+    .footer-logo { flex-shrink:0; }
+    .footer-logo img { max-width:200px; height:auto; display:block; }
+    .footer-tagline { text-align:center; font-family:Dancing Script, cursive; color:#E91E63; font-size:16px; margin:28px 0 20px 0; font-style:italic; }
+    .footer-socials { display:flex; gap:16px; justify-content:center; margin:20px 0; }
+    .footer-socials a { color:#E91E63; font-size:22px; text-decoration:none; transition:all 0.3s; padding:6px; }
+    .footer-socials a:hover { color:#fff; background:#E91E63; border-radius:50%; }
+    .footer-bottom { background:#f5f5f5; padding:14px 24px; text-align:center; color:#777; font-size:11px; border-top:1px solid #eee; }
+    @media (max-width:768px) { .footer-top { grid-template-columns:1fr; gap:24px; } .footer-info-grid { grid-template-columns:1fr; } .footer-section { text-align:center; } }
     @media (max-width:900px) { .footer-top { grid-template-columns:1fr; gap:24px; } }
   </style>
 </head>
@@ -775,35 +776,35 @@
     <footer class="footer-main" id="contacto">
       <div class="footer-content">
         <div class="footer-top">
-          <!-- Contacto (Izquierda) -->
-          <div class="footer-section">
-            <h3>CONTACTO</h3>
-            <p><i class="fa fa-whatsapp" style="margin-right:8px; color:#E91E63;"></i> WhatsApp: (+57) 319 5400473</p>
-            <p><i class="fa fa-envelope" style="margin-right:8px; color:#E91E63;"></i> info@detallesbarranquilla.com</p>
-          </div>
-
-          <!-- Logo (Centro) -->
+          <!-- Logo (Izquierda) -->
           <div class="footer-logo">
-            <img src="logo-rebecca.jpg" alt="Logo Rebecca" style="max-width:280px; height:auto; margin:0 auto;">
+            <img src="logo-rebecca.jpg" alt="Logo Rebecca">
           </div>
 
-          <!-- Explora (Derecha) -->
-          <div class="footer-section">
-            <h3>EXPLORA</h3>
-            <p><a href="desayunos.html">Desayunos</a></p>
-            <p><a href="floristeria.html">Floristería</a></p>
-            <p><a href="fresas.html">Fresas</a></p>
+          <!-- Información (Derecha en 2 columnas) -->
+          <div class="footer-info-grid">
+            <div class="footer-section">
+              <h3>Contáctanos</h3>
+              <p><i class="fa fa-whatsapp" style="margin-right:6px; color:#E91E63;"></i> <strong>(+57) 319 5400473</strong></p>
+              <p style="margin-top:12px; font-size:12px; color:#999;">📧 info@detallesbarranquilla.com</p>
+            </div>
+            <div class="footer-section">
+              <h3>Nuestras Categorías</h3>
+              <p><a href="desayunos.html">🌅 Desayunos</a></p>
+              <p><a href="floristeria.html">🌹 Floristería</a></p>
+              <p><a href="fresas.html">🍓 Fresas</a></p>
+            </div>
           </div>
         </div>
-
-        <!-- Tagline -->
-        <div class="footer-tagline">Partícipes de tus momentos especiales</div>
 
         <!-- Redes Sociales -->
         <div class="footer-socials">
           <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fa fa-instagram"></i></a>
           <a href="https://wa.me/573195400473" target="_blank" title="WhatsApp"><i class="fa fa-whatsapp"></i></a>
         </div>
+
+        <!-- Tagline -->
+        <div class="footer-tagline">Partícipes de tus momentos especiales</div>
       </div>
     </footer>
 
