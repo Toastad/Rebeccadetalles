@@ -314,6 +314,19 @@
       max-width: 100%;
       min-width: 0;
       box-sizing: border-box;
+      transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background-color 0.22s ease;
+    }
+    .config-field input,
+    .config-field textarea {
+      background: linear-gradient(180deg, #fff 0%, #fff9fc 100%);
+    }
+    .config-field input:focus,
+    .config-field textarea:focus {
+      outline: none;
+      border-color: #e08cb0;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+      transform: translateY(-1px);
+      background: #fff;
     }
     .config-field.collapse-anim {
       overflow: hidden;
@@ -334,6 +347,32 @@
     .config-field select.native-hidden {
       display: none;
     }
+    .input-shell {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+    }
+    .input-shell input {
+      padding-right: 40px;
+    }
+    .input-shell::after {
+      font-family: FontAwesome;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bf5b86;
+      font-size: 13px;
+      pointer-events: none;
+      transition: color 0.22s ease, transform 0.22s ease;
+    }
+    .input-shell:focus-within::after {
+      color: #c2185b;
+      transform: translateY(-50%) scale(1.06);
+    }
+    .input-shell.shell-qty::after { content: "\f162"; }
+    .input-shell.shell-date::after { content: "\f073"; }
+    .input-shell.shell-time::after { content: "\f017"; }
     .custom-select {
       position: relative;
       width: 100%;
@@ -356,6 +395,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      background: linear-gradient(180deg, #fff 0%, #fff9fc 100%);
       transition: border-color 0.22s ease, box-shadow 0.22s ease;
     }
     .custom-select-trigger::after {
@@ -656,7 +696,9 @@
                 <div class="config-grid">
                   <div class="config-field">
                     <label for="qtyInput">Cantidad</label>
-                    <input id="qtyInput" type="number" min="1" max="10" value="1">
+                    <div class="input-shell shell-qty">
+                      <input id="qtyInput" type="number" min="1" max="10" value="1">
+                    </div>
                   </div>
                   <div class="config-field">
                     <label for="deliveryType">Tipo de envío</label>
@@ -702,11 +744,15 @@
                   </div>
                   <div class="config-field">
                     <label for="deliveryDateInput">Fecha de entrega</label>
-                    <input id="deliveryDateInput" type="date" required>
+                    <div class="input-shell shell-date">
+                      <input id="deliveryDateInput" type="date" required>
+                    </div>
                   </div>
                   <div class="config-field">
                     <label for="deliveryTimeInput">Hora aproximada</label>
-                    <input id="deliveryTimeInput" type="time" required>
+                    <div class="input-shell shell-time">
+                      <input id="deliveryTimeInput" type="time" required>
+                    </div>
                   </div>
                   <div class="config-field" id="balloonsBaseWrapper">
                     <label for="includeBalloonsInput">Globos</label>
