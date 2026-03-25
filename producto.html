@@ -212,6 +212,7 @@
       margin: 0;
       background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,245,250,0.92));
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+      transform-origin: top center;
     }
     .customizer-dropdown > summary {
       list-style: none;
@@ -262,6 +263,15 @@
     .customizer-dropdown[open] > summary .caret {
       transform: rotate(180deg);
       color: #ad1457;
+    }
+    .customizer-dropdown[open] {
+      animation: customizerBloom 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 14px 28px rgba(233, 30, 99, 0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    @keyframes customizerBloom {
+      0% { transform: translateY(-2px) scaleY(0.985); }
+      65% { transform: translateY(0) scaleY(1.008); }
+      100% { transform: translateY(0) scaleY(1); }
     }
     .config-title {
       margin: 0 0 10px;
@@ -373,6 +383,79 @@
     .input-shell.shell-qty::after { content: "\f162"; }
     .input-shell.shell-date::after { content: "\f073"; }
     .input-shell.shell-time::after { content: "\f017"; }
+    .custom-picker {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+    }
+    .custom-picker-trigger {
+      display: block;
+      width: 100%;
+      border: 1px solid #e7dce1;
+      border-radius: 8px;
+      padding: 10px 36px 10px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: left;
+      background: linear-gradient(180deg, #fff 0%, #fff9fc 100%);
+      color: #555;
+      cursor: pointer;
+      position: relative;
+      box-sizing: border-box;
+      transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+    }
+    .custom-picker-trigger::after {
+      content: "\f078";
+      font-family: FontAwesome;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bf5b86;
+      font-size: 12px;
+      transition: transform 0.24s ease, color 0.24s ease;
+    }
+    .custom-picker-trigger .picker-value.is-filled {
+      color: #333;
+      font-weight: 600;
+    }
+    .custom-picker.open .custom-picker-trigger {
+      border-color: #e08cb0;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.12);
+      transform: translateY(-1px);
+    }
+    .custom-picker.open .custom-picker-trigger::after {
+      transform: translateY(-50%) rotate(180deg);
+      color: #c2185b;
+    }
+    .custom-picker-panel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      z-index: 75;
+      border: 1px solid #f0c7d8;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #fff, #fff7fb);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+      padding: 0 10px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: max-height 0.24s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease, transform 0.24s ease, padding 0.24s ease;
+    }
+    .custom-picker.open .custom-picker-panel {
+      padding: 10px;
+      max-height: 120px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .custom-picker-panel .input-shell input {
+      background: #fff;
+    }
     .custom-select {
       position: relative;
       width: 100%;
@@ -744,14 +827,28 @@
                   </div>
                   <div class="config-field">
                     <label for="deliveryDateInput">Fecha de entrega</label>
-                    <div class="input-shell shell-date">
-                      <input id="deliveryDateInput" type="date" required>
+                    <div class="custom-picker picker-date" id="deliveryDatePicker">
+                      <button type="button" class="custom-picker-trigger">
+                        <span class="picker-value">Seleccionar fecha</span>
+                      </button>
+                      <div class="custom-picker-panel">
+                        <div class="input-shell shell-date">
+                          <input id="deliveryDateInput" type="date" required>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="config-field">
                     <label for="deliveryTimeInput">Hora aproximada</label>
-                    <div class="input-shell shell-time">
-                      <input id="deliveryTimeInput" type="time" required>
+                    <div class="custom-picker picker-time" id="deliveryTimePicker">
+                      <button type="button" class="custom-picker-trigger">
+                        <span class="picker-value">Seleccionar hora</span>
+                      </button>
+                      <div class="custom-picker-panel">
+                        <div class="input-shell shell-time">
+                          <input id="deliveryTimeInput" type="time" required>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="config-field" id="balloonsBaseWrapper">
@@ -1354,6 +1451,83 @@
       }
     }
 
+    function initAnimatedPickers() {
+      const formatDateLabel = (value) => {
+        if (!value) return 'Seleccionar fecha';
+        const [year, month, day] = value.split('-').map(Number);
+        const date = new Date(year, (month || 1) - 1, day || 1);
+        if (Number.isNaN(date.getTime())) return 'Seleccionar fecha';
+        return new Intl.DateTimeFormat('es-CO', {
+          weekday: 'short',
+          day: '2-digit',
+          month: 'short'
+        }).format(date);
+      };
+
+      const formatTimeLabel = (value) => {
+        if (!value) return 'Seleccionar hora';
+        const [hours, minutes] = value.split(':').map(Number);
+        if (Number.isNaN(hours) || Number.isNaN(minutes)) return 'Seleccionar hora';
+        const period = hours >= 12 ? 'p. m.' : 'a. m.';
+        const normalizedHour = hours % 12 || 12;
+        return `${normalizedHour}:${String(minutes).padStart(2, '0')} ${period}`;
+      };
+
+      const closeAllAnimatedPickers = (except) => {
+        document.querySelectorAll('.custom-picker.open').forEach((node) => {
+          if (node !== except) node.classList.remove('open');
+        });
+      };
+
+      document.querySelectorAll('.custom-picker').forEach((picker) => {
+        if (picker.dataset.bound === '1') return;
+        picker.dataset.bound = '1';
+
+        const trigger = picker.querySelector('.custom-picker-trigger');
+        const input = picker.querySelector('input');
+        const valueNode = picker.querySelector('.picker-value');
+        if (!trigger || !input || !valueNode) return;
+
+        const sync = () => {
+          const isDate = input.type === 'date';
+          const text = isDate ? formatDateLabel(input.value) : formatTimeLabel(input.value);
+          valueNode.textContent = text;
+          valueNode.classList.toggle('is-filled', !!input.value);
+        };
+
+        trigger.addEventListener('click', () => {
+          const willOpen = !picker.classList.contains('open');
+          closeAllAnimatedPickers(picker);
+          picker.classList.toggle('open', willOpen);
+          if (willOpen) {
+            window.setTimeout(() => {
+              if (typeof input.showPicker === 'function') input.showPicker();
+              else input.focus();
+            }, 120);
+          }
+        });
+
+        input.addEventListener('change', () => {
+          sync();
+          picker.classList.remove('open');
+        });
+        input.addEventListener('focus', () => {
+          picker.classList.add('open');
+        });
+
+        input._syncAnimatedPicker = sync;
+        sync();
+      });
+
+      if (!window.__animatedPickerDocBound) {
+        document.addEventListener('click', (event) => {
+          if (event.target.closest('.custom-picker')) return;
+          document.querySelectorAll('.custom-picker.open').forEach((node) => node.classList.remove('open'));
+        });
+        window.__animatedPickerDocBound = true;
+      }
+    }
+
     function setMinDeliveryDate() {
       const dateInput = document.getElementById('deliveryDateInput');
       if (!dateInput) return;
@@ -1386,6 +1560,7 @@
     renderProduct();
     initSelectAnimations();
     setMinDeliveryDate();
+    initAnimatedPickers();
     toggleBalloonTypeVisibility();
     updateCartCount();
 
