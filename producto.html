@@ -272,6 +272,59 @@
       min-width: 0;
       box-sizing: border-box;
     }
+    .config-field.has-select {
+      position: relative;
+    }
+    .config-field.has-select select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-right: 36px;
+      transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+    }
+    .config-field.has-select::after {
+      content: "\f078";
+      font-family: FontAwesome;
+      position: absolute;
+      right: 12px;
+      top: 31px;
+      color: #bf5b86;
+      font-size: 12px;
+      pointer-events: none;
+      transition: transform 0.26s ease, color 0.26s ease;
+    }
+    .config-field.has-select:focus-within::after {
+      transform: translateY(-1px) rotate(180deg);
+      color: #c2185b;
+    }
+    .config-field.has-select:focus-within select {
+      border-color: #e08cb0;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.12);
+      transform: translateY(-1px);
+    }
+    .config-field.select-opening select {
+      animation: selectLift 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes selectLift {
+      0% { transform: translateY(0); }
+      55% { transform: translateY(-2px); }
+      100% { transform: translateY(-1px); }
+    }
+
+    .config-field.collapse-anim {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: max-height 0.3s ease, opacity 0.24s ease, transform 0.3s ease;
+    }
+    .config-field.collapse-anim.is-open {
+      max-height: 92px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
     .config-field textarea { min-height: 74px; resize: vertical; }
 
     .cta-row {
@@ -559,7 +612,7 @@
                       <option value="Sí">Sí</option>
                     </select>
                   </div>
-                  <div class="config-field" id="balloonTypeWrapper" style="display:none;">
+                  <div class="config-field collapse-anim" id="balloonTypeWrapper">
                     <label for="balloonTypeInput">Tipo de globos</label>
                     <select id="balloonTypeInput">
                       <option value="">Seleccionar</option>
@@ -791,6 +844,7 @@
               ${cfg.variants.map((v, i) => `<option value="${i}">${v.name} — $${v.price}</option>`).join('')}
             </select>
           </div>`;
+        initSelectAnimations();
         updatePriceFromVariant();
       } else {
         wrapper.innerHTML = '';
@@ -1061,11 +1115,34 @@
       if (!wrapper || !balloonType) return;
 
       if (value === 'Sí') {
-        wrapper.style.display = 'flex';
+        wrapper.classList.add('is-open');
       } else {
-        wrapper.style.display = 'none';
+        wrapper.classList.remove('is-open');
         balloonType.value = '';
       }
+    }
+
+    function initSelectAnimations() {
+      document.querySelectorAll('.config-field select').forEach((sel) => {
+        const field = sel.closest('.config-field');
+        if (!field) return;
+
+        field.classList.add('has-select');
+        if (sel.dataset.animBound === '1') return;
+
+        sel.addEventListener('pointerdown', () => {
+          field.classList.add('select-opening');
+          window.setTimeout(() => field.classList.remove('select-opening'), 280);
+        });
+        sel.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+            field.classList.add('select-opening');
+            window.setTimeout(() => field.classList.remove('select-opening'), 280);
+          }
+        });
+
+        sel.dataset.animBound = '1';
+      });
     }
 
     function setMinDeliveryDate() {
@@ -1098,6 +1175,7 @@
     document.getElementById('includeBalloonsInput').addEventListener('change', toggleBalloonTypeVisibility);
 
     renderProduct();
+    initSelectAnimations();
     setMinDeliveryDate();
     toggleBalloonTypeVisibility();
     updateCartCount();
