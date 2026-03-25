@@ -280,16 +280,34 @@
       -webkit-appearance: none;
       -moz-appearance: none;
       padding-right: 36px;
+      border: 1.5px solid #d894b3;
+      background: linear-gradient(180deg, #ffffff 0%, #fff5fa 100%);
+      color: #333;
+      font-weight: 600;
+      cursor: pointer;
       transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+    }
+    .config-field.has-select::before {
+      content: "";
+      position: absolute;
+      right: 6px;
+      top: 24px;
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: #ffe6f1;
+      border: 1px solid #f2bfd7;
+      pointer-events: none;
+      transition: background-color 0.26s ease, border-color 0.26s ease;
     }
     .config-field.has-select::after {
       content: "\f078";
       font-family: FontAwesome;
       position: absolute;
-      right: 12px;
-      top: 31px;
-      color: #bf5b86;
-      font-size: 12px;
+      right: 14px;
+      top: 32px;
+      color: #ad3f70;
+      font-size: 11px;
       pointer-events: none;
       transition: transform 0.26s ease, color 0.26s ease;
     }
@@ -297,10 +315,19 @@
       transform: translateY(-1px) rotate(180deg);
       color: #c2185b;
     }
+    .config-field.has-select:focus-within::before {
+      background: #ffd7e9;
+      border-color: #e6a7c3;
+    }
     .config-field.has-select:focus-within select {
       border-color: #e08cb0;
       box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.12);
       transform: translateY(-1px);
+    }
+    .config-field.has-select select option {
+      color: #333;
+      background: #fff;
+      font-weight: 500;
     }
     .config-field.select-opening select {
       animation: selectLift 260ms cubic-bezier(0.22, 1, 0.36, 1);
