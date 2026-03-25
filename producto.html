@@ -207,9 +207,11 @@
     }
     .customizer-dropdown {
       border-radius: 12px;
-      overflow: visible;
+      overflow: hidden;
       border: none;
       margin: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,245,250,0.92));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
     }
     .customizer-dropdown > summary {
       list-style: none;
@@ -223,13 +225,44 @@
       color: #c2185b;
       font-size: 15px;
       border-bottom: 1px solid #f2d5e1;
+      position: relative;
+      transition: background-color 0.24s ease, color 0.24s ease;
+    }
+    .customizer-dropdown > summary::before {
+      content: "Personalizable";
+      position: absolute;
+      right: 42px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      letter-spacing: 0.2px;
+      font-weight: 700;
+      color: #c2185b;
+      background: #ffe5f1;
+      border: 1px solid #f3bdd5;
+      border-radius: 999px;
+      padding: 2px 7px;
+      opacity: 0.85;
+      transition: opacity 0.22s ease, transform 0.22s ease;
     }
     .customizer-dropdown > summary::-webkit-details-marker { display: none; }
     .customizer-dropdown > summary .caret {
       font-size: 16px;
-      transition: transform 0.24s ease;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.24s ease;
     }
-    .customizer-dropdown[open] > summary .caret { transform: rotate(180deg); }
+    .customizer-dropdown[open] > summary {
+      background: linear-gradient(135deg, #ffe9f4, #fff7fb 72%);
+      color: #ad1457;
+      border-bottom-color: #efbfd3;
+    }
+    .customizer-dropdown[open] > summary::before {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.02);
+    }
+    .customizer-dropdown[open] > summary .caret {
+      transform: rotate(180deg);
+      color: #ad1457;
+    }
     .config-title {
       margin: 0 0 10px;
       color: #c2185b;
@@ -237,8 +270,18 @@
       font-weight: 800;
     }
     .config-content {
+      padding: 0 12px;
+      overflow: hidden;
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-10px);
+      transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, transform 0.4s ease, padding 0.3s ease;
+    }
+    .customizer-dropdown[open] .config-content {
       padding: 12px;
-      overflow: visible;
+      opacity: 1;
+      max-height: 1400px;
+      transform: translateY(0);
     }
     .config-grid {
       display: grid;
@@ -280,44 +323,22 @@
       -webkit-appearance: none;
       -moz-appearance: none;
       padding-right: 36px;
-      border: 1.5px solid #d894b3;
-      background: linear-gradient(180deg, #ffffff 0%, #fff5fa 100%);
-      color: #333;
-      font-weight: 600;
-      cursor: pointer;
       transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
-    }
-    .config-field.has-select::before {
-      content: "";
-      position: absolute;
-      right: 6px;
-      top: 24px;
-      width: 26px;
-      height: 26px;
-      border-radius: 7px;
-      background: #ffe6f1;
-      border: 1px solid #f2bfd7;
-      pointer-events: none;
-      transition: background-color 0.26s ease, border-color 0.26s ease;
     }
     .config-field.has-select::after {
       content: "\f078";
       font-family: FontAwesome;
       position: absolute;
-      right: 14px;
-      top: 32px;
-      color: #ad3f70;
-      font-size: 11px;
+      right: 12px;
+      top: 31px;
+      color: #bf5b86;
+      font-size: 12px;
       pointer-events: none;
       transition: transform 0.26s ease, color 0.26s ease;
     }
     .config-field.has-select:focus-within::after {
       transform: translateY(-1px) rotate(180deg);
       color: #c2185b;
-    }
-    .config-field.has-select:focus-within::before {
-      background: #ffd7e9;
-      border-color: #e6a7c3;
     }
     .config-field.has-select:focus-within select {
       border-color: #e08cb0;
@@ -524,6 +545,7 @@
       .trust-row { grid-template-columns: 1fr; }
       .related-grid { grid-template-columns: 1fr; }
       .bottom-nav { display: flex; justify-content: space-around; align-items: center; }
+      .customizer-dropdown > summary::before { display: none; }
     }
   </style>
 </head>
