@@ -375,6 +375,98 @@
     }
     .config-field textarea { min-height: 74px; resize: vertical; }
 
+    .config-field select.native-hidden {
+      display: none;
+    }
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+    .custom-select-trigger {
+      width: 100%;
+      border: 1px solid #e7dce1;
+      border-radius: 8px;
+      padding: 10px 36px 10px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: left;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .custom-select-trigger::after {
+      content: "\f078";
+      font-family: FontAwesome;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bf5b86;
+      font-size: 12px;
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
+    .custom-select.open .custom-select-trigger {
+      border-color: #e08cb0;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.12);
+    }
+    .custom-select.open .custom-select-trigger::after {
+      transform: translateY(-50%) rotate(180deg);
+      color: #c2185b;
+    }
+    .custom-select-panel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      z-index: 80;
+      background: #fff;
+      border: 1px solid #f0c7d8;
+      border-radius: 10px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: max-height 0.24s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease, transform 0.24s ease;
+    }
+    .custom-select.open .custom-select-panel {
+      max-height: 220px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .custom-select-list {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .custom-select-item {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid #f7e8ef;
+      background: #fff;
+      text-align: left;
+      padding: 9px 10px;
+      font-size: 13px;
+      color: #333;
+      cursor: pointer;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+    .custom-select-item:last-child {
+      border-bottom: 0;
+    }
+    .custom-select-item:hover {
+      background: #fff3f9;
+      color: #ad1457;
+    }
+    .custom-select-item.active {
+      background: #ffe5f1;
+      color: #ad1457;
+      font-weight: 700;
+    }
+
     .cta-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -878,7 +970,10 @@
       // Reset balloons to No when hidden
       if (!cfg.hasBalloons) {
         const bi = document.getElementById('includeBalloonsInput');
-        if (bi) bi.value = 'No';
+        if (bi) {
+          bi.value = 'No';
+          if (typeof bi._syncCustomSelect === 'function') bi._syncCustomSelect();
+        }
       }
     }
 
@@ -1172,26 +1267,83 @@
     }
 
     function initSelectAnimations() {
+      const closeAllCustomSelects = (except) => {
+        document.querySelectorAll('.custom-select.open').forEach((node) => {
+          if (node !== except) node.classList.remove('open');
+        });
+      };
+
       document.querySelectorAll('.config-field select').forEach((sel) => {
-        const field = sel.closest('.config-field');
-        if (!field) return;
+        if (sel.dataset.customized === '1') return;
 
-        field.classList.add('has-select');
-        if (sel.dataset.animBound === '1') return;
+        sel.dataset.customized = '1';
+        sel.classList.add('native-hidden');
 
-        sel.addEventListener('pointerdown', () => {
-          field.classList.add('select-opening');
-          window.setTimeout(() => field.classList.remove('select-opening'), 280);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select';
+
+        const trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'custom-select-trigger';
+
+        const triggerText = document.createElement('span');
+        trigger.appendChild(triggerText);
+
+        const panel = document.createElement('div');
+        panel.className = 'custom-select-panel';
+
+        const list = document.createElement('div');
+        list.className = 'custom-select-list';
+        panel.appendChild(list);
+
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(panel);
+        sel.insertAdjacentElement('afterend', wrapper);
+
+        const syncFromSelect = () => {
+          const selectedOption = sel.options[sel.selectedIndex] || sel.options[0];
+          triggerText.textContent = selectedOption ? selectedOption.textContent : 'Seleccionar';
+
+          list.querySelectorAll('.custom-select-item').forEach((btn) => {
+            btn.classList.toggle('active', btn.dataset.value === sel.value);
+          });
+        };
+
+        Array.from(sel.options).forEach((opt) => {
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.className = 'custom-select-item';
+          item.dataset.value = opt.value;
+          item.textContent = opt.textContent;
+
+          item.addEventListener('click', () => {
+            sel.value = opt.value;
+            syncFromSelect();
+            wrapper.classList.remove('open');
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+
+          list.appendChild(item);
         });
-        sel.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
-            field.classList.add('select-opening');
-            window.setTimeout(() => field.classList.remove('select-opening'), 280);
-          }
+
+        trigger.addEventListener('click', () => {
+          const willOpen = !wrapper.classList.contains('open');
+          closeAllCustomSelects(wrapper);
+          wrapper.classList.toggle('open', willOpen);
         });
 
-        sel.dataset.animBound = '1';
+        sel.addEventListener('change', syncFromSelect);
+        sel._syncCustomSelect = syncFromSelect;
+        syncFromSelect();
       });
+
+      if (!window.__customSelectDocBound) {
+        document.addEventListener('click', (event) => {
+          if (event.target.closest('.custom-select')) return;
+          document.querySelectorAll('.custom-select.open').forEach((node) => node.classList.remove('open'));
+        });
+        window.__customSelectDocBound = true;
+      }
     }
 
     function setMinDeliveryDate() {
