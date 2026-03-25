@@ -52,6 +52,12 @@
     .search-suggestions li:hover,.search-suggestions li.active{background:#fff1f7}
     .search-suggestions .sg-name{display:block;font-weight:700;color:#333}
     .search-suggestions .sg-desc{display:block;font-size:12px;color:#777;margin-top:2px}
+    .advanced-filters{max-width:720px;margin:10px auto 4px;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr auto;gap:8px;align-items:center}
+    .advanced-filters .w3-input,.advanced-filters .w3-select{height:40px;border-radius:8px}
+    .advanced-filters .stock-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:#666;white-space:nowrap}
+    .advanced-filters .stock-toggle input{margin:0}
+    .advanced-filters .clear-filters-btn{height:40px;border-radius:8px;border:1px solid #f3c1d6;background:#fff7fb;color:#c2185b;font-weight:700;cursor:pointer;padding:0 10px}
+    .advanced-filters .clear-filters-btn:hover{background:#ffeaf4}
     @media (max-width:800px){.product-card{width:calc(50% - 14px)}}
     @media (max-width:480px){.product-card{width:calc(50% - 8px)}.product-card img{height:120px}}
     /* Ensure header covers full viewport on desktop and doesn't get constrained by .w3-content max-width */
@@ -107,6 +113,16 @@
       .search-wrapper {
         margin: 18px auto;
         max-width: none;
+      }
+      .advanced-filters {
+        max-width: none;
+        grid-template-columns: 1fr 1fr;
+      }
+      .advanced-filters .stock-toggle {
+        grid-column: 1 / -1;
+      }
+      .advanced-filters .clear-filters-btn {
+        grid-column: 1 / -1;
       }
       .search-bar {
         flex-direction: column;
@@ -270,6 +286,19 @@
       <ul id="searchSuggestions" class="search-suggestions" aria-label="Sugerencias de productos"></ul>
     </div>
 
+    <div class="advanced-filters">
+      <select id="sortSelect" class="w3-select w3-border" aria-label="Ordenar productos">
+        <option value="relevance">Orden: relevancia</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+        <option value="name-asc">Nombre: A-Z</option>
+      </select>
+      <input id="minPriceInput" class="w3-input w3-border" type="number" min="0" placeholder="Precio mínimo" aria-label="Precio mínimo" />
+      <input id="maxPriceInput" class="w3-input w3-border" type="number" min="0" placeholder="Precio máximo" aria-label="Precio máximo" />
+      <label class="stock-toggle" for="onlyAvailableInput"><input id="onlyAvailableInput" type="checkbox" /> Solo disponibles</label>
+      <button id="clearFiltersBtn" class="clear-filters-btn" type="button">Limpiar filtros</button>
+    </div>
+
     <div id="products" class="product-grid">
       <!-- Products inserted by JS -->
     </div>
@@ -360,6 +389,11 @@
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     const suggestionsEl = document.getElementById('searchSuggestions');
+    const sortSelect = document.getElementById('sortSelect');
+    const minPriceInput = document.getElementById('minPriceInput');
+    const maxPriceInput = document.getElementById('maxPriceInput');
+    const onlyAvailableInput = document.getElementById('onlyAvailableInput');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
     let activeSuggestionIndex = -1;
 
     // Helper: get flattened products
@@ -401,6 +435,35 @@
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase();
+    }
+
+    function parsePriceToNumber(value){
+      return Number(String(value || '0').replace(/\./g, '').replace(/,/g, '.')) || 0;
+    }
+
+    function applyAdvancedFilters(list){
+      const min = Number(minPriceInput.value || 0);
+      const max = Number(maxPriceInput.value || 0);
+      const onlyAvailable = !!onlyAvailableInput.checked;
+      const sortBy = sortSelect.value;
+
+      let filtered = list.filter((p) => {
+        const price = parsePriceToNumber(p.price);
+        if (min > 0 && price < min) return false;
+        if (max > 0 && price > max) return false;
+        if (onlyAvailable && p.stock === false) return false;
+        return true;
+      });
+
+      if (sortBy === 'price-asc') {
+        filtered.sort((a, b) => parsePriceToNumber(a.price) - parsePriceToNumber(b.price));
+      } else if (sortBy === 'price-desc') {
+        filtered.sort((a, b) => parsePriceToNumber(b.price) - parsePriceToNumber(a.price));
+      } else if (sortBy === 'name-asc') {
+        filtered.sort((a, b) => normalizeText(a.name).localeCompare(normalizeText(b.name)));
+      }
+
+      return filtered;
     }
 
     function searchProducts(query){
@@ -460,13 +523,25 @@
 
     function doSearch(rawQuery){
       const q = (typeof rawQuery === 'string' ? rawQuery : searchInput.value).trim();
-      const results = searchProducts(q);
+      const baseResults = searchProducts(q);
+      const results = applyAdvancedFilters(baseResults);
       render(results);
-      renderSuggestions(results);
+      renderSuggestions(baseResults);
     }
 
     searchBtn.addEventListener('click', doSearch);
     searchInput.addEventListener('input', () => doSearch());
+    sortSelect.addEventListener('change', () => doSearch());
+    minPriceInput.addEventListener('input', () => doSearch());
+    maxPriceInput.addEventListener('input', () => doSearch());
+    onlyAvailableInput.addEventListener('change', () => doSearch());
+    clearFiltersBtn.addEventListener('click', () => {
+      sortSelect.value = 'relevance';
+      minPriceInput.value = '';
+      maxPriceInput.value = '';
+      onlyAvailableInput.checked = false;
+      doSearch();
+    });
     searchInput.addEventListener('keydown', (e) => {
       const items = suggestionsEl.querySelectorAll('li');
       if(e.key === 'ArrowDown' && items.length){

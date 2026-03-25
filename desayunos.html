@@ -54,7 +54,12 @@
       top: -8px;
       right: -8px;
     }
-    .banner-img-container { margin-top: 50px; margin-bottom: 24px; position: relative; width: 100%; height: 420px; overflow: hidden; border-radius: 10px; }
+      .products-grid .empty-filter { color: #777; font-size: 13px; margin: 8px 0 0; }
+      @media (max-width: 600px) {
+        .category-filters { grid-template-columns: 1fr 1fr; }
+        .category-filters .stock-toggle,
+        .category-filters .clear-filters-btn { grid-column: 1 / -1; }
+      }
     @media (max-width: 600px) {
       .banner-img-container { margin-top: 42px; height: 300px; }
     }
@@ -600,6 +605,41 @@
     .btn-cancel { background:#f0f0f0; color:#333; }
     .btn-cancel:hover { background:#e0e0e0; }
     .form-success { color:#4caf50; font-size:14px; margin-top:12px; text-align:center; }
+    .category-filters {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr auto;
+      gap: 8px;
+      margin: 4px 0 14px;
+      align-items: center;
+    }
+    .category-filters input,
+    .category-filters select {
+      border: 1px solid #f0bfd3;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font-size: 13px;
+      width: 100%;
+    }
+    .category-filters .stock-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #666;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .category-filters .stock-toggle input { margin: 0; width: auto; }
+    .category-filters .clear-filters-btn {
+      border: 1px solid #f0bfd3;
+      border-radius: 8px;
+      background: #fff7fb;
+      color: #c2185b;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 9px 10px;
+    }
+    .category-filters .clear-filters-btn:hover { background: #ffeef6; }
+    .products-grid .empty-filter { color: #777; font-size: 13px; margin: 8px 0 0; }
   </style>
 </head>
 <body>
@@ -625,6 +665,20 @@
   </div>
 
   <main class="container">
+
+    <div class="category-filters">
+      <input id="filterTextInput" type="text" placeholder="Buscar en desayunos" />
+      <input id="minPriceInput" type="number" min="0" placeholder="Precio mínimo" />
+      <input id="maxPriceInput" type="number" min="0" placeholder="Precio máximo" />
+      <select id="sortInput">
+        <option value="default">Orden: categoría</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+        <option value="name-asc">Nombre: A-Z</option>
+      </select>
+      <label class="stock-toggle" for="onlyAvailableInput"><input id="onlyAvailableInput" type="checkbox" /> Solo disponibles</label>
+      <button id="clearFiltersBtn" class="clear-filters-btn" type="button">Limpiar filtros</button>
+    </div>
 
     <!-- Desayunos Clásicos -->
     <section>
@@ -726,11 +780,54 @@
 
     let currentProduct = null;
     let currentSlide = 0;
+    const filterTextInput = document.getElementById('filterTextInput');
+    const minPriceInput = document.getElementById('minPriceInput');
+    const maxPriceInput = document.getElementById('maxPriceInput');
+    const sortInput = document.getElementById('sortInput');
+    const onlyAvailableInput = document.getElementById('onlyAvailableInput');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+
+    function normalizeText(value) {
+      return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
+    function parsePriceToNumber(value) {
+      return Number(String(value || '0').replace(/\./g, '').replace(/,/g, '.')) || 0;
+    }
+
+    function getFilteredCategoryProducts(category) {
+      const q = normalizeText(filterTextInput?.value || '').trim();
+      const min = Number(minPriceInput?.value || 0);
+      const max = Number(maxPriceInput?.value || 0);
+      const sortBy = sortInput?.value || 'default';
+      const onlyAvailable = !!onlyAvailableInput?.checked;
+
+      let list = (productos[category] || []).filter((p) => {
+        const haystack = normalizeText(`${p.name} ${p.desc} ${p.category}`);
+        const price = parsePriceToNumber(p.price);
+        if (q && !haystack.includes(q)) return false;
+        if (min > 0 && price < min) return false;
+        if (max > 0 && price > max) return false;
+        if (onlyAvailable && p.stock === false) return false;
+        return true;
+      });
+
+      if (sortBy === 'price-asc') list.sort((a, b) => parsePriceToNumber(a.price) - parsePriceToNumber(b.price));
+      else if (sortBy === 'price-desc') list.sort((a, b) => parsePriceToNumber(b.price) - parsePriceToNumber(a.price));
+      else if (sortBy === 'name-asc') list.sort((a, b) => normalizeText(a.name).localeCompare(normalizeText(b.name)));
+
+      return list;
+    }
 
     function renderProducts() {
       Object.keys(productos).forEach(category => {
         const container = document.getElementById(category);
-        container.innerHTML = productos[category].map(p => `
+        const filtered = getFilteredCategoryProducts(category);
+        if (!filtered.length) {
+          container.innerHTML = '<p class="empty-filter">Sin resultados con los filtros actuales.</p>';
+          return;
+        }
+        container.innerHTML = filtered.map(p => `
           <div class="product-card" onclick="goToProduct(${p.id})" style="cursor:pointer;">
             <img src="${p.img}" alt="${p.name}">
             <div class="product-info">
@@ -954,6 +1051,19 @@
       const cart = JSON.parse(localStorage.getItem('detallesCart')) || [];
       const total = cart.reduce((sum, item) => sum + item.qty, 0);
       document.getElementById('cartCount').textContent = total;
+    }
+
+    [filterTextInput, minPriceInput, maxPriceInput].forEach(el => el && el.addEventListener('input', renderProducts));
+    [sortInput, onlyAvailableInput].forEach(el => el && el.addEventListener('change', renderProducts));
+    if (clearFiltersBtn) {
+      clearFiltersBtn.addEventListener('click', () => {
+        filterTextInput.value = '';
+        minPriceInput.value = '';
+        maxPriceInput.value = '';
+        sortInput.value = 'default';
+        onlyAvailableInput.checked = false;
+        renderProducts();
+      });
     }
 
     renderProducts();

@@ -78,13 +78,21 @@
     .bottom-nav a:active, .bottom-nav button:active { transform: translateY(0) scale(0.97); }
     .bottom-nav i { font-size: 20px; }
     .bottom-nav .badge { position: absolute; background: #FFD700; color: #333; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; top: 2px; }
-    @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .products-grid { gap: 10px; } .product-card { flex: 1 1 calc(50% - 6px); min-width: 0; } .product-card img { height: 108px; } .product-info { padding: 8px; } .product-info h3 { font-size: 14px; margin-bottom: 4px; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px; } .product-desc { font-size: 11px; min-height: 30px; margin-bottom: 4px; } .product-price { font-size: 14px; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } }
+    .category-filters { max-width: 1200px; margin: 10px auto 6px; padding: 0 18px; display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; gap: 8px; align-items: center; }
+    .category-filters input, .category-filters select { border: 1px solid #f0bfd3; border-radius: 8px; padding: 9px 10px; font-size: 13px; }
+    .category-filters .stock-toggle { display: flex; align-items: center; gap: 6px; color: #666; font-size: 12px; white-space: nowrap; }
+    .category-filters .stock-toggle input { margin: 0; }
+    .category-filters .clear-filters-btn { border: 1px solid #f0bfd3; border-radius: 8px; background: #fff7fb; color: #c2185b; font-weight: 700; cursor: pointer; padding: 9px 10px; }
+    .category-filters .clear-filters-btn:hover { background: #ffeef6; }
+    .products-grid .empty-filter { color: #777; font-size: 13px; margin: 8px 0 0; }
+    @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .products-grid { gap: 10px; } .product-card { flex: 1 1 calc(50% - 6px); min-width: 0; } .product-card img { height: 108px; } .product-info { padding: 8px; } .product-info h3 { font-size: 14px; margin-bottom: 4px; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px; } .product-desc { font-size: 11px; min-height: 30px; margin-bottom: 4px; } .product-price { font-size: 14px; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } .category-filters { grid-template-columns: 1fr 1fr; } .category-filters .stock-toggle, .category-filters .clear-filters-btn { grid-column: 1 / -1; } }
     @media (max-width: 380px) { .product-card img { height: 98px; } .product-info { padding: 7px; } }
   </style>
 </head>
 <body>
   <header class="topbar"><a href="Catalogo.html" class="logo">Detalles Barranquilla</a><nav class="topnav"><a href="carrito.html" class="cart-icon"><i class="fa fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a></nav></header>
   <div class="banner-img-container"><img src="Floristeria.jpg" alt="Floristeria"><div class="banner-text-overlay"><h1 style="color:white; margin:0; font-size:32px;">Floristeria</h1><p style="color:white; margin-top:8px; font-size:16px;">Ramos y arreglos frescos para cada ocasion</p></div></div>
+  <div class="category-filters"><input id="filterTextInput" type="text" placeholder="Buscar en floristería" /><input id="minPriceInput" type="number" min="0" placeholder="Precio mínimo" /><input id="maxPriceInput" type="number" min="0" placeholder="Precio máximo" /><select id="sortInput"><option value="default">Orden: categoría</option><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="name-asc">Nombre: A-Z</option></select><label class="stock-toggle" for="onlyAvailableInput"><input id="onlyAvailableInput" type="checkbox" /> Solo disponibles</label><button id="clearFiltersBtn" class="clear-filters-btn" type="button">Limpiar filtros</button></div>
   <main class="container"><section><h2 class="section-title">Rosas</h2><div class="products-grid" id="rosas"></div></section><section><h2 class="section-title">Ramos Mixtos</h2><div class="products-grid" id="mixtos"></div></section><section><h2 class="section-title">Especiales</h2><div class="products-grid" id="jarrones"></div></section></main>
   <div id="imageLightbox" class="image-lightbox" onclick="closeLightbox()"><span class="lightbox-close" onclick="closeLightbox()">&times;</span><div class="lightbox-content" id="lightboxContent" onclick="event.stopPropagation()"></div></div>
   <div id="productModal" class="modal"><div class="modal-content"><div class="modal-header"><h2 id="modalTitle">Detalles del Producto</h2><button class="close-btn" onclick="closeModal()">&times;</button></div><div id="carouselContainer" style="display:none;"><div class="modal-carousel"><div class="carousel-container" id="carouselSlides"></div><button class="carousel-button carousel-prev" onclick="changeSlide(-1)">&#10094;</button><button class="carousel-button carousel-next" onclick="changeSlide(1)">&#10095;</button><div class="carousel-dots" id="carouselDots"></div></div></div><div class="modal-body" id="modalBody"></div><div class="modal-footer"><button class="btn-buy" onclick="buyFromModal()"><i class="fa fa-shopping-cart"></i> Agregar al Carrito</button><button class="btn-cancel" onclick="closeModal()">Cerrar</button></div></div></div>
@@ -110,9 +118,53 @@
     };
     let currentProduct = null;
     let currentSlide = 0;
+    const filterTextInput = document.getElementById('filterTextInput');
+    const minPriceInput = document.getElementById('minPriceInput');
+    const maxPriceInput = document.getElementById('maxPriceInput');
+    const sortInput = document.getElementById('sortInput');
+    const onlyAvailableInput = document.getElementById('onlyAvailableInput');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+
+    function normalizeText(value){ return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+    function parsePriceToNumber(value){ return Number(String(value || '0').replace(/\./g, '').replace(/,/g, '.')) || 0; }
+
     function findProductById(productId){ for (let category in productos) { const product = productos[category].find(p => p.id === productId); if (product) return product; } return null; }
     function goToProduct(productId){ const selected = findProductById(productId); if (selected) { localStorage.setItem('detallesSelectedProduct', JSON.stringify({ origin: 'floristeria', product: selected })); } window.location.href = `producto.html?origen=floristeria&id=${productId}`; }
-    function renderProducts(){ Object.keys(productos).forEach(category => { const container = document.getElementById(category); container.innerHTML = productos[category].map(p => `<div class="product-card" onclick="goToProduct(${p.id})" style="cursor:pointer;"><img src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p><div class="product-price">$${p.price}</div></div></div>`).join(''); }); }
+    function getFilteredCategoryProducts(category){
+      const q = normalizeText(filterTextInput?.value || '').trim();
+      const min = Number(minPriceInput?.value || 0);
+      const max = Number(maxPriceInput?.value || 0);
+      const sortBy = sortInput?.value || 'default';
+      const onlyAvailable = !!onlyAvailableInput?.checked;
+
+      let list = (productos[category] || []).filter((p) => {
+        const haystack = normalizeText(`${p.name} ${p.desc} ${p.category}`);
+        const price = parsePriceToNumber(p.price);
+        if (q && !haystack.includes(q)) return false;
+        if (min > 0 && price < min) return false;
+        if (max > 0 && price > max) return false;
+        if (onlyAvailable && p.stock === false) return false;
+        return true;
+      });
+
+      if (sortBy === 'price-asc') list.sort((a, b) => parsePriceToNumber(a.price) - parsePriceToNumber(b.price));
+      else if (sortBy === 'price-desc') list.sort((a, b) => parsePriceToNumber(b.price) - parsePriceToNumber(a.price));
+      else if (sortBy === 'name-asc') list.sort((a, b) => normalizeText(a.name).localeCompare(normalizeText(b.name)));
+
+      return list;
+    }
+
+    function renderProducts(){
+      Object.keys(productos).forEach(category => {
+        const container = document.getElementById(category);
+        const filtered = getFilteredCategoryProducts(category);
+        if (!filtered.length) {
+          container.innerHTML = '<p class="empty-filter">Sin resultados con los filtros actuales.</p>';
+          return;
+        }
+        container.innerHTML = filtered.map(p => `<div class="product-card" onclick="goToProduct(${p.id})" style="cursor:pointer;"><img src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p><div class="product-price">$${p.price}</div></div></div>`).join('');
+      });
+    }
     function getProductMedia(product){
       const imageMedia = (product.images || []).map(src => ({ type: 'image', src }));
       const videoMedia = (product.videos || []).map(src => ({ type: 'video', src }));
@@ -210,6 +262,10 @@
     function toggleSearchMobile() {
       window.location.href = 'tienda.html#search';
     }
+    [filterTextInput, minPriceInput, maxPriceInput].forEach(el => el && el.addEventListener('input', renderProducts));
+    [sortInput, onlyAvailableInput].forEach(el => el && el.addEventListener('change', renderProducts));
+    if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', () => { if (filterTextInput) filterTextInput.value = ''; if (minPriceInput) minPriceInput.value = ''; if (maxPriceInput) maxPriceInput.value = ''; if (sortInput) sortInput.value = 'default'; if (onlyAvailableInput) onlyAvailableInput.checked = false; renderProducts(); });
+
     renderProducts(); updateCartCount(); window.onclick = function(event){ const modal = document.getElementById('productModal'); if (event.target === modal) closeModal(); };
   </script>
   <script>
