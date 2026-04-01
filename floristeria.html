@@ -85,6 +85,11 @@
     .category-filters .clear-filters-btn { border: 1px solid #f0bfd3; border-radius: 8px; background: #fff7fb; color: #c2185b; font-weight: 700; cursor: pointer; padding: 9px 10px; }
     .category-filters .clear-filters-btn:hover { background: #ffeef6; }
     .products-grid .empty-filter { color: #777; font-size: 13px; margin: 8px 0 0; }
+    .color-swatches { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0 8px; }
+    .color-swatch-btn { display: inline-flex; align-items: center; gap: 4px; border: 1.5px solid #e0e0e0; border-radius: 20px; padding: 2px 8px 2px 5px; font-size: 11px; font-weight: 600; cursor: pointer; background: #fafafa; color: #555; transition: border-color 0.15s, background 0.15s, color 0.15s; line-height: 1.5; }
+    .color-swatch-btn:hover { border-color: #E91E63; background: #fff0f5; color: #c2185b; }
+    .color-swatch-btn.active { border-color: #E91E63; background: #fce4ec; color: #c2185b; }
+    .color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; display: inline-block; border: 1px solid rgba(0,0,0,0.1); }
     @media (max-width: 600px) { .banner-img-container { height: 220px; margin-top: 60px; } .products-grid { gap: 10px; } .product-card { flex: 1 1 calc(50% - 6px); min-width: 0; } .product-card img { height: 108px; } .product-info { padding: 8px; } .product-info h3 { font-size: 14px; margin-bottom: 4px; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px; } .product-desc { font-size: 11px; min-height: 30px; margin-bottom: 4px; } .product-price { font-size: 14px; } .modal-carousel { height: 250px; } .bottom-nav { display: flex; justify-content: space-around; align-items: center; } .container { margin-bottom: 70px; } .category-filters { grid-template-columns: 1fr 1fr; } .category-filters .stock-toggle, .category-filters .clear-filters-btn { grid-column: 1 / -1; } }
     @media (max-width: 380px) { .product-card img { height: 98px; } .product-info { padding: 7px; } }
   </style>
@@ -101,14 +106,13 @@
     const productos = {
       rosas: [
         { id: 201, name: 'Ramo Flores Amarillas', desc: 'Ramo de flores amarillas variadas con decoracion clasica.', price: '80.000', img: 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', category: 'Rosas', images: ['img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM (1).jpeg'], videos: ['img/floristeria/WhatsApp Video 2026-03-22 at 2.44.54 PM.mp4'], contents: ['Flores amarillas variadas', 'Astromelias o follaje', 'Mono y decoracion'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
-        { id: 202, name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium.', price: '120.000', img: 'IMG_0612.JPG', category: 'Rosas', images: ['IMG_0612.JPG', 'Floristeria.jpg'], colorImages: { Rojo: 'IMG_0612.JPG', Rosado: 'Floristeria.jpg', Blanco: 'IMG_0618.JPG', Amarillo: 'Floristeria.jpg' }, contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Colores disponibles: rojo, rosado, blanco y amarillo. No incluye domicilio.' },
-        { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y moño decorativo. ¡Ahora con opciones de combo: agrega fresas o ferreros!', price: '105.000', img: 'Floristeria.jpg', category: 'Rosas', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramo de 5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Disponible con opciones de combo especiales' },
+        { id: 202, name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium.', price: '120.000', img: 'IMG_0612.JPG', category: 'Rosas', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Colores disponibles: rojo, rosado, blanco y amarillo. No incluye domicilio.' },
+        { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 12-15 rosas con astromelias o follaje, envoltura cisne y moño decorativo.', price: '90.000', img: 'img/floristeria/Ramo Cisne/Envoltura rosada flores rosadas.jpg', category: 'Rosas', images: ['img/floristeria/Ramo Cisne/Envoltura rosada flores rosadas.jpg', 'img/floristeria/Ramo Cisne/Envoltura dorada flores rosadas.jpg', 'img/floristeria/Ramo Cisne/Envoltura dorada flores rojas.jpg', 'img/floristeria/Ramo Cisne/Envoltura dorada flores amarillas.jpg', 'img/floristeria/Ramo Cisne/Thumbnail.jpg', 'img/floristeria/Ramo Cisne/Thumbnail 2.jpg'], colorImages: { 'Todo rosa': 'img/floristeria/Ramo Cisne/Envoltura rosada flores rosadas.jpg', 'Flores rosadas': 'img/floristeria/Ramo Cisne/Envoltura dorada flores rosadas.jpg', 'Flores rojas': 'img/floristeria/Ramo Cisne/Envoltura dorada flores rojas.jpg', 'Flores amarillas': 'img/floristeria/Ramo Cisne/Envoltura dorada flores amarillas.jpg' }, contents: ['Ramo de 12-15 rosas con astromelias o follaje', 'Envoltura cisne', 'Moño y decoracion', 'Opcional: corazon de chocolate'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio. Con corazon de chocolate: Adros $120.000 o Ferreros $140.000' },
         { id: 210, name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de listón para conservar el detalle.', price: '130.000', img: 'IMG_0618.JPG', category: 'Rosas', images: ['IMG_0618.JPG', 'Floristeria.jpg'], contents: ['Ramo de rosas eternas', 'Moño y decoración'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' }
       ],
       mixtos: [
         { id: 204, name: 'Ramo Cisne Girasoles', desc: 'Ramo con 5-6 girasoles en presentacion cisne.', price: '105.000', img: 'Floristeria.jpg', category: 'Ramos Mixtos', images: ['Floristeria.jpg', 'IMG_0618.JPG'], contents: ['5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
-        { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos. Con girasoles $145.000 o con rosas $160.000.', price: '145.000', stock: false, img: 'IMG_0618.JPG', category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Astromelias o Follaje', 'Fresas o Choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'AGOTADO TEMPORALMENTE. No incluye domicilio' },
-        { id: 206, name: 'Ramo Cisne mas Corazon de Chocolate', desc: 'Ramo romantico con corazon de chocolate incluido.', price: '175.000', img: 'IMG_0612.JPG', category: 'Ramos Mixtos', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Corazon de chocolate', 'Envoltura y mono'], shipping: '0', prepTime: '5 horas', note: 'Version con Ferreros o Adros disponible' }
+        { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos. Con girasoles $145.000 o con rosas $160.000.', price: '145.000', stock: false, img: 'IMG_0618.JPG', category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Astromelias o Follaje', 'Fresas o Choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'AGOTADO TEMPORALMENTE. No incluye domicilio' }
       ],
       jarrones: [
         { id: 207, name: 'Ramillete Solitario', desc: 'Ramillete sencillo para un detalle rapido y bonito. Sin fresas $40.000 — con fresas $80.000.', price: '40.000', img: 'Floristeria.jpg', category: 'Especiales', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramillete de flores amarillas', 'Tarjeta', 'Lazo', 'Fondo alusivo'], shipping: '0', prepTime: '2 horas', note: 'Precio varía con fresas. No incluye domicilio' },
@@ -154,6 +158,36 @@
       return list;
     }
 
+    function renderColorSwatches(p) {
+      if (!p.colorImages) return '';
+      var dotColors = { 'Todo Rosa': '#e91e63', 'Rosado': '#f48fb1', 'Rojo': '#c62828', 'Amarillo': '#f9a825' };
+      var btns = Object.entries(p.colorImages).map(function(entry) {
+        var color = entry[0]; var img = entry[1];
+        var dot = dotColors[color] ? '<span class="color-dot" style="background:' + dotColors[color] + '"></span>' : '';
+        var active = p.img === img ? ' active' : '';
+        return '<button class="color-swatch-btn' + active + '" onclick="event.stopPropagation();previewCardColor(' + p.id + ',\'' + img + '\',this)">' + dot + color + '</button>';
+      }).join('');
+      return '<div class="color-swatches" onclick="event.stopPropagation()">' + btns + '</div>';
+    }
+    function previewCardColor(productId, imgSrc, btn) {
+      var card = document.querySelector('[data-card-id="' + productId + '"]');
+      if (!card) return;
+      var cardImg = card.querySelector('.card-thumb');
+      if (cardImg) cardImg.src = imgSrc;
+      card.querySelectorAll('.color-swatch-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      for (var cat in productos) {
+        var prod = productos[cat].find(function(pr) { return pr.id === productId; });
+        if (prod) {
+          prod.img = imgSrc;
+          if (prod.colorImages) {
+            var color = Object.keys(prod.colorImages).find(function(c) { return prod.colorImages[c] === imgSrc; });
+            if (color) prod.selectedColor = color;
+          }
+          break;
+        }
+      }
+    }
     function renderProducts(){
       Object.keys(productos).forEach(category => {
         const container = document.getElementById(category);
@@ -162,7 +196,7 @@
           container.innerHTML = '<p class="empty-filter">Sin resultados con los filtros actuales.</p>';
           return;
         }
-        container.innerHTML = filtered.map(p => `<div class="product-card" onclick="goToProduct(${p.id})" style="cursor:pointer;"><img src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p><div class="product-price">$${p.price}</div></div></div>`).join('');
+        container.innerHTML = filtered.map(p => `<div class="product-card" data-card-id="${p.id}" onclick="goToProduct(${p.id})" style="cursor:pointer;"><img class="card-thumb" src="${p.img}" alt="${p.name}"><div class="product-info"><h3>${p.name}</h3><p class="product-desc">${p.desc}</p>${renderColorSwatches(p)}<div class="product-price">$${p.price}</div></div></div>`).join('');
       });
     }
     function getProductMedia(product){

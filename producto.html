@@ -97,7 +97,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      pointer-events: none;
+      cursor: zoom-in;
     }
     .slide-in-image {
       animation: mediaSlideIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -137,6 +137,39 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+    .image-viewer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 4100;
+      background: rgba(0, 0, 0, 0.86);
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .image-viewer.open {
+      display: flex;
+    }
+    .image-viewer img {
+      max-width: 95vw;
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+    }
+    .image-viewer-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      color: #fff;
+      font-size: 34px;
+      line-height: 1;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
     .info-body { padding: 18px; }
@@ -223,21 +256,24 @@
       padding: 12px 14px;
       background: linear-gradient(135deg, #fff7fb, #fff);
       display: flex;
-      justify-content: space-between;
+      gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
       font-weight: 800;
       color: #c2185b;
       font-size: 15px;
+      line-height: 1.3;
       border-bottom: 1px solid #f2d5e1;
       position: relative;
       transition: background-color 0.24s ease, color 0.24s ease;
     }
+    .customizer-dropdown > summary > span:first-child {
+      flex: 1 1 180px;
+      min-width: 0;
+    }
     .customizer-dropdown > summary::before {
       content: "Personalizable";
-      position: absolute;
-      right: 42px;
-      top: 50%;
-      transform: translateY(-50%);
+      position: static;
       font-size: 10px;
       letter-spacing: 0.2px;
       font-weight: 700;
@@ -247,11 +283,14 @@
       border-radius: 999px;
       padding: 2px 7px;
       opacity: 0.85;
+      margin-left: auto;
+      flex-shrink: 0;
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
     .customizer-dropdown > summary::-webkit-details-marker { display: none; }
     .customizer-dropdown > summary .caret {
       font-size: 16px;
+      flex-shrink: 0;
       transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.24s ease;
     }
     .customizer-dropdown[open] > summary {
@@ -261,7 +300,7 @@
     }
     .customizer-dropdown[open] > summary::before {
       opacity: 1;
-      transform: translateY(-50%) scale(1.02);
+      transform: scale(1.02);
     }
     .customizer-dropdown[open] > summary .caret {
       transform: rotate(180deg);
@@ -375,6 +414,19 @@
       font-weight: 600;
       color: #6a4560;
       cursor: pointer;
+      transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, background-color 0.24s ease;
+    }
+    .color-checkbox-option.is-active {
+      border-color: #e05b95;
+      background: #ffe9f2;
+      box-shadow: 0 7px 16px rgba(233, 30, 99, 0.18);
+      transform: translateY(-1px);
+    }
+    .color-checkbox-option.is-active span {
+      color: #ad1457;
+    }
+    .color-checkbox-option.check-anim {
+      animation: checkbox-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .color-checkbox-option input {
       width: 14px;
@@ -382,10 +434,59 @@
       margin: 0;
       accent-color: #e91e63;
     }
+    @keyframes checkbox-pop {
+      0% {
+        transform: scale(0.95);
+      }
+      60% {
+        transform: scale(1.04);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
     .color-checkbox-help {
       margin-top: 6px;
       font-size: 11px;
       color: #8b6b7d;
+    }
+    .color-custom-wrap {
+      margin-top: 8px;
+      display: none;
+    }
+    .color-custom-wrap input {
+      width: 100%;
+      border: 1px solid #efbfd3;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: #5a3650;
+      background: #fff;
+    }
+
+    .color-preview-section {
+      margin: 14px 0 8px;
+      padding: 12px 14px 10px;
+      background: #fff8fb;
+      border: 1.5px solid #f0c9da;
+      border-radius: 12px;
+    }
+    .color-preview-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #c2185b;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .color-preview-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media (min-width: 480px) {
+      .color-preview-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
     }
 
     .config-field select.native-hidden {
@@ -804,6 +905,12 @@
             <div class="meta-item"><strong>Compra segura</strong>Pago por transferencia o efectivo</div>
           </div>
 
+          <div id="colorPreviewSection" class="color-preview-section" style="display:none;">
+            <div class="color-preview-label"><i class="fa fa-tint"></i> Color del ramo</div>
+            <div id="colorPreviewGrid" class="color-checkbox-grid color-preview-grid"></div>
+            <div id="colorPreviewHelp" class="color-checkbox-help">Toca un color para ver la foto del ramo.</div>
+          </div>
+
           <div class="config-box">
             <details class="customizer-dropdown" id="customizerDropdown">
               <summary>
@@ -972,6 +1079,11 @@
     </a>
   </div>
 
+  <div id="imageViewer" class="image-viewer" onclick="closeImageViewer()">
+    <button class="image-viewer-close" type="button" onclick="closeImageViewer()">&times;</button>
+    <img id="imageViewerImg" src="" alt="Vista completa" onclick="event.stopPropagation()">
+  </div>
+
   <script>
     const PRODUCTS = [
       {
@@ -1008,11 +1120,10 @@
       // floristeria
       { id: 201, name: 'Ramo Flores Amarillas', desc: 'Ramo de flores amarillas variadas con decoracion clasica.', price: '80.000', img: 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM (1).jpeg'], contents: ['Flores amarillas variadas', 'Astromelias o follaje', 'Mono y decoracion'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 202, name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium.', price: '120.000', img: 'IMG_0612.JPG', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Colores disponibles: rojo, rosado, blanco y amarillo. No incluye domicilio.' },
-      { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y mono decorativo. ¡Ahora con opciones de combo: agrega fresas o ferreros!', price: '105.000', img: 'img/floristeria/Ramo Cisne/26027914-4c8b-4722-9236-7f68095d85e3.jpg', imageFolder: 'img/floristeria/Ramo Cisne/', category: 'Rosas', images: ['img/floristeria/Ramo Cisne/26027914-4c8b-4722-9236-7f68095d85e3.jpg', 'img/floristeria/Ramo Cisne/54ca87f6-06ca-4805-ab32-e9f9451cb375.jpg', 'img/floristeria/Ramo Cisne/88cf42aa-ec29-46c3-bab7-5a56bca5bcd3.jpg', 'img/floristeria/Ramo Cisne/d66e2149-faca-44b6-b12d-4d6c401d82ed.jpg', 'img/floristeria/Ramo Cisne/0a220c3a-f6a9-49d6-ba61-19ca56eb0b76.jpg'], colorImages: { Rosado: 'img/floristeria/Ramo Cisne/26027914-4c8b-4722-9236-7f68095d85e3.jpg', Rojo: 'img/floristeria/Ramo Cisne/54ca87f6-06ca-4805-ab32-e9f9451cb375.jpg', Blanco: 'img/floristeria/Ramo Cisne/88cf42aa-ec29-46c3-bab7-5a56bca5bcd3.jpg', Amarillo: 'img/floristeria/Ramo Cisne/d66e2149-faca-44b6-b12d-4d6c401d82ed.jpg' }, contents: ['Ramo de 5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Disponible con opciones de combo especiales' },
+      { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 12-15 rosas con astromelias o follaje, envoltura cisne y moño decorativo.', price: '90.000', img: 'img/floristeria/Ramo Cisne/Envoltura rosada flores rosadas.jpg', imageFolder: 'img/floristeria/Ramo Cisne/', category: 'Rosas', images: ['img/floristeria/Ramo Cisne/Envoltura rosada flores rosadas.jpg', 'img/floristeria/Ramo Cisne/Envoltura dorada flores rosadas.jpg', 'img/floristeria/Ramo Cisne/Envoltura dorada flores rojas.jpg', 'img/floristeria/Ramo Cisne/Envoltura dorada flores amarillas.jpg', 'img/floristeria/Ramo Cisne/Thumbnail.jpg', 'img/floristeria/Ramo Cisne/Thumbnail 2.jpg'], colorImages: { 'Todo rosa': 'img/floristeria/Ramo Cisne/Envoltura rosada flores rosadas.jpg', 'Flores rosadas': 'img/floristeria/Ramo Cisne/Envoltura dorada flores rosadas.jpg', 'Flores rojas': 'img/floristeria/Ramo Cisne/Envoltura dorada flores rojas.jpg', 'Flores amarillas': 'img/floristeria/Ramo Cisne/Envoltura dorada flores amarillas.jpg' }, contents: ['Ramo de 12-15 rosas con astromelias o follaje', 'Envoltura cisne', 'Moño y decoracion', 'Opcional: corazon de chocolate'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio. Con corazon de chocolate: Adros $120.000 o Ferreros $140.000' },
       { id: 210, name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de listón para conservar el detalle.', price: '130.000', img: 'IMG_0618.JPG', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['IMG_0618.JPG', 'Floristeria.jpg'], contents: ['Ramo de rosas eternas', 'Moño y decoración'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 204, name: 'Ramo Cisne Girasoles', desc: 'Ramo con 5-6 girasoles en presentacion cisne.', price: '105.000', img: 'Floristeria.jpg', imageFolder: 'img/floristeria/', category: 'Ramos Mixtos', images: ['Floristeria.jpg', 'IMG_0618.JPG'], contents: ['5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
       { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos para detalle doble. Con girasoles $145.000 o con rosas $160.000.', price: '145.000', img: 'IMG_0618.JPG', imageFolder: 'img/floristeria/', stock: false, category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Astromelias o Follaje', 'Fresas o Choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio. Precio varía según presentación.' },
-      { id: 206, name: 'Ramo Cisne mas Corazon de Chocolate', desc: 'Ramo romantico con corazon de chocolate incluido.', price: '175.000', img: 'IMG_0612.JPG', imageFolder: 'img/floristeria/', category: 'Ramos Mixtos', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Corazon de chocolate', 'Envoltura y mono'], shipping: '0', prepTime: '5 horas', note: 'Version con Ferreros o Adros disponible' },
       { id: 207, name: 'Ramillete Solitario', desc: 'Ramillete sencillo para un detalle rápido y bonito. Sin fresas $40.000 — con fresas $80.000.', price: '40.000', img: 'Floristeria.jpg', imageFolder: 'img/floristeria/', category: 'Floristeria Especiales', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramillete de flores amarillas', 'Tarjeta', 'Lazo', 'Fondo alusivo'], shipping: '0', prepTime: '2 horas', note: 'Precio varía con fresas. No incluye domicilio' },
       { id: 208, name: 'Ramo Buchon 22 Rosas', desc: 'Ramo buchon elegante para ocasiones especiales.', price: '130.000', img: 'IMG_0618.JPG', imageFolder: 'img/floristeria/', category: 'Floristeria Especiales', images: ['IMG_0618.JPG', 'IMG_0612.JPG'], contents: ['22 rosas', 'Empaque premium', 'Decoracion y lazo'], shipping: '0', prepTime: '5-6 horas', note: 'Papel coreano segun disponibilidad' },
       { id: 209, name: 'Ramo Buchon 36 Rosas', desc: 'Version amplia de ramo buchon con mayor volumen.', price: '210.000', img: 'IMG_0612.JPG', imageFolder: 'img/floristeria/', category: 'Floristeria Especiales', images: ['IMG_0612.JPG', 'IMG_0618.JPG'], contents: ['36 rosas', 'Empaque premium', 'Acabado de lujo'], shipping: '0', prepTime: '5-6 horas', note: 'No incluye domicilio' },
@@ -1063,14 +1174,13 @@
       // Floristería
       201: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
       202: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
-      203: { hasFlowers: true,  hasBalloons: false, hasFoods: false,
-             variants: [{ name: 'Ramo Cisne (sin combo)', price: '105.000' }, 
-                        { name: '🎁 OFERTA: Con Fresas Decoradas', price: '145.000', isSpecial: true },
-                        { name: '🎁 OFERTA: Con Ferreros', price: '150.000', isSpecial: true }] },
+            203: { hasFlowers: true,  hasBalloons: false, hasFoods: false,
+              variants: [{ name: 'Ramo Cisne', price: '90.000' },
+               { name: '🎁 OFERTA: + Corazón de chocolate (Adros)', price: '120.000', isSpecial: true },
+               { name: '🎁 OFERTA: + Corazón de chocolate (Ferreros)', price: '140.000', isSpecial: true }] },
       204: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
       205: { hasFlowers: true,  hasBalloons: false, hasFoods: true,  stock: false,
              variants: [{ name: 'Con Girasoles', price: '145.000' }, { name: 'Con Rosas', price: '160.000' }] },
-      206: { hasFlowers: true,  hasBalloons: false, hasFoods: true  },
       207: { hasFlowers: true,  hasBalloons: false, hasFoods: false,
              variants: [{ name: 'Sin Fresas', price: '40.000' }, { name: 'Con Fresas', price: '80.000' }] },
       208: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
@@ -1228,7 +1338,8 @@
 
     const selectedFromStorage = getSelectedProductFromStorage();
     const baseProduct = PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
-    const currentProduct = selectedFromStorage ? { ...baseProduct, ...selectedFromStorage } : baseProduct;
+    // Prefer current catalog media/routes and keep storage only for incidental fields.
+    const currentProduct = selectedFromStorage ? { ...selectedFromStorage, ...baseProduct } : baseProduct;
 
     const originMap = {
       desayunos: 'desayunos.html',
@@ -1264,10 +1375,16 @@
     }
 
     function renderMainMedia() {
-      document.getElementById('mainMediaWrap').innerHTML = `<img class="slide-in-image" src="${currentMedia}" alt="${currentProduct.name}">`;
+      const encodedMain = encodeURI(currentMedia || '');
+      const mediaWrap = document.getElementById('mainMediaWrap');
+      mediaWrap.innerHTML = `<img class="slide-in-image" src="${encodedMain}" alt="${currentProduct.name}">`;
+
+      const mainImg = mediaWrap.querySelector('img');
+      if (mainImg) mainImg.addEventListener('click', openImageViewer);
+
       const thumbStrip = document.getElementById('thumbStrip');
       thumbStrip.innerHTML = productMedia
-        .map(src => `<button class="thumb-btn ${src === currentMedia ? 'active' : ''}" onclick="setMainMedia('${src}')"><img src="${src}" alt="Miniatura"></button>`)
+        .map(src => `<button class="thumb-btn ${src === currentMedia ? 'active' : ''}" onclick="setMainMedia('${src}')"><img src="${encodeURI(src)}" alt="Miniatura"></button>`)
         .join('');
     }
 
@@ -1276,60 +1393,153 @@
       renderMainMedia();
     }
 
+    function openImageViewer() {
+      const viewer = document.getElementById('imageViewer');
+      const viewerImg = document.getElementById('imageViewerImg');
+      if (!viewer || !viewerImg) return;
+      viewerImg.src = encodeURI(currentMedia || '');
+      viewer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImageViewer() {
+      const viewer = document.getElementById('imageViewer');
+      if (!viewer) return;
+      viewer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
     function setupRamoCisneColorCheckboxes() {
       const wrapper = document.getElementById('roseColorWrapper');
       const roseColorInput = document.getElementById('roseColorInput');
-      if (!wrapper || !roseColorInput) return;
+      const previewSection = document.getElementById('colorPreviewSection');
+      const previewGrid = document.getElementById('colorPreviewGrid');
+      if (!wrapper || !roseColorInput || !previewSection || !previewGrid) return;
 
+      // Reset inner dropdown state
       const oldGrid = wrapper.querySelector('.color-checkbox-grid');
       const oldHelp = wrapper.querySelector('.color-checkbox-help');
+      const oldCustomWrap = wrapper.querySelector('.color-custom-wrap');
+      const customSelect = wrapper.querySelector('.custom-select');
       if (oldGrid) oldGrid.remove();
       if (oldHelp) oldHelp.remove();
+      if (oldCustomWrap) oldCustomWrap.remove();
       roseColorInput.style.display = '';
+      roseColorInput.dataset.customWidgetHidden = '0';
+      if (customSelect) customSelect.style.display = '';
+      // Reset exterior section
+      previewSection.style.display = 'none';
+      previewGrid.innerHTML = '';
 
-      if (currentProduct.id !== 203 || !currentProduct.colorImages) return;
+      if (!currentProduct.colorImages) return;
 
-      roseColorInput.value = 'Sin preferencia';
+      const previewOptions = Object.entries(currentProduct.colorImages).map(([label, src]) => ({ label, src }));
+      const innerOptions = [...previewOptions, { label: 'Otro', src: '' }];
+      if (!innerOptions.length) return;
+
+      const selectedColor = currentProduct.selectedColor && innerOptions.some((option) => option.label === currentProduct.selectedColor)
+        ? currentProduct.selectedColor
+        : previewOptions[0].label;
+
+      const storedCustomColor = typeof roseColorInput.value === 'string' && roseColorInput.value.startsWith('Otro:')
+        ? roseColorInput.value.replace(/^Otro:\s*/, '').trim()
+        : '';
+
+      currentProduct.selectedColor = selectedColor;
+      roseColorInput.value = selectedColor === 'Otro' ? 'Otro' : selectedColor;
       roseColorInput.style.display = 'none';
+      roseColorInput.dataset.customWidgetHidden = '1';
+      if (customSelect) customSelect.style.display = 'none';
 
-      const options = Object.entries(currentProduct.colorImages);
-      if (!options.length) return;
+      function buildGrid(container, groupName, optionList) {
+        container.innerHTML = optionList.map((option) => `
+          <label class="color-checkbox-option">
+            <input type="checkbox" name="${groupName}" data-color="${option.label}" data-src="${option.src}" ${option.label === selectedColor ? 'checked' : ''}>
+            <span>${option.label}</span>
+          </label>
+        `).join('');
+      }
 
-      const grid = document.createElement('div');
-      grid.className = 'color-checkbox-grid';
-      grid.innerHTML = options.map(([color, src]) => `
-        <label class="color-checkbox-option">
-          <input type="checkbox" name="ramoCisneColor" data-color="${color}" data-src="${src}">
-          <span>${color}</span>
-        </label>
-      `).join('');
+      // Build exterior preview grid
+      buildGrid(previewGrid, 'colorPreview', previewOptions);
+      previewSection.style.display = '';
 
+      // Build interior dropdown grid
+      const innerGrid = document.createElement('div');
+      innerGrid.className = 'color-checkbox-grid';
+      buildGrid(innerGrid, 'ramoCisneColor', innerOptions);
       const help = document.createElement('div');
       help.className = 'color-checkbox-help';
-      help.textContent = 'Marca un color para ver la foto correspondiente del ramo.';
+      help.textContent = 'Color sincronizado con la selección de arriba. Usa "Otro" para pedir combinación personalizada.';
 
-      wrapper.appendChild(grid);
+      const customWrap = document.createElement('div');
+      customWrap.className = 'color-custom-wrap';
+      customWrap.innerHTML = '<input id="colorCustomInput" type="text" placeholder="Escribe envoltura y color de rosas">';
+      const colorCustomInput = customWrap.querySelector('#colorCustomInput');
+      if (colorCustomInput) colorCustomInput.value = storedCustomColor;
+
+      wrapper.appendChild(innerGrid);
       wrapper.appendChild(help);
+      wrapper.appendChild(customWrap);
 
-      const checks = grid.querySelectorAll('input[type="checkbox"]');
-      checks.forEach((check) => {
-        check.addEventListener('change', (event) => {
-          const target = event.currentTarget;
-          if (!(target instanceof HTMLInputElement)) return;
+      // Shared select function: syncs all checkboxes in both grids
+      function syncCheckboxVisualState() {
+        document.querySelectorAll('input[name="colorPreview"], input[name="ramoCisneColor"]').forEach((cb) => {
+          const label = cb.closest('.color-checkbox-option');
+          if (!label) return;
+          label.classList.toggle('is-active', cb.checked);
+        });
+      }
 
-          if (target.checked) {
-            checks.forEach((item) => {
-              if (item !== target) item.checked = false;
-            });
-            roseColorInput.value = target.dataset.color || 'Sin preferencia';
-            const src = target.dataset.src || '';
-            if (src) setMainMedia(src);
-          } else {
-            roseColorInput.value = 'Sin preferencia';
-            setMainMedia(productMedia[0]);
+      function selectColor(color, src) {
+        currentProduct.selectedColor = color;
+        const isOther = color === 'Otro';
+        customWrap.style.display = isOther ? '' : 'none';
+        if (isOther) {
+          const customText = (colorCustomInput && colorCustomInput.value ? colorCustomInput.value : '').trim();
+          roseColorInput.value = customText ? `Otro: ${customText}` : 'Otro';
+        } else {
+          roseColorInput.value = color || 'Sin preferencia';
+        }
+        document.querySelectorAll('input[name="colorPreview"], input[name="ramoCisneColor"]').forEach((cb) => {
+          cb.checked = cb.dataset.color === color;
+          const label = cb.closest('.color-checkbox-option');
+          if (!label) return;
+          if (cb.checked) {
+            label.classList.remove('check-anim');
+            void label.offsetWidth;
+            label.classList.add('check-anim');
+            setTimeout(() => label.classList.remove('check-anim'), 320);
           }
         });
+        syncCheckboxVisualState();
+        if (src) setMainMedia(src);
+      }
+
+      if (colorCustomInput) colorCustomInput.addEventListener('input', () => {
+        if (currentProduct.selectedColor !== 'Otro') return;
+        const customText = (colorCustomInput.value || '').trim();
+        roseColorInput.value = customText ? `Otro: ${customText}` : 'Otro';
       });
+
+      // Attach listeners to both grids
+      [previewGrid, innerGrid].forEach(grid => {
+        grid.querySelectorAll('input[type="checkbox"]').forEach(check => {
+          check.addEventListener('change', (event) => {
+            const target = event.currentTarget;
+            if (!(target instanceof HTMLInputElement)) return;
+            if (target.checked) {
+              selectColor(target.dataset.color || '', target.dataset.src || '');
+            } else {
+              // Prevent unchecking without another selection
+              target.checked = true;
+            }
+          });
+        });
+      });
+
+      if (selectedColor === 'Otro') customWrap.style.display = '';
+      syncCheckboxVisualState();
     }
 
     function setupMainMediaSwipe() {
@@ -1483,6 +1693,7 @@
       if (!deliveryTime) missingRequired.push('Hora aproximada');
       if (!deliveryAddress) missingRequired.push('Dirección de entrega');
       if (cfg.hasBalloons && includeBalloons === 'Sí' && !balloonType) missingRequired.push('Tipo de globos');
+      if (cfg.hasFlowers && roseColor === 'Otro') missingRequired.push('Detalle de color personalizado');
 
       if (missingRequired.length) {
         status.textContent = `Faltan campos obligatorios: ${missingRequired.join(', ')}`;
@@ -1595,6 +1806,10 @@
         const list = document.createElement('div');
         list.className = 'custom-select-list';
         panel.appendChild(list);
+
+        if (sel.dataset.customWidgetHidden === '1') {
+          wrapper.style.display = 'none';
+        }
 
         wrapper.appendChild(trigger);
         wrapper.appendChild(panel);
