@@ -1027,7 +1027,10 @@
       // Floristería
       201: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
       202: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
-      203: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
+      203: { hasFlowers: true,  hasBalloons: false, hasFoods: false,
+             variants: [{ name: 'Ramo Cisne (sin combo)', price: '105.000' }, 
+                        { name: '🎁 OFERTA: Con Fresas Decoradas', price: '145.000', isSpecial: true },
+                        { name: '🎁 OFERTA: Con Ferreros', price: '150.000', isSpecial: true }] },
       204: { hasFlowers: true,  hasBalloons: false, hasFoods: false },
       205: { hasFlowers: true,  hasBalloons: false, hasFoods: true,  stock: false,
              variants: [{ name: 'Con Girasoles', price: '145.000' }, { name: 'Con Rosas', price: '160.000' }] },
@@ -1091,13 +1094,36 @@
       const wrapper = document.getElementById('variantWrapper');
       if (!wrapper) return;
       if (cfg.variants && cfg.variants.length > 0) {
-        wrapper.innerHTML = `
-          <div class="config-field full" style="margin-bottom:6px;">
-            <label for="variantInput" style="color:#c2185b;font-weight:800;">Presentación / Variante</label>
-            <select id="variantInput" onchange="updatePriceFromVariant()" required>
-              ${cfg.variants.map((v, i) => `<option value="${i}">${v.name} — $${v.price}</option>`).join('')}
-            </select>
-          </div>`;
+        const hasSpecialOffers = cfg.variants.some(v => v.isSpecial);
+        
+        if (hasSpecialOffers) {
+          // Render as stylized option cards for better visual impact
+          wrapper.innerHTML = `
+            <div class="config-field full" style="margin-bottom:12px;">
+              <label style="color:#c2185b;font-weight:800;display:block;margin-bottom:10px;">Presentación / Variante</label>
+              <div id="variantCards" style="display:grid;gap:10px;">
+                ${cfg.variants.map((v, i) => `
+                  <div class="variant-card ${v.isSpecial ? 'variant-offer' : 'variant-normal'}" 
+                       onclick="selectVariant(${i})" 
+                       style="padding:12px;border-radius:8px;border:2px solid #ddd;cursor:pointer;transition:all 0.24s;text-align:center;${v.isSpecial ? 'background:#fff5e6;border-color:#FFB300;box-shadow:0 4px 12px rgba(255,179,0,0.2);' : 'background:#f9f9f9;'}">
+                    <div style="font-weight:700;color:#333;font-size:15px;${v.isSpecial ? 'color:#E91E63;' : ''}">${v.name}</div>
+                    <div style="font-size:14px;color:#999;margin-top:4px;">$${v.price}</div>
+                    ${v.isSpecial ? '<div style="margin-top:6px;font-size:12px;background:#FFB300;color:#fff;padding:3px 8px;border-radius:4px;display:inline-block;font-weight:700;">⭐ OFERTA</div>' : ''}
+                  </div>
+                `).join('')}
+              </div>
+              <input type="hidden" id="variantInput" value="0" />
+            </div>`;
+        } else {
+          // Original select-based rendering
+          wrapper.innerHTML = `
+            <div class="config-field full" style="margin-bottom:6px;">
+              <label for="variantInput" style="color:#c2185b;font-weight:800;">Presentación / Variante</label>
+              <select id="variantInput" onchange="updatePriceFromVariant()" required>
+                ${cfg.variants.map((v, i) => `<option value="${i}">${v.name} — $${v.price}</option>`).join('')}
+              </select>
+            </div>`;
+        }
         initSelectAnimations();
         updatePriceFromVariant();
       } else {
@@ -1112,6 +1138,28 @@
       if (!cfg.variants) return;
       const v = cfg.variants[parseInt(variantInput.value || '0', 10)];
       if (v) document.getElementById('productPrice').textContent = `$${v.price}`;
+    }
+
+    function selectVariant(index) {
+      const variantInput = document.getElementById('variantInput');
+      if (variantInput) {
+        variantInput.value = String(index);
+        updatePriceFromVariant();
+        // Highlight selected card
+        const cards = document.querySelectorAll('.variant-card');
+        cards.forEach((card, i) => {
+          if (i === index) {
+            card.style.borderColor = '#E91E63';
+            card.style.boxShadow = '0 4px 12px rgba(233, 30, 99, 0.3)';
+            card.style.background = card.classList.contains('variant-offer') ? '#fff5e6' : '#f0f0f0';
+          } else {
+            const isOffer = card.classList.contains('variant-offer');
+            card.style.borderColor = '#ddd';
+            card.style.boxShadow = isOffer ? '0 4px 12px rgba(255,179,0,0.2)' : 'none';
+            card.style.background = isOffer ? '#fff5e6' : '#f9f9f9';
+          }
+        });
+      }
     }
     // ────────────────────────────────────────────────────────────────────────────
 
