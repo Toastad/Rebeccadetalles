@@ -373,6 +373,37 @@
     }
     .config-field textarea { min-height: 74px; resize: vertical; }
 
+    .color-checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .color-checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #f0c9da;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #fff8fb;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6a4560;
+      cursor: pointer;
+    }
+    .color-checkbox-option input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: #e91e63;
+    }
+    .color-checkbox-help {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #8b6b7d;
+    }
+
     .config-field select.native-hidden {
       display: none;
     }
@@ -993,7 +1024,7 @@
       // floristeria
       { id: 201, name: 'Ramo Flores Amarillas', desc: 'Ramo de flores amarillas variadas con decoracion clasica.', price: '80.000', img: 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM.jpeg', 'img/floristeria/WhatsApp Image 2026-03-22 at 2.44.51 PM (1).jpeg'], contents: ['Flores amarillas variadas', 'Astromelias o follaje', 'Mono y decoracion'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 202, name: 'Ramo Cisne Rosas', desc: 'Ramo de 12 rosas con envoltura cisne y decoracion premium.', price: '120.000', img: 'IMG_0612.JPG', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['IMG_0612.JPG', 'Floristeria.jpg'], contents: ['Ramo de 12 rosas', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Colores disponibles: rojo, rosado, blanco y amarillo. No incluye domicilio.' },
-      { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y mono decorativo. ¡Ahora con opciones de combo: agrega fresas o ferreros!', price: '105.000', img: 'Floristeria.jpg', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['Floristeria.jpg', 'IMG_0612.JPG'], contents: ['Ramo de 5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Disponible con opciones de combo especiales' },
+      { id: 203, name: 'Ramo Cisne', desc: 'Ramo de 5-6 girasoles con envoltura cisne y mono decorativo. ¡Ahora con opciones de combo: agrega fresas o ferreros!', price: '105.000', img: 'img/floristeria/Ramo Cisne/26027914-4c8b-4722-9236-7f68095d85e3.jpg', imageFolder: 'img/floristeria/Ramo Cisne/', category: 'Rosas', images: ['img/floristeria/Ramo Cisne/26027914-4c8b-4722-9236-7f68095d85e3.jpg', 'img/floristeria/Ramo Cisne/54ca87f6-06ca-4805-ab32-e9f9451cb375.jpg', 'img/floristeria/Ramo Cisne/88cf42aa-ec29-46c3-bab7-5a56bca5bcd3.jpg', 'img/floristeria/Ramo Cisne/d66e2149-faca-44b6-b12d-4d6c401d82ed.jpg', 'img/floristeria/Ramo Cisne/0a220c3a-f6a9-49d6-ba61-19ca56eb0b76.jpg'], colorImages: { Rosado: 'img/floristeria/Ramo Cisne/26027914-4c8b-4722-9236-7f68095d85e3.jpg', Rojo: 'img/floristeria/Ramo Cisne/54ca87f6-06ca-4805-ab32-e9f9451cb375.jpg', Blanco: 'img/floristeria/Ramo Cisne/88cf42aa-ec29-46c3-bab7-5a56bca5bcd3.jpg', Amarillo: 'img/floristeria/Ramo Cisne/d66e2149-faca-44b6-b12d-4d6c401d82ed.jpg' }, contents: ['Ramo de 5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'Disponible con opciones de combo especiales' },
       { id: 210, name: 'Ramo Rosas Eternas', desc: 'Ramo de rosas eternas de listón para conservar el detalle.', price: '130.000', img: 'IMG_0618.JPG', imageFolder: 'img/floristeria/', category: 'Rosas', images: ['IMG_0618.JPG', 'Floristeria.jpg'], contents: ['Ramo de rosas eternas', 'Moño y decoración'], shipping: '0', prepTime: '3-4 horas', note: 'No incluye domicilio' },
       { id: 204, name: 'Ramo Cisne Girasoles', desc: 'Ramo con 5-6 girasoles en presentacion cisne.', price: '105.000', img: 'Floristeria.jpg', imageFolder: 'img/floristeria/', category: 'Ramos Mixtos', images: ['Floristeria.jpg', 'IMG_0618.JPG'], contents: ['5-6 girasoles', 'Astromelias o follaje', 'Envoltura cisne', 'Mono y decoracion'], shipping: '0', prepTime: '4 horas', note: 'No incluye domicilio' },
       { id: 205, name: 'Ramo Cisne en Combo', desc: 'Ramo con fresas o choco-oreos para detalle doble. Con girasoles $145.000 o con rosas $160.000.', price: '145.000', img: 'IMG_0618.JPG', imageFolder: 'img/floristeria/', stock: false, category: 'Ramos Mixtos', images: ['IMG_0618.JPG', 'Floristeria.jpg', 'IMG_0612.JPG'], contents: ['7 girasoles o 12 rosas', 'Astromelias o Follaje', 'Fresas o Choco-oreos', 'Envoltura cisne', 'Decoracion'], shipping: '0', prepTime: '4-5 horas', note: 'No incluye domicilio. Precio varía según presentación.' },
@@ -1212,7 +1243,8 @@
     }
 
     const selectedFromStorage = getSelectedProductFromStorage();
-    const currentProduct = selectedFromStorage || PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
+    const baseProduct = PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
+    const currentProduct = selectedFromStorage ? { ...baseProduct, ...selectedFromStorage } : baseProduct;
 
     const originMap = {
       desayunos: 'desayunos.html',
@@ -1258,6 +1290,62 @@
     function setMainMedia(src) {
       currentMedia = src;
       renderMainMedia();
+    }
+
+    function setupRamoCisneColorCheckboxes() {
+      const wrapper = document.getElementById('roseColorWrapper');
+      const roseColorInput = document.getElementById('roseColorInput');
+      if (!wrapper || !roseColorInput) return;
+
+      const oldGrid = wrapper.querySelector('.color-checkbox-grid');
+      const oldHelp = wrapper.querySelector('.color-checkbox-help');
+      if (oldGrid) oldGrid.remove();
+      if (oldHelp) oldHelp.remove();
+      roseColorInput.style.display = '';
+
+      if (currentProduct.id !== 203 || !currentProduct.colorImages) return;
+
+      roseColorInput.value = 'Sin preferencia';
+      roseColorInput.style.display = 'none';
+
+      const options = Object.entries(currentProduct.colorImages);
+      if (!options.length) return;
+
+      const grid = document.createElement('div');
+      grid.className = 'color-checkbox-grid';
+      grid.innerHTML = options.map(([color, src]) => `
+        <label class="color-checkbox-option">
+          <input type="checkbox" name="ramoCisneColor" data-color="${color}" data-src="${src}">
+          <span>${color}</span>
+        </label>
+      `).join('');
+
+      const help = document.createElement('div');
+      help.className = 'color-checkbox-help';
+      help.textContent = 'Marca un color para ver la foto correspondiente del ramo.';
+
+      wrapper.appendChild(grid);
+      wrapper.appendChild(help);
+
+      const checks = grid.querySelectorAll('input[type="checkbox"]');
+      checks.forEach((check) => {
+        check.addEventListener('change', (event) => {
+          const target = event.currentTarget;
+          if (!(target instanceof HTMLInputElement)) return;
+
+          if (target.checked) {
+            checks.forEach((item) => {
+              if (item !== target) item.checked = false;
+            });
+            roseColorInput.value = target.dataset.color || 'Sin preferencia';
+            const src = target.dataset.src || '';
+            if (src) setMainMedia(src);
+          } else {
+            roseColorInput.value = 'Sin preferencia';
+            setMainMedia(productMedia[0]);
+          }
+        });
+      });
     }
 
     function setupMainMediaSwipe() {
@@ -1318,6 +1406,7 @@
 
       renderMainMedia();
       applyCustomizerConfig(cfg);
+      setupRamoCisneColorCheckboxes();
       renderVariantField(cfg);
       renderRelated();
     }
