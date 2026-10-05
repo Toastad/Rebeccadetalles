@@ -3,3 +3,5 @@ the fully automated result of what you want to buy, it will get everything down 
 this project isnt finished, not in the sense of coding, more in the sense that i'd need to add more products to finish it, for now its functional.
 
 usage of VS code's integrated copilot feature + usage of git.
+
+WARNING: if you want to buy something, it reffers to my Whatsapp phone number, please dont spam me 
